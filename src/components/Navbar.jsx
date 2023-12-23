@@ -4,6 +4,7 @@ import logo from "../assets/images (1).png";
 import { FaShoppingCart } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
 import { AiOutlineSearch } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const options = [
@@ -131,7 +132,9 @@ const Navbar = () => {
             </button> */}
             <div className="right-nav">
               <FaShoppingCart />
-              <FiUser />
+              <Link to={"/login"}>
+                <FiUser />
+              </Link>
               <AiOutlineSearch onClick={() => setIsSearch(true)} />
               {isSearch && (
                 <div className="search-bar">

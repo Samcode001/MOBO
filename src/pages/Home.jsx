@@ -13,7 +13,8 @@ import ic13_image from "../assets/ic13.avif";
 const Home = () => {
   return (
     <div>
-      {/* <Header/> */}
+      
+      <Navbar />
       <Hero />
 
       <div className="cta">
