@@ -13,7 +13,6 @@ import ic13_image from "../assets/ic13.avif";
 const Home = () => {
   return (
     <div>
-      
       <Navbar />
       <Hero />
 
@@ -43,7 +42,6 @@ const Home = () => {
       </div>
 
       <div className="cta2">
-
         <h2>WHAT MAKES THE ESSENTIAL DIFFERENT?</h2>
         <h4>EXPERIENCE HIGH PERFORMANCE AND SECURE</h4>
 
