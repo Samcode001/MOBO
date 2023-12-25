@@ -12,19 +12,19 @@ h1{
 }
 
 .left{
-    outline: 2px solid blue;
+    /* outline: 2px solid blue; */
     /* height: 30rem;
     width: 10rem; */
 }
 
 .right{
-    outline:2px solid lime;
+    /* outline:2px solid lime; */
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
     padding: 2rem 1rem;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
 }
 
 ul{

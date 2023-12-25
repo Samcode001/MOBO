@@ -8,9 +8,11 @@ import { dataState } from "../store/data";
 
 const Products = () => {
   const [data, setData] = useRecoilState(dataState);
+  const[filterData,setFilterData]=useState([]);
   const [processors, setProcessors] = useState([]);
   const [memory, setMemory] = useState([]);
   const [os, setOs] = useState([]);
+  const [selectedPriceRange, setSelectedPriceRange] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({
     price: [],
     processors: [],
@@ -23,7 +25,13 @@ const Products = () => {
       const res = await axios.get("http://localhost:3000/data/phones");
       if (res.status === 200) {
         setData(res.data.phones);
-        // let processordata = res.data.phones.filter(elem);
+        setFilterData(res.data.phones)
+        // const uniqueProcessors = [...new Set(res.data.phones.map((item) => item.processor))];
+        // const uniqueMemory = [...new Set(res.data.phones.map((item) => item.memory))];
+        // const uniqueOs = [...new Set(res.data.phones.map((item) => item.os))];
+        setProcessors(uniqueProcessors);
+        setMemory(uniqueMemory);
+        setOs(uniqueOs);
       } else {
         console.log("Some Erro occ");
       }
@@ -33,56 +41,87 @@ const Products = () => {
   };
 
   const applyFilters = () => {
-    // Implement your logic to filter data based on selected filters
-    const filteredData = data.filter((item) => {
-      //   const priceFilter = selectedFilters.price.length === 0 || selectedFilters.price.includes(item.priceRange);
-      const processorFilter =
-        selectedFilters.processors.length === 0 ||
-        selectedFilters.processors.includes(item.processor);
-      const memoryFilter =
-        selectedFilters.memory.length === 0 ||
-        selectedFilters.memory.includes(item.memory);
-      const osFilter =
-        selectedFilters.os.length === 0 || selectedFilters.os.includes(item.os);
+    const hasActiveFilters =
+      selectedFilters.price.length > 0 ||
+      selectedFilters.processors.length > 0 ||
+      selectedFilters.memory.length > 0 ||
+      selectedFilters.os.length > 0 ||
+      selectedPriceRange.length > 0; // Include price range filter
 
-      return processorFilter && memoryFilter && osFilter;
-    });
+    if (hasActiveFilters) {
+      const filteredData = data.filter((item) => {
+        const processorFilter =
+          selectedFilters.processors.length === 0 ||
+          selectedFilters.processors.includes(item.processor);
+        const memoryFilter =
+          selectedFilters.memory.length === 0 ||
+          selectedFilters.memory.includes(item.memory);
+        const osFilter =
+          selectedFilters.os.length === 0 ||
+          selectedFilters.os.includes(item.os);
 
-    // Update data with the filtered data
-    setData(filteredData);
+        // Check if the item's price range is included in the selectedPriceRange
+        const priceRangeFilter =
+          selectedPriceRange.length === 0 ||
+          selectedPriceRange.includes(item.priceRange);
 
-    console.log(selectedFilters);
+        return processorFilter && memoryFilter && osFilter && priceRangeFilter;
+      });
+
+      setFilterData(filteredData);
+    } else {
+      getData();
+    }
   };
+
+  const priceRanges = [
+    { label: "0-500", value: "range1" },
+    { label: "500-1000", value: "range2" },
+    { label: "1000-1500", value: "range3" },
+    // { label: "20000 Above", value: "range4" },
+  ];
 
   const handleCheckboxChange = (category, value) => {
-    setSelectedFilters((prevFilters) => {
-      const updatedFilters = { ...prevFilters };
-      if (updatedFilters[category].includes(value)) {
-        // Remove value if already present
-        updatedFilters[category] = updatedFilters[category].filter(
-          (item) => item !== value
-        );
-      } else {
-        // Add value if not present
-        updatedFilters[category] = [...updatedFilters[category], value];
-      }
-      return updatedFilters;
-    });
+    if (category === "price") {
+      setSelectedPriceRange((prevPriceRanges) => {
+        const updatedPriceRanges = prevPriceRanges.includes(value)
+          ? prevPriceRanges.filter((item) => item !== value)
+          : [...prevPriceRanges, value];
+
+        // Update state for price range filter
+        setSelectedPriceRange(updatedPriceRanges);
+
+        // Return updated state for further processing
+        console.log(updatedPriceRanges);
+        return updatedPriceRanges;
+      });
+    } else {
+      setSelectedFilters((prevFilters) => {
+        const updatedFilters = { ...prevFilters };
+        if (updatedFilters[category].includes(value)) {
+          updatedFilters[category] = updatedFilters[category].filter(
+            (item) => item !== value
+          );
+        } else {
+          updatedFilters[category] = [...updatedFilters[category], value];
+        }
+        return updatedFilters;
+      });
+    }
   };
 
-  const setFilters = () => {
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
     const uniqueProcessors = [...new Set(data.map((item) => item.processor))];
     const uniqueMemory = [...new Set(data.map((item) => item.memory))];
     const uniqueOs = [...new Set(data.map((item) => item.os))];
     setProcessors(uniqueProcessors);
     setMemory(uniqueMemory);
     setOs(uniqueOs);
-  };
-
-  useEffect(() => {
-    getData();
-    setFilters();
-  }, []);
+  }, [data]);
 
   return (
     <>
@@ -96,19 +135,34 @@ const Products = () => {
           <br />
           <h2>Price</h2>
           <ul>
+            {/* <li>
+              <input
+                type="checkbox"
+                id={`price-1000-5000`}
+                checked={selectedFilters.price.includes("1000-5000")}
+                onChange={() => handleCheckboxChange("price", "1000-5000")}
+              />{" "}
+              1000 - 5000
+            </li> */}
             <li>
-              <input type="checkbox" name="" id="" /> 1000 - 5000
+              {priceRanges.map((range) => (
+                <li key={range.label}>
+                  <input
+                    type="checkbox"
+                    id={`price-${range.label}`}
+                    checked={selectedPriceRange.includes(range.label)}
+                    onChange={() => handleCheckboxChange("price", range.label)}
+                  />{" "}
+                  {range.label}
+                </li>
+              ))}
             </li>
-            <li>
-              {" "}
-              <input type="checkbox" name="" id="" /> 5000-10000
-            </li>
-            <li>
+            {/* <li>
               <input type="checkbox" name="" id="" /> 10000-20000
             </li>
             <li>
               <input type="checkbox" name="" id="" /> 20000 Above.
-            </li>
+            </li> */}
           </ul>
 
           <br />
@@ -118,12 +172,13 @@ const Products = () => {
               processors.map((elem) => {
                 return (
                   <li>
-                    <input 
-                  type="checkbox"
-                  id={`processor-${elem}`}
-                  checked={selectedFilters.processors.includes(elem)}
-                  onChange={() => handleCheckboxChange("processors", elem)}
-                     /> {elem}
+                    <input
+                      type="checkbox"
+                      id={`processor-${elem}`}
+                      checked={selectedFilters.processors.includes(elem)}
+                      onChange={() => handleCheckboxChange("processors", elem)}
+                    />{" "}
+                    {elem}
                   </li>
                 );
               })}
@@ -141,7 +196,8 @@ const Products = () => {
                       id={`memory-${elem}`}
                       checked={selectedFilters.memory.includes(elem)}
                       onChange={() => handleCheckboxChange("memory", elem)}
-                      /> {elem}
+                    />{" "}
+                    {elem}
                   </li>
                 );
               })}
@@ -155,12 +211,13 @@ const Products = () => {
               os.map((elem) => {
                 return (
                   <li>
-                    <input 
-                    type="checkbox"
-                    id={`os-${elem}`}
-                    checked={selectedFilters.os.includes(elem)}
-                    onChange={() => handleCheckboxChange("os", elem)}
-                      /> {elem}
+                    <input
+                      type="checkbox"
+                      id={`os-${elem}`}
+                      checked={selectedFilters.os.includes(elem)}
+                      onChange={() => handleCheckboxChange("os", elem)}
+                    />{" "}
+                    {elem}
                   </li>
                 );
               })}
@@ -172,9 +229,11 @@ const Products = () => {
           </button>
         </div>
         <div className="right">
-          {/* {console.log(data)} */}
-          {data &&
-            data.map((elem) => <ProductsCard key={elem.id} data={elem} />)}
+          {filterData && filterData.length > 0 ? (
+            filterData.map((elem) => <ProductsCard key={elem.id} data={elem} />)
+          ) : (
+            <p>No data available</p>
+          )}
         </div>
       </div>
     </>

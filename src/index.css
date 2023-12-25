@@ -37,7 +37,7 @@ main {
   line-height: 1;
   padding: 1rem 2rem;
   border-radius: 5rem;
-  background: var(--clr-gradient-primary);
+  background: rgba(0, 0, 0, 0.841);
   color: var(--clr-neutral-100);
   font-weight: var(--fw-bold);
   cursor: pointer;

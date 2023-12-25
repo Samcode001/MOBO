@@ -65,9 +65,9 @@ const Navbar = () => {
       <header className="primary-header">
         <div className="container">
           <div className="nav-wrapper">
-            <a className="logo" href="#">
+            <Link className="logo" to={'/'}>
               <img src={logo} alt="logo" />
-            </a>
+            </Link>
             <button
               className="mobile-nav-toggle"
               aria-controls="primary-navigation"
@@ -78,7 +78,10 @@ const Navbar = () => {
             <nav className="primary-navigation">
               <ul role="list" id="primary-navigation" className="nav-list">
                 <li>
+                  <Link to={'/'}>
+
                   <a href="#">Home</a>
+                  </Link>
                 </li>
                 <li
                   className="dropdown"
@@ -105,7 +108,10 @@ const Navbar = () => {
                   )}
                 </li>
                 <li>
+                  <Link to={'/products'}>
+
                   <a href="#">Shop</a>
+                  </Link>
                 </li>
                 <li>
                   <a href="#">Android</a>
