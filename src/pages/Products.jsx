@@ -4,10 +4,10 @@ import ProductsCard from "../components/ProductsCard";
 import "../styles/Products.css";
 import Navbar from "../components/Navbar";
 import { useRecoilState } from "recoil";
-import { dataState } from "../store/data";
+import { allPhonesDataState } from "../store/data";
 
 const Products = () => {
-  const [data, setData] = useRecoilState(dataState);
+  const [allPhones, setAllPhones] = useRecoilState(allPhonesDataState);
   const[filterData,setFilterData]=useState([]);
   const [processors, setProcessors] = useState([]);
   const [memory, setMemory] = useState([]);
@@ -24,8 +24,9 @@ const Products = () => {
     try {
       const res = await axios.get("http://localhost:3000/data/phones");
       if (res.status === 200) {
-        setData(res.data.phones);
+        setAllPhones(res.data.phones);
         setFilterData(res.data.phones)
+        console.log(res.data.phones)
         // const uniqueProcessors = [...new Set(res.data.phones.map((item) => item.processor))];
         // const uniqueMemory = [...new Set(res.data.phones.map((item) => item.memory))];
         // const uniqueOs = [...new Set(res.data.phones.map((item) => item.os))];
@@ -49,7 +50,7 @@ const Products = () => {
       selectedPriceRange.length > 0; // Include price range filter
 
     if (hasActiveFilters) {
-      const filteredData = data.filter((item) => {
+      const filteredData = allPhones.filter((item) => {
         const processorFilter =
           selectedFilters.processors.length === 0 ||
           selectedFilters.processors.includes(item.processor);
@@ -115,13 +116,13 @@ const Products = () => {
   }, []);
 
   useEffect(() => {
-    const uniqueProcessors = [...new Set(data.map((item) => item.processor))];
-    const uniqueMemory = [...new Set(data.map((item) => item.memory))];
-    const uniqueOs = [...new Set(data.map((item) => item.os))];
+    const uniqueProcessors = [...new Set(allPhones.map((item) => item.processor))];
+    const uniqueMemory = [...new Set(allPhones.map((item) => item.memory))];
+    const uniqueOs = [...new Set(allPhones.map((item) => item.os))];
     setProcessors(uniqueProcessors);
     setMemory(uniqueMemory);
     setOs(uniqueOs);
-  }, [data]);
+  }, [allPhones]);
 
   return (
     <>
@@ -230,7 +231,7 @@ const Products = () => {
         </div>
         <div className="right">
           {filterData && filterData.length > 0 ? (
-            filterData.map((elem) => <ProductsCard key={elem.id} data={elem} />)
+            filterData.map((elem) => <ProductsCard key={elem._id} data={elem} />)
           ) : (
             <p>No data available</p>
           )}

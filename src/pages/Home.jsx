@@ -4,7 +4,6 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import "../styles/Hero.css";
 import { useSetRecoilState } from "recoil";
-import { dataState } from "../store/data.js";
 import axios from "axios";
 import ProductsCard from "../components/ProductsCard";
 
@@ -19,16 +18,17 @@ import cta3_battery from "../assets/cta3-battery.png";
 import cta3_sim from "../assets/cta3-sim.webp";
 import cta3_processor from "../assets/cta3-processor.webp";
 import cta3_camera from "../assets/cta3-camera.webp";
+import { allPhonesDataState } from "../store/data.js";
 
 const Home = () => {
-  const setData = useSetRecoilState(dataState);
+  const setAllPhones = useSetRecoilState(allPhonesDataState);
   const [parsedData, setParsedData] = useState([]);
 
   const getData = async () => {
     try {
       const res = await axios.get("http://localhost:3000/data/phones");
       if (res.status === 200) {
-        setData((prevData) => [...prevData, res.data.phones]);
+        setAllPhones((prevData) => [...prevData, res.data.phones]);
         setParsedData(res.data.phones.slice(0, 4));
       } else {
         console.log("Some Erro occ");

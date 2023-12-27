@@ -14,24 +14,24 @@ const ProductCard = ({ data }) => {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const d = data.name;
+  const id = data._id;
 
-  const product_name = d.replace(/\s+/g, "-"); // This product_name will be used in url for redirecting to product page so we need to change the all the ' ' spaces ("\s+") in the product name (d=data.name) to hyphens "-", so the product_name can be URL Friendly String
+//   const product_name = d.replace(/\s+/g, "-"); // This product_name will be used in url for redirecting to product page so we need to change the all the ' ' spaces ("\s+") in the product name (d=data.name) to hyphens "-", so the product_name can be URL Friendly String
 
   return (
     <div className="card-container">
       <div>
-        <Link to={`/product/${product_name}`}>
+        <Link to={`/product/${id}`}>
           <img
             src={data.images[0]}
             alt=""
-            style={{ width: "18rem", height: "13rem" ,borderRadius:"1rem"}}
+            style={{ width: "18rem", height: "17rem" ,borderRadius:"1rem" ,objectFit:"contain"}}
           />
         </Link>
       </div>
       {/* <Link to={"/"}>{data.shop.name}</Link> */}
       <div>
-        <Link to={`/product/${product_name}`} className="card-details">
+        <Link to={`/product/${id}`} className="card-details">
           <h4 style={{fontSize:"1.2rem"}}>
             {data.name.length > 40 ? data.name.slice(0, 40) + "..." : data.name}
           </h4>

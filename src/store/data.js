@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export const dataState = atom({
+export const allPhonesDataState = atom({
   key: "dataState",
   default: [],
 });
