@@ -4,6 +4,7 @@ import { useRecoilValue } from "recoil";
 import { allPhonesDataState } from "../store/data";
 import Navbar from "../components/Navbar";
 import ProductDetails from '../components/ProductDetails.jsx'
+import Footer from "../components/Footer.jsx";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -19,8 +20,7 @@ const ProductDetailsPage = () => {
     <div>
       <Navbar />
      <ProductDetails data={phone_data}/>
-
-      {id}
+     <Footer/>
     </div>
   );
 };

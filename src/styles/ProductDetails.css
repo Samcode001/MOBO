@@ -1,67 +1,219 @@
-
-.product-container{
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 1.5fr 1fr;
-    outline: 2px solid red;
-    height: 90vh;
+.product-container {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr 1.4fr;
+  /* outline: 2px solid red; */
+  height: 90vh;
+  padding: 0rem 3rem;
 }
 
-.left{
-    outline: 2px solid black;
-
+.product-left {
+  /* outline: 2px solid black; */
 }
 
-.left{
-    /* outline: 2px solid lime; */
-    display: grid;
-    gap: 1rem;
+.product-left {
+  /* outline: 2px solid lime; */
+  display: grid;
+  gap: 1rem;
 }
 
-.images{
-    width: 8rem;
-    height: 8rem;
+.images {
+  width: 8rem;
+  height: 8rem;
 }
 
-.item-1{
-    grid-column: 2/3;
-    grid-row: 1/3;
-    outline: 2px solid black;
+.item-1 {
+  grid-column: 2/4;
+  grid-row: 1/3;
+  /* outline: 2px solid black; */
 }
-.item-1>img{
-   object-fit: contain;
+.item-1 > img {
+  object-fit: contain;
 }
-.item-2{
-    grid-column: 1/2;
-    grid-row: 3/5;
-    outline: 2px solid lime;
-}
-
-.item-2>img{
-    object-fit: cover;
+.item-2 {
+  grid-column: 2/3;
+  grid-row: 5/5;
+  /* outline: 2px solid lime; */
 }
 
-.item-3{
-    grid-column: 2/3;
-    grid-row: 3/5;
-    outline: 2px solid royalblue;
+.item-2 > img {
+  object-fit: cover;
 }
 
-.item-3>img{
-object-fit: cover;
+.item-3 {
+  grid-column: 3/4;
+  grid-row: 3/5;
+  /* outline: 2px solid royalblue; */
 }
 
-.item-4{
-    grid-column: 3/4;
-    grid-row: 3/5;
-    outline: 2px solid royalblue;
+.item-3 > img {
+  object-fit: cover;
 }
 
-.item-4>img{
-object-fit: cover;
+.item-4 {
+  grid-column: 4/5;
+  grid-row: 5/5;
+  /* outline: 2px solid royalblue; */
+}
+
+.item-4 > img {
+  object-fit: cover;
+}
+
+.product-right {
+  /* outline: 2px solid rgb(236, 57, 17); */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: start;
+  padding: 0rem 3rem;
+}
+
+.product-right > h2 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.product-right > h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.product-right > h3 > span {
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding-left: 1rem;
+}
+
+.quantity {
+  display: flex;
+  gap: 1rem;
+}
+
+.product-buttons > * {
+  margin-inline: 1rem;
+}
+
+.share-button {
+  width: fit-content;
+  border: 0;
+  line-height: 1;
+  /* padding: 1rem 2rem; */
+  /* border-radius: 5rem; */
+  background: white;
+  /* color: var(--clr-neutral-100); */
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  position: relative;
+}
+
+.share-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(148, 123, 123);
+  opacity: 0;
+  border-radius: 5rem;
+  transition: 150ms;
+}
+
+.share-button:hover::after {
+  opacity: 0.4;
+}
+
+.product-description {
+  margin: 3rem 2rem;
+  outline: 2px solid rgb(2, 2, 45);
+  border-radius: 1rem;
+  padding: 1.5rem 1.8rem;
+}
+
+.product-description > * {
+  margin-block: 1rem;
+}
+
+.desc-buttons > h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  position: relative;
+  display: inline;
+  cursor: pointer;
+  margin-inline: 1rem;
+}
+
+.desc-buttons > h2::before {
+  transition: 300ms;
+  content: "";
+  position: absolute;
+  bottom: -35px;
+  height: 5px;
+  width: 100%;
+  background: var(--clr-gradient-primary);
+  opacity: 0;
+}
+
+.desc-buttons > h2:hover::before {
+  bottom: -15px;
+  opacity: 1;
+  color: black;
+}
+
+.product-description > h4 {
+  font-size: 1.3rem;
+  font-weight: 550;
+}
+
+.product-description > p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  /* font-weight: 550; */
 }
 
 
-.right{
-    outline: 2px solid blueviolet;
+.customer-review{
+    padding: 2rem 3rem;
+    margin: 2rem 2.5rem;
+    outline: 2px solid gray;
+    border-radius: 1rem;
+}
+
+.rating-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.rating-container>input{
+padding: 4px 10px;
+border-radius: 10px;
+}
+
+.review-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ratings>div{
+    border-bottom: 1px solid gray;
+    padding:1rem 0;
+}
+
+.ratings>*{
+margin-bottom: 12px;
+   font-size: 1rem;
+}
+
+.ratings span{
+/* margin-bottom: 12px; */
+   font-size: 1rem;
+   font-weight: 600;
+   color: rgb(6, 6, 36);
+}
+
+.related-container {
+  padding: 3rem 2rem;
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
 }
