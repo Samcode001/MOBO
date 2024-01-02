@@ -2,11 +2,12 @@ const express = require("express");
 const { default: mongoose } = require("mongoose");
 const PHONES = require("../schema/phones");
 const RATINGS = require("../schema/ratings");
+const authenticateJwt = require("../auth/authenticateJwt");
 const router = express.Router();
 
 // const phonesModel = mongoose.model("phones", new mongoose.Schema({}), "phones");
 
-router.get("/phones", async (req, res) => {
+router.get("/phones", authenticateJwt, async (req, res) => {
   try {
     // const phonesData = await phonesModel.find({}).exec();
     const phonesData = await PHONES.find({});
@@ -17,10 +18,10 @@ router.get("/phones", async (req, res) => {
   }
 });
 
-router.post("/set-rating", async (req, res) => {
+router.post("/set-rating", authenticateJwt, async (req, res) => {
   try {
     const { id, rate, title, desc } = { ...req.body };
-    const date = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+    const date = new Date().toJSON().slice(0, 10).replace(/-/g, "/");
     const product = await RATINGS.findOne({ productId: id });
     if (!product) {
       const newProduct = RATINGS({
@@ -46,9 +47,9 @@ router.post("/set-rating", async (req, res) => {
         user: "Sam",
         date: date,
       };
-      
+
       product.ratings.push(newrating);
-      await RATINGS.findOneAndUpdate({ productId: id },product,{new:true})
+      await RATINGS.findOneAndUpdate({ productId: id }, product, { new: true });
       res.status(200).send("Rating updated");
     }
   } catch (error) {
@@ -56,9 +57,9 @@ router.post("/set-rating", async (req, res) => {
   }
 });
 
-router.post("/ratings", async (req, res) => {
+router.post("/ratings", authenticateJwt, async (req, res) => {
   try {
-    const product = await RATINGS.findOne({productId:req.body.id});
+    const product = await RATINGS.findOne({ productId: req.body.id });
     res.status(200).json({ ratings: product.ratings });
   } catch (error) {
     res.status(500).send(`Error in Route:${error}`);

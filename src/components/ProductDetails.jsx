@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import Ratings from "../components/Ratings.jsx";
 import GeneraetStars from "../components/GeneraetStars.jsx";
 import { FaStar } from "react-icons/fa";
+import { FaRegStar } from "react-icons/fa";
 import axios from "axios";
 
 const ProductDetails = ({ data }) => {
@@ -43,6 +44,7 @@ const ProductDetails = ({ data }) => {
   const [descFlag, setDescFlag] = useState(true);
   const [ratings, setRatings] = useState([]);
   const [writeReview, setWriteReview] = useState(false);
+  const [totalRatings, setTotalRatings] = useState(0);
 
   const allPhones = useRecoilValue(allPhonesDataState);
 
@@ -74,11 +76,27 @@ const ProductDetails = ({ data }) => {
   };
 
   const getRatings = async () => {
-    const res = await axios.post("http://localhost:3000/data/ratings", {
-      id: data._id,
-    });
+    const res = await axios.post(
+      "http://localhost:3000/data/ratings",
+      {
+        id: data._id,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
     if (res.status === 200) {
       setRatings(res.data.ratings);
+
+      const ratingsData = res.data.ratings;
+      let averageRating = 0;
+      for (let i = 0; i < ratingsData.length; i++) {
+        averageRating += ratingsData[i].rate;
+      }
+      averageRating = Math.ceil(averageRating / ratingsData.length);
+      setTotalRatings(averageRating);
     }
   };
 
@@ -92,12 +110,6 @@ const ProductDetails = ({ data }) => {
 
   return (
     <>
-      <head>
-        <meta property="og:title" content={data.name} />
-        <meta property="og:type" content={data.type} />
-        <meta property="og:image" content={data.images[0]} />
-        {/* Add more relevant metadata tags */}
-      </head>
       <div className="product-container">
         <div className="product-left">
           <div className="main-image item-1">
@@ -258,9 +270,16 @@ const ProductDetails = ({ data }) => {
         </h2>
         <div className="review-header">
           <div style={{ display: "flex", gap: "5px" }}>
-            {[...Array(5)].map((value) => (
-              <FaStar key={value + 1} color="orange" size={25} />
-            ))}
+            {<GeneraetStars rating={totalRatings} size={25} />}
+            <h2
+              style={{
+                fontSize: "1.2rem",
+                fontWeight: "500",
+                marginInlineStart: "1rem",
+              }}
+            >
+              Based on {ratings.length} reviews
+            </h2>
           </div>
           <h3
             style={{
@@ -289,8 +308,8 @@ const ProductDetails = ({ data }) => {
             ratings.map((elem) => {
               return (
                 <div key={elem._id}>
-                  <div style={{marginBlock:'0.5rem'}} >
-                    <GeneraetStars rating={elem.rate} />
+                  <div style={{ marginBlock: "0.5rem" }}>
+                    <GeneraetStars rating={elem.rate} size={18} />
                   </div>
                   <span>{elem.title}</span>
                   <div>

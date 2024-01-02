@@ -37,7 +37,9 @@ router.post("/signup", async (req, res) => {
       await newAdmin.save();
       res.status(200).json({
         message: "Admin created",
-        token: jwt.sign({ admin: newAdmin._id }, "Hello", { expiresIn: "4h" }),
+        token: jwt.sign({ admin: newAdmin.username }, "Hello", {
+          expiresIn: "4h",
+        }),
       });
     }
   } catch (error) {
@@ -56,7 +58,9 @@ router.post("/login", async (req, res) => {
     if (flag)
       res.status(200).json({
         message: "Logged in Succesfully",
-        token: jwt.sign({ admin: admin._id }, "Hello", { expiresIn: "4h" }),
+        token: jwt.sign({ admin: admin.username }, "Hello", {
+          expiresIn: "4h",
+        }),
       });
     else {
       res.status(401).send("Invalid Credentials");
@@ -65,6 +69,5 @@ router.post("/login", async (req, res) => {
     res.status(500).send(`Error in Route : ${error}`);
   }
 });
-
 
 module.exports = router;

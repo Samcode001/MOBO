@@ -1,9 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { FaRegStar } from "react-icons/fa";
 
-const Ratings = ({ id ,getRatings}) => {
+
+const Ratings = ({ id, getRatings }) => {
   const fullRating = 5;
 
   const [review, setReview] = useState(0);
@@ -17,12 +17,20 @@ const Ratings = ({ id ,getRatings}) => {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.post("http://localhost:3000/data/set-rating", {
-        id: id,
-        rate: review,
-        title: title,
-        desc: desc,
-      });
+      const res = await axios.post(
+        "http://localhost:3000/data/set-rating",
+        {
+          id: id,
+          rate: review,
+          title: title,
+          desc: desc,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
 
       //  console.log(review,title,desc);
 
