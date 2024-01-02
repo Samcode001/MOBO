@@ -1,8 +1,8 @@
-const express = require("express");
-const { default: mongoose } = require("mongoose");
-const PHONES = require("../schema/phones");
-const RATINGS = require("../schema/ratings");
-const authenticateJwt = require("../auth/authenticateJwt");
+import  express  from "express";
+import mongoose from "mongoose";
+import  PHONES  from  "../models/phones.js";
+import RATINGS from "../models/ratings.js";
+import  authenticateJwt from "../auth/authenticateJwt.js";
 const router = express.Router();
 
 // const phonesModel = mongoose.model("phones", new mongoose.Schema({}), "phones");
@@ -66,4 +66,4 @@ router.post("/ratings", authenticateJwt, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

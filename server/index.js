@@ -1,24 +1,37 @@
-const express = require("express");
+import express from 'express'
 const app = express();
 const port = 3000;
-const cors = require("cors");
-const mongoose = require("mongoose");
-const adminRoutes = require("./routes/admin");
-const dataRoutes = require("./routes/phones");
+import cors from 'cors'
+import mongoose from 'mongoose';
+import  adminRoutes from "./routes/admin.js";
+import  dataRoutes from "./routes/phones.js";
+import  paymentRoutes from './routes/paymentRoutes.js'
+import { config }  from "dotenv";
+import Razorpay from "razorpay"
+
 
 app.use(cors());
 app.use(express.json());
+config({ path: "./config/config.env" });
 
 app.use("/admin", adminRoutes);
 app.use("/data", dataRoutes);
+app.use('/payments',paymentRoutes)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
 mongoose
-  .connect("mongodb://localhost:27017/MOBO")
+  .connect(process.env.mongoString)
   .then(() => {
     console.log("Database connected");
   })
   .catch((error) => console.log(error));
+
+
+ export const instance = new Razorpay({
+    key_id: process.env.razoarpay_api_id,
+    key_secret:process.env.razorpay_api_key
+  });
+

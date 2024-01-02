@@ -1,13 +1,12 @@
-const jwt = require("jsonwebtoken");
-const express = require("express");
+import jwt from "jsonwebtoken";
 
-const authenticateJwt = (req, res, next) => {
+ const authenticateJwt = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (authHeader) {
       const token = authHeader.split(" ")[1];
       console.log(token);
-      jwt.verify(token, "Hello", (err, user) => {
+      jwt.verify(token, process.env.jwtSecret, (err, user) => {
         if (err) return res.status(402).send(`UnAuthorised:${err}`);
 
         req.headers["user"] = user;
@@ -21,4 +20,4 @@ const authenticateJwt = (req, res, next) => {
   }
 };
 
-module.exports = authenticateJwt;
+export default authenticateJwt

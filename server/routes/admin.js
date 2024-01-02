@@ -1,9 +1,9 @@
-const express = require("express");
-const { USER } = require("../schema/admin");
+import express from "express";
+import  { USER } from "../models/admin.js";
 const router = express.Router();
-const jwt = require("jsonwebtoken");
-const { z } = require("zod");
-const bcrypt = require("bcrypt");
+import  jwt from "jsonwebtoken";
+import  { z } from "zod";
+import bcrypt from "bcrypt";
 
 const adminInputProps = z.object({
   username: z.string().min(1),
@@ -37,7 +37,7 @@ router.post("/signup", async (req, res) => {
       await newAdmin.save();
       res.status(200).json({
         message: "Admin created",
-        token: jwt.sign({ admin: newAdmin.username }, "Hello", {
+        token: jwt.sign({ admin: newAdmin.username },  process.env.jwtSecret, {
           expiresIn: "4h",
         }),
       });
@@ -58,7 +58,7 @@ router.post("/login", async (req, res) => {
     if (flag)
       res.status(200).json({
         message: "Logged in Succesfully",
-        token: jwt.sign({ admin: admin.username }, "Hello", {
+        token: jwt.sign({ admin: admin.username },  process.env.jwtSecret, {
           expiresIn: "4h",
         }),
       });
@@ -70,4 +70,4 @@ router.post("/login", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
