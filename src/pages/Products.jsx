@@ -4,7 +4,7 @@ import ProductsCard from "../components/ProductsCard";
 import "../styles/Products.css";
 import Navbar from "../components/Navbar";
 import { useRecoilState } from "recoil";
-import { allPhonesDataState } from "../store/data";
+import { allPhonesDataState } from "../recoil/atoms/data";
 
 const Products = () => {
   const [allPhones, setAllPhones] = useRecoilState(allPhonesDataState);

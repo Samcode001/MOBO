@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { allPhonesDataState } from "../store/data";
 import Navbar from "../components/Navbar";
 import ProductDetails from '../components/ProductDetails.jsx'
 import Footer from "../components/Footer.jsx";
+import { allPhonesDataState } from "../recoil/atoms/data.js";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();

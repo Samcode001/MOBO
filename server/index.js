@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import adminRoutes from "./routes/admin.js";
 import dataRoutes from "./routes/phones.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
+import cartRoutes from './routes/cartRoutes.js'
 import { config } from "dotenv";
 import Razorpay from "razorpay";
 
@@ -15,6 +16,7 @@ config({ path: "./config/config.env" });
 
 app.use("/admin", adminRoutes);
 app.use("/data", dataRoutes);
+app.use('/cart',cartRoutes);
 app.use("/payments", paymentRoutes);
 
 app.listen(port, () => {

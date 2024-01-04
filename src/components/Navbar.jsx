@@ -5,6 +5,9 @@ import { FaShoppingCart } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import AddCart from "../components/AddCart.jsx";
+import { FaHeart } from "react-icons/fa";
+import AddWishlist from "./AddWishlist.jsx";
 
 const Navbar = () => {
   const options = [
@@ -58,6 +61,8 @@ const Navbar = () => {
   const [isCollection, setIsCollection] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [cartFlag, setCartFlag] = useState(false);
+  const [wishlistFlag, setWishlistFlag] = useState(false);
 
   const submitInput = () => {};
   return (
@@ -65,7 +70,7 @@ const Navbar = () => {
       <header className="primary-header">
         <div className="container">
           <div className="nav-wrapper">
-            <Link className="logo" to={'/'}>
+            <Link className="logo" to={"/"}>
               <img src={logo} alt="logo" />
             </Link>
             <button
@@ -78,12 +83,11 @@ const Navbar = () => {
             <nav className="primary-navigation">
               <ul role="list" id="primary-navigation" className="nav-list">
                 <li>
-                  <Link to={'/'}>
-
-                  <a href="#">Home</a>
+                  <Link to={"/"}>
+                    <a href="#">Home</a>
                   </Link>
                 </li>
-                <li
+                {/* <li
                   className="dropdown"
                   onMouseEnter={() => setIsCollection(true)}
                   onMouseLeave={() => setIsCollection(false)}
@@ -106,11 +110,10 @@ const Navbar = () => {
                       </div>
                     </div>
                   )}
-                </li>
+                </li> */}
                 <li>
-                  <Link to={'/products'}>
-
-                  <a href="#">Shop</a>
+                  <Link to={"/products"}>
+                    <a href="#">Shop</a>
                   </Link>
                 </li>
                 <li>
@@ -137,10 +140,6 @@ const Navbar = () => {
               Request Invite
             </button> */}
             <div className="right-nav">
-              <FaShoppingCart />
-              <Link to={"/login"}>
-                <FiUser />
-              </Link>
               <AiOutlineSearch onClick={() => setIsSearch(true)} />
               {isSearch && (
                 <div className="search-bar">
@@ -155,10 +154,20 @@ const Navbar = () => {
                   <button onClick={() => setIsSearch(false)}></button>
                 </div>
               )}
+              <FaHeart onClick={() => setWishlistFlag((prevFlag) => !prevFlag)} />
+              <FaShoppingCart
+                onClick={() => setCartFlag((prevFlag) => !prevFlag)}
+              />
+              <Link to={"/login"}>
+                <FiUser />
+              </Link>
             </div>
           </div>
         </div>
       </header>
+
+      <AddCart cartFlag={cartFlag} setCartFlag={setCartFlag} />
+      <AddWishlist wishlistFlag={wishlistFlag} setWishlistFlag={setWishlistFlag}/>
     </div>
   );
 };

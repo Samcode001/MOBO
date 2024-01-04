@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/ProductDetails.css";
 import { useRecoilValue } from "recoil";
-import { allPhonesDataState } from "../store/data";
 import ProductCard from "./ProductsCard";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa";
@@ -12,39 +11,17 @@ import GeneraetStars from "../components/GeneraetStars.jsx";
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import axios from "axios";
+import { allPhonesDataState } from "../recoil/atoms/data.js";
+import useAddToCart from "../hooks/addToCart.js";
 
 const ProductDetails = ({ data }) => {
-  //   const desc={
-  //         h2:"Description",
-  //         p1:` Mobile phones are pivotal in our daily lives. Living without a mobile
-  //         phone is challenging in this contemporary environment. A mobile phone
-  //         is a broadband network that is a compact, small device used to send
-  //         and receive speech, video, and other data types. Mobile phone usage
-  //         offers additional benefits and features.`,
-  //         h4_1:"Design and Build",
-  //         p2:` It distinguishes out from the other smartphone competitors because of
-  //         its fresh, sophisticated colors, which when combined with TFT LCD
-  //         Display, give it a luxurious appearance. Its approximate weight is
-  //         195.00 g dimensions are 164.5 x 76.9 x 8.4mm making it convenient and
-  //         comfortable to hold. This phone includes Bluetooth and GPS
-  //         connectivity as well as expandable storage.`,
-  //         h4_2:"Display and Screen",
-  //         p3:` A 6.20-inch screen with a resolution of 1080x2340 pixels displays all
-  //         types of entertainment great, and the colors appear to be rather
-  //         realistic. Standard Wi-Fi is supported up to 802.11 b/g/n with Type-C
-  //         USB. As its vendor Sensors like Face unlock, Fingerprint, Proximity
-  //         and Accelerometer are supported. The speaker grill and audio jack are
-  //         located at the bottom.`,
-  //         h4_3:"Hardware and Performance",
-  //         p4:""
-  //   }
-
   const [count, setCount] = useState(1);
   const [total, setTotal] = useState(data.price);
   const [descFlag, setDescFlag] = useState(true);
   const [ratings, setRatings] = useState([]);
   const [writeReview, setWriteReview] = useState(false);
   const [totalRatings, setTotalRatings] = useState(0);
+  const { addToCart } = useAddToCart();
 
   const allPhones = useRecoilValue(allPhonesDataState);
 
@@ -75,6 +52,10 @@ const ProductDetails = ({ data }) => {
     setRating(newRating);
   };
 
+  const hanldeCart = async () => {
+    await addToCart(data);
+  };
+
   const getRatings = async () => {
     const res = await axios.post(
       "http://localhost:3000/data/ratings",
@@ -100,38 +81,40 @@ const ProductDetails = ({ data }) => {
     }
   };
 
-  
-  const handlePayment=async(amount)=>{
-      const {data:{key}}=await axios.get("http://localhost:3000/getkey");
-      const {data:{order}}=await axios.post("http://localhost:3000/payments/checkout",{
-        amount
-      });
+  const handlePayment = async (amount) => {
+    const {
+      data: { key },
+    } = await axios.get("http://localhost:3000/getkey");
+    const {
+      data: { order },
+    } = await axios.post("http://localhost:3000/payments/checkout", {
+      amount,
+    });
 
-
-      const options = {
-        "key": key, // Enter the Key ID generated from the Dashboard
-        "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-        "currency": "INR",
-        "name": "Acme Corp",
-        "description": "Test Transaction",
-        "image": "https://example.com/your_logo",
-        "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-        "callback_url": "http://localhost:3000/payments/paymentVerification",
-        "prefill": {
-            "name": "Gaurav Kumar",
-            "email": "gaurav.kumar@example.com",
-            "contact": "9000090000"
-        },
-        "notes": {
-            "address": "Razorpay Corporate Office"
-        },
-        "theme": {
-            "color": "#3399cc"
-        }
+    const options = {
+      key: key, // Enter the Key ID generated from the Dashboard
+      amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: "INR",
+      name: "Acme Corp",
+      description: "Test Transaction",
+      image: "https://example.com/your_logo",
+      order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      callback_url: "http://localhost:3000/payments/paymentVerification",
+      prefill: {
+        name: "Gaurav Kumar",
+        email: "gaurav.kumar@example.com",
+        contact: "9000090000",
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#3399cc",
+      },
     };
     const razor = new Razorpay(options);
     razor.open();
-  }
+  };
 
   useEffect(() => {
     getRatings();
@@ -199,8 +182,10 @@ const ProductDetails = ({ data }) => {
           </span>
 
           <div className="product-buttons">
-            <button className="button">Add TO Cart</button>
-            <button className="button-buy" onClick={()=>handlePayment(total)}>Buy Now</button>
+            <button className="button" onClick={hanldeCart}>Add TO Cart</button>
+            <button className="button-buy" onClick={() => handlePayment(total)}>
+              Buy Now
+            </button>
             <button className="share-button" onClick={handleShareClick}>
               <IoMdShare size={30} />
             </button>

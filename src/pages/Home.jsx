@@ -18,7 +18,7 @@ import cta3_battery from "../assets/cta3-battery.png";
 import cta3_sim from "../assets/cta3-sim.webp";
 import cta3_processor from "../assets/cta3-processor.webp";
 import cta3_camera from "../assets/cta3-camera.webp";
-import { allPhonesDataState } from "../store/data.js";
+import { allPhonesDataState } from "../recoil/atoms/data.js";
 
 const Home = () => {
   const setAllPhones = useSetRecoilState(allPhonesDataState);
