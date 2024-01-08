@@ -8,40 +8,36 @@ import {
   AiOutlineStar,
 } from "react-icons/ai";
 import "../styles/ProductsCard.css";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { toast } from "react-toastify";
 import axios from "axios";
 import useAddToCart from "../hooks/addToCart";
-import cartState from "../recoil/atoms/cart";
+
+import useAddToList from "../hooks/addToList";
 
 const ProductCard = ({ data }) => {
   const [click, setClick] = useState(false);
   // const [open, setOpen] = useState(false);
-  const [cart, setCart] = useRecoilState(cartState);
+  // const [cart, setCart] = useRecoilState(cartState);
+  // const [wishlist, setWishList] = useRecoilState(wishListState);
 
   const { addToCart } = useAddToCart();
+  const { addToList, removeToList } = useAddToList();
 
   const id = data._id;
 
   const handleCart = async () => {
     await addToCart(data);
   };
-  const getCart = async () => {
-    const {
-      data: { cartItems },
-    } = await axios.get("http://localhost:3000/cart/getItems", {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
-    if (cartItems) {
-      setCart(cartItems);
-    }
+
+  const hanldeWishList = async () => {
+    await addToList(data);
   };
 
-  useEffect(() => {
-    getCart();
-  }, []);
+  const deleteListItem = async () => {
+    await removeToList(data.name);
+    console.log("Delete Ahppened")
+  };
 
   //   const product_name = d.replace(/\s+/g, "-"); // This product_name will be used in url for redirecting to product page so we need to change the all the ' ' spaces ("\s+") in the product name (d=data.name) to hyphens "-", so the product_name can be URL Friendly String
 
@@ -92,14 +88,20 @@ const ProductCard = ({ data }) => {
         {click ? (
           <AiFillHeart
             size={22}
-            onClick={() => setClick(!click)}
+            onClick={() => {
+              setClick(!click);
+              deleteListItem();
+            }}
             color={click ? "red" : "#333"}
             title="Remove from wishlist"
           />
         ) : (
           <AiOutlineHeart
             size={22}
-            onClick={() => setClick(!click)}
+            onClick={() => {
+              setClick(!click);
+              hanldeWishList();
+            }}
             color={click ? "red" : "#333"}
             title="Add to wishlist"
           />

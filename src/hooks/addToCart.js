@@ -7,6 +7,7 @@ const useAddToCart = () => {
   const [cart, setCart] = useRecoilState(cartState);
 
   const addToCart = async (productData) => {
+    console.log(productData)
     const {
       data: { success, message },
     } = await axios.post(

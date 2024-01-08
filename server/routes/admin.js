@@ -1,9 +1,10 @@
 import express from "express";
-import  { USER } from "../models/admin.js";
+import { USER } from "../models/admin.js";
 const router = express.Router();
-import  jwt from "jsonwebtoken";
-import  { z } from "zod";
+import jwt from "jsonwebtoken";
+import { z } from "zod";
 import bcrypt from "bcrypt";
+import authenticateJwt from "../auth/authenticateJwt.js";
 
 const adminInputProps = z.object({
   username: z.string().min(1),
@@ -32,12 +33,13 @@ router.post("/signup", async (req, res) => {
         name: name,
         username: username,
         password: securePassword,
+        address: [],
       });
 
       await newAdmin.save();
       res.status(200).json({
         message: "Admin created",
-        token: jwt.sign({ admin: newAdmin.username },  process.env.jwtSecret, {
+        token: jwt.sign({ admin: newAdmin.username }, process.env.jwtSecret, {
           expiresIn: "4h",
         }),
       });
@@ -58,7 +60,7 @@ router.post("/login", async (req, res) => {
     if (flag)
       res.status(200).json({
         message: "Logged in Succesfully",
-        token: jwt.sign({ admin: admin.username },  process.env.jwtSecret, {
+        token: jwt.sign({ admin: admin.username }, process.env.jwtSecret, {
           expiresIn: "4h",
         }),
       });
@@ -67,6 +69,40 @@ router.post("/login", async (req, res) => {
     }
   } catch (error) {
     res.status(500).send(`Error in Route : ${error}`);
+  }
+});
+
+router.post("/address", authenticateJwt, async (req, res) => {
+  try {
+    const { address } = req.body;
+    const user = req.headers["user"].admin;
+    const admin = await USER.findOne({ username: user });
+
+    if (admin.address.length === 0) {
+      admin.address.push(address);
+      await USER.findOneAndUpdate({ username: user }, admin, { new: true });
+    }
+    res.status(201).json({ success: true, message: "Address Added" });
+    // console.log(user,admin.address)
+  } catch (error) {
+    res.status(500).send(`Error in Route:${error}`);
+  }
+});
+
+router.get("/address", authenticateJwt, async (req, res) => {
+  try {
+    const { address } = req.body;
+    const user = req.headers["user"].admin;
+    const admin = await USER.findOne({ username: user });
+    if (admin.address.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No Address Found" });
+    } else {
+      res.status(200).json({ success: true, message: "Address Found",address:admin.address });
+    }
+  } catch (error) {
+    res.status(500).send(`Error in Route:${error}`);
   }
 });
 

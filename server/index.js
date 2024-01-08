@@ -7,6 +7,7 @@ import adminRoutes from "./routes/admin.js";
 import dataRoutes from "./routes/phones.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import cartRoutes from './routes/cartRoutes.js'
+import wishListRoutes from './routes/wishListRoutes.js'
 import { config } from "dotenv";
 import Razorpay from "razorpay";
 
@@ -18,6 +19,7 @@ app.use("/admin", adminRoutes);
 app.use("/data", dataRoutes);
 app.use('/cart',cartRoutes);
 app.use("/payments", paymentRoutes);
+app.use('/wishlist',wishListRoutes);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

@@ -4,9 +4,11 @@ import { IoClose } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
 import { MdOutlineDeleteForever } from "react-icons/md";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import axios from "axios";
 import cartState from "../recoil/atoms/cart";
+// import cartState from "../recoil/atoms/cart";
+import wishListState from "../recoil/atoms/wishList";
 
 const AddCart = ({ cartFlag, setCartFlag }) => {
   const [count, setCount] = useState(1);
@@ -22,11 +24,11 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
     setCount(count + 1);
   };
 
-  const deleteCartItem = async (itemId) => {
+  const deleteCartItem = async (itemName) => {
     const res = await axios.post(
       "http://localhost:3000/cart/removeItem",
       {
-        id: itemId,
+        name: itemName,
       },
       {
         headers: {
@@ -38,8 +40,45 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
     if (res === 201) {
       alert("Item deleted");
     }
-    setCart((prevCart) => prevCart.filter((elem) => elem._id !== itemId));
+    setCart((prevCart) => prevCart.filter((elem) => elem.name !== itemName));
   };
+
+
+  //  ----------------------- For Loading data into wishlist and cart ----------------------------
+  const setWishList = useSetRecoilState(wishListState);
+  const getCart = async () => {
+    const {
+      data: { cartItems },
+    } = await axios.get("http://localhost:3000/cart/getItems", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    if (cartItems) {
+      setCart(cartItems);
+    }
+  };
+
+  const getWishList = async () => {
+    const {
+      data: { wishListItems },
+    } = await axios.get("http://localhost:3000/wishlist/getItems", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    if (wishListItems) {
+      setWishList(wishListItems);
+    }
+  };
+
+  useEffect(() => {
+    getCart();
+    getWishList();
+    console.log(cart)
+  }, []);
+
+  // ------------------------------------- End --------------------------------------------
 
   useEffect(() => {
     let total = 0;
@@ -126,7 +165,7 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
                     <MdOutlineDeleteForever
                       style={{ cursor: "pointer" }}
                       size={30}
-                      onClick={() => deleteCartItem(elem._id)}
+                      onClick={() => deleteCartItem(elem.name)}
                     />
                   </div>
                 </div>

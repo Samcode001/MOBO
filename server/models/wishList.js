@@ -1,16 +1,16 @@
 import mongoose from "mongoose";
 
-const cartSchema = new mongoose.Schema({
+const wishListSchema = new mongoose.Schema({
   // name: {
-  //   type: String,
-  //   required: true,
-  // },
-  // img: {
   //   type: String,
   //   required: true,
   // },
   // price: {
   //   type: Number,
+  //   required: true,
+  // },
+  // img: {
+  //   type: String,
   //   required: true,
   // },
   // memory: {
@@ -25,15 +25,15 @@ const cartSchema = new mongoose.Schema({
   //   type: String,
   //   required: true,
   // },
-  user:{
-    type:String,
-    required:true
+  user: {
+    type: String,
+    required: true,
   },
-  cart:{
-    type:Array,
+  list:{
+    type:Array
   }
 });
 
-const CART = new mongoose.model("cart", cartSchema);
+const WISHLIST = new mongoose.model("wishList", wishListSchema);
 
-export default CART;
+export default WISHLIST;

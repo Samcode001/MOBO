@@ -10,6 +10,9 @@ const adminSchema = new mongoose.Schema({
   password: {
     type: String,
   },
+  address:{
+    type:Array
+  }
 });
 
 const USER = mongoose.model("Admin", adminSchema);
