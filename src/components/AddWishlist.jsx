@@ -13,7 +13,8 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
   const [subTotal, setSubTotal] = useState(0);
   const [quantityPrice, setQuantityPrice] = useState(0);
   const [wishlist, setWishList] = useRecoilState(wishListState);
-  const {addToCart}=useAddToCart();
+  const { addToCart } = useAddToCart();
+  const { getWishList } = useHanldeList();
 
   const { removeToList } = useHanldeList();
 
@@ -21,26 +22,20 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
     await removeToList(itemName);
   };
 
-  const handlecart=async(data)=>{
+  const handlecart = async (data) => {
     await addToCart(data);
+
     // console.log(data)
-  }
-
-  useEffect(() => {
-    let total = 0;
-    for (let i = 0; i < wishlist.length; i++) {
-      total += wishlist[i].price;
-    }
-    setSubTotal(total);
-  }, [wishlist]);
-
-  const setPrice = async () => {
-    for (let i = 0; i < wishlist.length; i++) {
-      if (wishlist[i]._id === itemId) {
-        wishlist[i].price *= count;
-      }
-    }
   };
+
+  // useEffect(() => {
+  //   let total = 0;
+  //   for (let i = 0; i < wishlist.length; i++) {
+  //     total += wishlist[i].price;
+  //   }
+  //   setSubTotal(total);
+  // }, [wishlist]);
+
   return (
     <div
       className="cart-container"
@@ -61,18 +56,17 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
       </div>
 
       <div style={{ overflowY: "scroll", height: "70vh" }}>
-        {wishlist &&
+        {wishlist.length === 0 ? (
+          <h2 style={{ fontSize: "2rem",fontWeight:'550' ,color:'red'}}>List empty</h2>
+        ) : (
+          wishlist &&
           wishlist.map((elem) => {
             return (
               <>
                 <div className="cart-item">
                   <hr />
                   <div className="cart-details-container">
-                    <img
-                      src="https://rukminim2.flixcart.com/image/416/416/ktketu80/mobile/8/z/w/iphone-13-mlph3hn-a-apple-original-imag6vzzhrxgazsg.jpeg?q=70"
-                      alt=""
-                      className="cart-details-image"
-                    />
+                    <img src={elem.img} alt="" className="cart-details-image" />
                     <div className="cart-details">
                       <h2>{elem.name}</h2>
                       <span>Type: {elem.type}</span>
@@ -90,7 +84,12 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
                     }}
                   >
                     <div>
-                      <button className="button" onClick={()=>handlecart(elem)}>Add to cart</button>
+                      <button
+                        className="button"
+                        onClick={() => handlecart(elem)}
+                      >
+                        Add to cart
+                      </button>
                     </div>
                     <MdOutlineDeleteForever
                       style={{ cursor: "pointer" }}
@@ -101,7 +100,8 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
                 </div>
               </>
             );
-          })}
+          })
+        )}
       </div>
 
       <hr />

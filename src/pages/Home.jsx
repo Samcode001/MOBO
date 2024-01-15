@@ -26,7 +26,11 @@ const Home = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/data/phones");
+      const res = await axios.get("http://localhost:3000/data/phones", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
       if (res.status === 200) {
         setAllPhones((prevData) => [...prevData, res.data.phones]);
         setParsedData(res.data.phones.slice(0, 4));
@@ -44,7 +48,6 @@ const Home = () => {
 
   return (
     <div>
-      <Navbar />
       <Hero />
 
       <div className="cta">
@@ -155,7 +158,6 @@ const Home = () => {
       <div className="items-section">
         {parsedData &&
           parsedData.map((elem) => <ProductsCard key={elem.id} data={elem} />)}
-        {console.log(parsedData)}
       </div>
 
       <Footer />

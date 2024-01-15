@@ -5,7 +5,7 @@ import CART from "../models/cart.js";
 
 router.post("/addItem", authenticateJwt, async (req, res) => {
   try {
-    const { name, img, price, os, memory, type } = req.body;
+    const { name, img, price, os, memory, quantity, type } = req.body;
     const user = req.headers["user"].admin;
     const userExist = await CART.findOne({ user: user });
 
@@ -15,6 +15,7 @@ router.post("/addItem", authenticateJwt, async (req, res) => {
       img: img,
       type: type,
       os: os,
+      quantity: quantity,
       memory: memory,
     };
 
@@ -63,6 +64,31 @@ router.post("/removeItem", authenticateJwt, async (req, res) => {
   await CART.findOneAndUpdate({ user: user }, userCart, { new: true });
 
   res.status(201).send("ItemDeleted");
+});
+
+router.post("/updateQuantity", authenticateJwt, async (req, res) => {
+  try {
+    const { updateQuantity, productName } = req.body;
+    if (updateQuantity === 0 || updateQuantity === 11) {
+      return res.status(401).send("Not allowed");
+    }
+
+    const user = req.headers["user"].admin;
+    const userCart = await CART.findOne({ user: user });
+
+    userCart.cart.forEach((item) => {
+      if (item.name === productName) {
+        item.quantity = updateQuantity;
+      }
+    });
+    await CART.findOneAndUpdate({ user: user }, userCart, { new: true });
+
+    res
+      .status(201)
+      .json({ message: "Cart Update successfully", updatedCart: userCart });
+  } catch (error) {
+    res.status(500).send(`Error in Route:${error}`);
+  }
 });
 
 export default router;

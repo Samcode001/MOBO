@@ -3,11 +3,15 @@ import Select from "react-select";
 import { useEffect, useState } from "react";
 import "../styles/CheckOut.css";
 import axios from "axios";
+import { IoClose } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { useRecoilState, useRecoilValue } from "recoil";
 import cartState from "../recoil/atoms/cart";
 import Navbar from "../components/Navbar";
 import useAddToCart from "../hooks/addToCart";
+import useGetCart from "../hooks/getCart";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/bootstrap.css";
 
 const CheckOutPage = () => {
   /// ***********************------------ State for getting Address ------------- ****************************8
@@ -24,9 +28,14 @@ const CheckOutPage = () => {
   //   const isoCode=selectedCountry ? selectedCountry.isoCode : undefined ;
 
   /// *******************---------- states for checkout page --------------**************************
-  const [userAddress, setUserAddress] = useState("");
-//   const { cart } = useAddToCart();
-const cart=useRecoilValue(cartState)
+  const paymentsOptions = ["Stripe", "Razorpay", "Cash On Delivery"];
+  const [userAddress, setUserAddress] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [selectedPayment, setSelectedPayment] = useState("");
+  const [subTotal, setSubTotal] = useState(0);
+  const [totalSum, setTotalSum] = useState(0);
+  const [phone, setPhone] = useState("");
+  const { cart, getCart } = useGetCart();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,6 +66,13 @@ const cart=useRecoilValue(cartState)
     if (success) {
       setAddressFlag(true);
       getAddress();
+      setSelectedCountry(null);
+      setSelectedState(null);
+      setSelectedCity(null);
+      setFirstName("");
+      setLastName("");
+      setAddress("");
+      setPincode("");
     }
   };
 
@@ -71,15 +87,20 @@ const cart=useRecoilValue(cartState)
 
     if (success) {
       setAddressFlag(true);
-      let tempAddress = address[0];
-      const foramtAddress = `
-      ${tempAddress.address} ,
-      ${tempAddress.City},
-      ${tempAddress.State},
-      ${tempAddress.Country} (
-      ${tempAddress.Pincode});
-      `;
-      setUserAddress(foramtAddress);
+      // address.forEach((elem) => {
+      //   let tempAddress = elem;
+      //   const foramtAddress = `
+      //   ${tempAddress.address} ,
+      //   ${tempAddress.City},
+      //   ${tempAddress.State},
+      //   ${tempAddress.Country} (
+      //     ${tempAddress.Pincode});
+      //     `;
+      //   const filterAddress = userAddress.filter(
+      //     (elem) => elem !== foramtAddress
+      //   );
+      // });
+      setUserAddress(address);
       toast.success(message, {
         position: "bottom-left",
         autoClose: 5000,
@@ -93,59 +114,157 @@ const cart=useRecoilValue(cartState)
     }
   };
 
+  const handleSelectAddress = (elem) => {
+    setSelectedAddress(elem);
+  };
+  const handleSelectPayment = (elem) => {
+    setSelectedPayment(elem);
+  };
+
   useEffect(() => {
+    getCart();
     getAddress();
-    console.log(cart);
+
+    let tempSum = cart.reduce((accumulator, item) => {
+      return accumulator + item.price * item.quantity;
+    }, 0);
+    setSubTotal(tempSum);
+    tempSum += tempSum * 0.08;
+    setTotalSum(tempSum);
   }, []);
 
   return (
     <div>
       {addressFlag ? (
         <>
-          {/* <Navbar/> */}
           <div className="checkout-container">
             <div className="checkout-left">
-              <div>
+              <div className="checkout-contact">
                 <label htmlFor="contact">Contact</label>
-                <input
-                  type="text"
-                  name="contact"
-                  placeholder="Enter Mobile no. or Email"
+                <PhoneInput
+                  country={"in"}
+                  enableSearch={true}
+                  value={phone}
+                  onChange={(phone) => setPhone(phone)}
                 />
               </div>
-              <div className="checkout-address">
+              <div
+                className="checkout-address"
+                style={{ backgroundColor: "rgb(217, 214, 214)" }}
+              >
                 <h2>Address</h2>
-                <div>{userAddress}</div>
+                <div style={{ overflowY: "scroll", marginBottom: "0.6rem" }}>
+                  {console.log(userAddress)}
+                  {userAddress &&
+                    userAddress.map((elem, index) => {
+                      return (
+                        <div
+                          key={index}
+                          onClick={() => handleSelectAddress(elem)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <input
+                            id={index}
+                            name="selectAddress"
+                            style={{ display: "inline" }}
+                            checked={elem === selectedAddress}
+                            type="radio"
+                            onChange={() => {}}
+                          />
+                          <label htmlFor="selectAddress">{elem}</label>
+                        </div>
+                      );
+                    })}
+                  {/* <input type="radio" /> <p>{userAddress}</p> */}
+                </div>
+                <button
+                  className="button-buy"
+                  onClick={() => setAddressFlag(false)}
+                >
+                  Add new Address..
+                </button>
               </div>
               <div className="checkout-payment-options">
-                <h2>Payments Options</h2>
+                <h2>Payment</h2>
                 <div>
-                  <h2>Razorpay</h2>
-                  <h2>Stripe</h2>
-                  <h2>Cash On Delivery</h2>
+                  {paymentsOptions.map((elem, index) => {
+                    return (
+                      <div
+                        key={index}
+                        onClick={() => handleSelectPayment(elem)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <input
+                          id={elem}
+                          name="selectPayment"
+                          style={{ display: "inline" }}
+                          checked={elem === selectedPayment}
+                          type="radio"
+                          onChange={() => {}}
+                        />
+                        <label htmlFor="selectAddress">{elem}</label>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-              <button>Order Now</button>
+              <button className="button">Order Now</button>
             </div>
             <div className="checkout-right">
               <div>
-                {/* {console.log(cart)} */}
-                <div>
-                  {cart &&
-                    cart.map((elem) => {
-                    return ( <>
-                        <div key={elem._id}>
-                          <img src={elem.img} alt="" />
-                          <div>
-                            <h3>{elem.name}</h3>
-                            <span>
-                              {elem.type}/{elem.memory}/{elem.os}
-                            </span>
+                <div className="checkout-right-container">
+                  <div>
+                    {cart &&
+                      cart.map((elem) => {
+                        return (
+                          <div key={elem._id} className="checkout-right-items">
+                            <div style={{ position: "relative" }}>
+                              <img src={elem.img} alt="" />
+                              <span className="checkout-right-quantity">
+                                {elem.quantity}
+                              </span>
+                            </div>
+                            <div className="checkout-right-items-details">
+                              <h3>{elem.name}</h3>
+                              <span>
+                                {elem.type}/{elem.memory}/{elem.os}
+                              </span>
+                            </div>
+                            <h2>${elem.price}</h2>
                           </div>
-                          <h2>${elem.price}</h2>
-                        </div>
-                      </>);
-                    })}
+                        );
+                      })}
+                  </div>
+                  <div>
+                    <div>
+                      <h3>Subtotal</h3> <h2>${subTotal}</h2>
+                    </div>
+                    <div>
+                      <h3> Shipping </h3>{" "}
+                      <p style={{ maxWidth: "25ch" }}>
+                        {" "}
+                        {selectedAddress
+                          ? selectedAddress
+                          : "Please Select the address"}
+                      </p>
+                    </div>
+                    <div>
+                      <h3>
+                        Estimated taxes
+                        {/* <span>&#63;</span> */}
+                      </h3>
+                      <h2>${subTotal * 0.08}</h2>
+                    </div>
+                    <div>
+                      <h2> Total</h2>{" "}
+                      <h2>
+                        <span style={{ fontWeight: "100", fontSize: "1rem" }}>
+                          USD
+                        </span>{" "}
+                        ${totalSum}
+                      </h2>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -159,6 +278,7 @@ const cart=useRecoilValue(cartState)
           >
             <div className="address-modal">
               <div className="address-modal-banner">Enter Delevery Address</div>
+              <IoClose size={25} />
               <form>
                 <div
                   className="adrress-name-section"

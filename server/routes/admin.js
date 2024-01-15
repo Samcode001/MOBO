@@ -5,6 +5,9 @@ import jwt from "jsonwebtoken";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import authenticateJwt from "../auth/authenticateJwt.js";
+import { upload } from "../multer.js";
+import fs from "fs";
+import path from "path";
 
 const adminInputProps = z.object({
   username: z.string().min(1),
@@ -12,9 +15,9 @@ const adminInputProps = z.object({
   name: z.string().min(2),
 });
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", upload.single("file"), async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     const parsedData = adminInputProps.safeParse(req.body);
     if (!parsedData.success) {
       return res.status(401).send("Please Provide Valid Inputs");
@@ -27,18 +30,29 @@ router.post("/signup", async (req, res) => {
 
     const admin = await USER.findOne({ username: username });
     if (admin) {
-      res.status(401).send("User Already Exist");
+      const fileName = req.file.filename;
+      const filePath = `uploads/${fileName}`;
+      fs.unlink(filePath, (error) => {
+        if (error) console.log(`Error in deleting file :${error}`);
+      });
+
+      res.status(409).json({ message: "User Already Exist", success: false });
     } else {
+      const fileName = req.file.filename;
+      const fileUrl = path.join(fileName);
+
       const newAdmin = new USER({
         name: name,
         username: username,
         password: securePassword,
+        avatar: fileUrl,
         address: [],
       });
 
       await newAdmin.save();
       res.status(200).json({
         message: "Admin created",
+        success: true,
         token: jwt.sign({ admin: newAdmin.username }, process.env.jwtSecret, {
           expiresIn: "4h",
         }),
@@ -72,16 +86,28 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post("/getUser", authenticateJwt, async (req, res) => {
+  try {
+    const username = req.headers["user"].admin;
+    const user = await USER.findOne({ username });
+    res.status(200).json({ user: user });
+  } catch (error) {
+    res.status(500).send(`Error in Route :${error}`);
+  }
+});
+
 router.post("/address", authenticateJwt, async (req, res) => {
   try {
     const { address } = req.body;
     const user = req.headers["user"].admin;
     const admin = await USER.findOne({ username: user });
 
-    if (admin.address.length === 0) {
-      admin.address.push(address);
-      await USER.findOneAndUpdate({ username: user }, admin, { new: true });
-    }
+    // if (admin.address.length === 0) {
+    let tempAddress = address;
+    const foramtAddress = `${tempAddress.address},${tempAddress.City},${tempAddress.State},${tempAddress.Country} (${tempAddress.Pincode})`;
+    admin.address.push(foramtAddress);
+    await USER.findOneAndUpdate({ username: user }, admin, { new: true });
+    // }
     res.status(201).json({ success: true, message: "Address Added" });
     // console.log(user,admin.address)
   } catch (error) {
@@ -99,7 +125,11 @@ router.get("/address", authenticateJwt, async (req, res) => {
         .status(404)
         .json({ success: false, message: "No Address Found" });
     } else {
-      res.status(200).json({ success: true, message: "Address Found",address:admin.address });
+      res.status(200).json({
+        success: true,
+        message: "Address Found",
+        address: admin.address,
+      });
     }
   } catch (error) {
     res.status(500).send(`Error in Route:${error}`);

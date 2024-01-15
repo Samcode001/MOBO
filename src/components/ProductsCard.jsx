@@ -14,6 +14,8 @@ import axios from "axios";
 import useAddToCart from "../hooks/addToCart";
 
 import useAddToList from "../hooks/addToList";
+import useGetCart from "../hooks/getCart";
+import useHanldeList from "../hooks/addToList";
 
 const ProductCard = ({ data }) => {
   const [click, setClick] = useState(false);
@@ -22,21 +24,25 @@ const ProductCard = ({ data }) => {
   // const [wishlist, setWishList] = useRecoilState(wishListState);
 
   const { addToCart } = useAddToCart();
-  const { addToList, removeToList } = useAddToList();
+  const { addToList, removeToList, getWishList } = useHanldeList();
+  const { getCart } = useGetCart();
 
   const id = data._id;
 
   const handleCart = async () => {
+    console.log(data);
     await addToCart(data);
+    getCart();
   };
 
   const hanldeWishList = async () => {
     await addToList(data);
+    getWishList();
   };
 
   const deleteListItem = async () => {
     await removeToList(data.name);
-    console.log("Delete Ahppened")
+    console.log("Delete Ahppened");
   };
 
   //   const product_name = d.replace(/\s+/g, "-"); // This product_name will be used in url for redirecting to product page so we need to change the all the ' ' spaces ("\s+") in the product name (d=data.name) to hyphens "-", so the product_name can be URL Friendly String
@@ -53,6 +59,7 @@ const ProductCard = ({ data }) => {
               height: "17rem",
               borderRadius: "1rem",
               objectFit: "contain",
+              padding: "0.4rem 0.3rem",
             }}
           />
         </Link>
@@ -106,13 +113,13 @@ const ProductCard = ({ data }) => {
             title="Add to wishlist"
           />
         )}
-        <AiOutlineShoppingCart
+        {/* <AiOutlineShoppingCart
           size={25}
           onClick={handleCart}
           style={{ cursor: "pointer" }}
           color="#444"
           title="Add to cart"
-        />
+        /> */}
       </div>
 
       <div className="buttons">

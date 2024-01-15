@@ -9,20 +9,43 @@ import axios from "axios";
 import cartState from "../recoil/atoms/cart";
 // import cartState from "../recoil/atoms/cart";
 import wishListState from "../recoil/atoms/wishList";
+import useGetCart from "../hooks/getCart";
+import { Link } from "react-router-dom";
+import useAddToCart from "../hooks/addToCart";
+import useUpdateQuantity from "../hooks/updateQuantity";
+import useHanldeList from "../hooks/addToList";
 
 const AddCart = ({ cartFlag, setCartFlag }) => {
-  const [count, setCount] = useState(1);
+  // const [quantitiy, setQuantity] = useState(1);
   const [subTotal, setSubTotal] = useState(0);
   const [quantityPrice, setQuantityPrice] = useState(0);
   const [cart, setCart] = useRecoilState(cartState);
+  const { getCart } = useGetCart();
+  const { updateQuantity } = useUpdateQuantity();
 
-  //   console.log(cart);
-  const handleMinus = () => {
-    if (count > 1) setCount(count - 1);
-  };
-  const hanldePlus = () => {
-    setCount(count + 1);
-  };
+  // const handleMinus = () => {
+  //   if (count > 1) setQuantity(count - 1);
+  // };
+  // const hanldePlus = () => {
+  //   setQuantity(count + 1);
+  // };
+
+  //  ----------------------- For Loading data into wishlist and cart ----------------------------
+  // const setWishList = useSetRecoilState(wishListState);
+  const { getWishList } = useHanldeList();
+
+  // const getWishList = async () => {
+  //   const {
+  //     data: { wishListItems },
+  //   } = await axios.get("http://localhost:3000/wishlist/getItems", {
+  //     headers: {
+  //       Authorization: "Bearer " + localStorage.getItem("token"),
+  //     },
+  //   });
+  //   if (wishListItems) {
+  //     setWishList(wishListItems);
+  //   }
+  // };
 
   const deleteCartItem = async (itemName) => {
     const res = await axios.post(
@@ -43,39 +66,12 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
     setCart((prevCart) => prevCart.filter((elem) => elem.name !== itemName));
   };
 
-
-  //  ----------------------- For Loading data into wishlist and cart ----------------------------
-  const setWishList = useSetRecoilState(wishListState);
-  const getCart = async () => {
-    const {
-      data: { cartItems },
-    } = await axios.get("http://localhost:3000/cart/getItems", {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
-    if (cartItems) {
-      setCart(cartItems);
-    }
+  const handleQuantity = async (quantity, productName, flag) => {
+    await updateQuantity(quantity, productName), flag;
   };
-
-  const getWishList = async () => {
-    const {
-      data: { wishListItems },
-    } = await axios.get("http://localhost:3000/wishlist/getItems", {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
-    if (wishListItems) {
-      setWishList(wishListItems);
-    }
-  };
-
   useEffect(() => {
     getCart();
     getWishList();
-    console.log(cart)
   }, []);
 
   // ------------------------------------- End --------------------------------------------
@@ -83,20 +79,20 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
   useEffect(() => {
     let total = 0;
     for (let i = 0; i < cart.length; i++) {
-      total += cart[i].price;
+      total += cart[i].price * cart[i].quantity;
     }
     setSubTotal(total);
   }, [cart]);
 
-  const setPrice = async () => {
-    for (let i = 0; i < cart.length; i++) {
-      if (cart[i]._id === itemId) {
-        cart[i].price *= count;
-      }
-    }
-  };
+  // const setPrice = async () => {
+  //   for (let i = 0; i < cart.length; i++) {
+  //     if (cart[i]._id === itemId) {
+  //       cart[i].price *= count;
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {}, [count]);
+  // useEffect(() => {}, [count]);
 
   return (
     <div
@@ -118,24 +114,25 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
       </div>
 
       <div style={{ overflowY: "scroll", height: "70vh" }}>
-        {cart &&
+        {cart.length === 0 ? (
+          <h2 style={{ fontSize: "2rem", fontWeight: "550", color: "red" }}>
+            Cart empty
+          </h2>
+        ) : (
+          cart &&
           cart.map((elem) => {
             return (
               <>
                 <div className="cart-item">
                   <hr />
                   <div className="cart-details-container">
-                    <img
-                      src="https://rukminim2.flixcart.com/image/416/416/ktketu80/mobile/8/z/w/iphone-13-mlph3hn-a-apple-original-imag6vzzhrxgazsg.jpeg?q=70"
-                      alt=""
-                      className="cart-details-image"
-                    />
+                    <img src={elem.img} alt="" className="cart-details-image" />
                     <div className="cart-details">
                       <h2>{elem.name}</h2>
                       <span>Type: {elem.type}</span>
                       <span>Os: {elem.os},</span>
                       <span>Memory: {elem.memory},</span>
-                      <h2>${elem.price}</h2>
+                      <h2>${elem.price * elem.quantity}</h2>
                     </div>
                   </div>
                   <div
@@ -147,18 +144,20 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
                   >
                     <div className="cart-quantitiy-container">
                       <FaPlus
+                        style={{ cursor: "pointer" }}
                         size={15}
                         onClick={() => {
-                          hanldePlus();
-                          setPrice(elem._id);
+                          handleQuantity(elem.quantity + 1, elem.name, true);
+                          // setPrice(elem._id);
                         }}
                       />
-                      <span>{count}</span>
+                      <span>{elem.quantity}</span>
                       <FaMinus
+                        style={{ cursor: "pointer" }}
                         size={15}
                         onClick={() => {
-                          handleMinus();
-                          setPrice(elem._id);
+                          handleQuantity(elem.quantity - 1, elem.name, false);
+                          // setPrice(elem._id);
                         }}
                       />
                     </div>
@@ -171,7 +170,8 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
                 </div>
               </>
             );
-          })}
+          })
+        )}
       </div>
 
       <hr />
@@ -181,7 +181,9 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
           <span>${subTotal}.00 USD</span>
         </div>
         <p>Taxes and shipping calculated at checkout</p>
-        <button className="button">Check Out</button>
+        <Link to={"/checkout"}>
+          <button className="button">Check Out</button>
+        </Link>
       </div>
     </div>
   );

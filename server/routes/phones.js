@@ -1,13 +1,13 @@
-import  express  from "express";
+import express from "express";
 import mongoose from "mongoose";
-import  PHONES  from  "../models/phones.js";
+import PHONES from "../models/phones.js";
 import RATINGS from "../models/ratings.js";
-import  authenticateJwt from "../auth/authenticateJwt.js";
+import authenticateJwt from "../auth/authenticateJwt.js";
 const router = express.Router();
 
 // const phonesModel = mongoose.model("phones", new mongoose.Schema({}), "phones");
 
-router.get("/phones", authenticateJwt, async (req, res) => {
+router.get("/phones", async (req, res) => {
   try {
     // const phonesData = await phonesModel.find({}).exec();
     const phonesData = await PHONES.find({});

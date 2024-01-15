@@ -6,8 +6,8 @@ import { toast } from "react-toastify";
 const useAddToCart = () => {
   const [cart, setCart] = useRecoilState(cartState);
 
-  const addToCart = async (productData) => {
-    console.log(productData)
+  const addToCart = async (productData, quantity=1) => {
+    console.log(productData);
     const {
       data: { success, message },
     } = await axios.post(
@@ -18,6 +18,7 @@ const useAddToCart = () => {
         img: productData.images[0],
         os: productData.os,
         type: productData.type,
+        quantity: quantity,
         memory: productData.memory,
       },
       {

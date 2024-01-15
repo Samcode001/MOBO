@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import "../styles/Login.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import useHandleUser from "../hooks/handleUser";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+
+  const { getUser } = useHandleUser();
 
   const navigate = useNavigate();
 
@@ -17,6 +20,10 @@ const Login = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  const handleUser=async()=>{
+    await getUser();
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +35,7 @@ const Login = () => {
       );
 
       if (response.status === 200) {
+        handleUser();
         navigate("/");
         localStorage.setItem("token", response.data.token);
       }

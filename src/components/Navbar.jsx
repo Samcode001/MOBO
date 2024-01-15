@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Header.css";
 import logo from "../assets/images (1).png";
 import { FaShoppingCart } from "react-icons/fa";
@@ -8,61 +8,22 @@ import { Link } from "react-router-dom";
 import AddCart from "../components/AddCart.jsx";
 import { FaHeart } from "react-icons/fa";
 import AddWishlist from "./AddWishlist.jsx";
+import useHandleUser from "../hooks/handleUser.js";
 
 const Navbar = () => {
-  const options = [
-    "SSD CARD",
-    "Affinity M20",
-    "Affinity P40 Pro",
-    "PO V40 ThinQ",
-    "Tencho 7.3",
-    "Tencho 8.1",
-    "Nexian",
-    "Ningbo",
-    "Fix A Phone",
-    "Hisense",
-    "Force Cell",
-    "POWER BANKS",
-    "Spots 8 Lite",
-    "Spots ERA 5X",
-    "Tencho 8.1",
-    "Phonelink",
-    "Musah",
-    "Connect 4",
-    "Alcatel",
-    "MobiAir",
-    "Beat Cell",
-    "Hunk Cell",
-    "EARPHONE",
-    "Spots Y93 1815",
-    "Tencho F12 Pro",
-    "Telefonika",
-    "T-Blast",
-    "Alcatel",
-    "Ampy",
-    "Crystal Cell",
-    "MOI Cell",
-    "Groove Cell",
-    "Olly Cell",
-    "ANDROID",
-    "Tencho 10 Lite",
-    "Tencho 7.3",
-    "Spectrum",
-    "Hisense",
-    "Bluesky",
-    "GreatDid",
-    "Mastic",
-    "Pigeon Cell",
-    "Arise Cell",
-    "Ritz Cell",
-  ];
-
   const [isPage, setIsPage] = useState(false);
   const [isCollection, setIsCollection] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [cartFlag, setCartFlag] = useState(false);
   const [wishlistFlag, setWishlistFlag] = useState(false);
+
+  const { user, getUser } = useHandleUser();
+
+  useEffect(() => {
+    getUser();
+    // console.log(user.avatar);
+  }, []);
 
   const submitInput = () => {};
   return (
@@ -154,20 +115,45 @@ const Navbar = () => {
                   <button onClick={() => setIsSearch(false)}></button>
                 </div>
               )}
-              <FaHeart onClick={() => setWishlistFlag((prevFlag) => !prevFlag)} />
-              <FaShoppingCart
-                onClick={() => setCartFlag((prevFlag) => !prevFlag)}
-              />
-              <Link to={"/login"}>
-                <FiUser />
-              </Link>
+              {!user ? (
+                <>
+                  {" "}
+                  <Link to={"/login"}>
+                    <FiUser />
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <FaHeart
+                    onClick={() => setWishlistFlag((prevFlag) => !prevFlag)}
+                  />
+                  <FaShoppingCart
+                    onClick={() => setCartFlag((prevFlag) => !prevFlag)}
+                  />
+                  <Link to={"/profile"}>
+                    <img
+                      src={`http://localhost:3000/uploads/${user.avatar}`}
+                      alt="avatar"
+                      className="avatar"
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: "100vmax",
+                      }}
+                    />
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
       </header>
 
       <AddCart cartFlag={cartFlag} setCartFlag={setCartFlag} />
-      <AddWishlist wishlistFlag={wishlistFlag} setWishlistFlag={setWishlistFlag}/>
+      <AddWishlist
+        wishlistFlag={wishlistFlag}
+        setWishlistFlag={setWishlistFlag}
+      />
     </div>
   );
 };

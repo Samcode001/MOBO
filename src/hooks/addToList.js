@@ -17,7 +17,7 @@ const useHanldeList = () => {
         os: productData.os,
         type: productData.type,
         memory: productData.memory,
-        price:productData.price
+        price: productData.price,
       },
       {
         headers: {
@@ -51,6 +51,19 @@ const useHanldeList = () => {
     }
   };
 
+  const getWishList = async () => {
+    const {
+      data: { wishListItems },
+    } = await axios.get("http://localhost:3000/wishlist/getItems", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    if (wishListItems) {
+      setWishList(wishListItems);
+    }
+  };
+
   const removeToList = async (itemName) => {
     const res = await axios.post(
       "http://localhost:3000/wishlist/removeItem",
@@ -75,10 +88,12 @@ const useHanldeList = () => {
         theme: "light",
       });
     }
-    setWishList((prevCart) => prevCart.filter((elem) => elem.name !== itemName));
+    setWishList((prevCart) =>
+      prevCart.filter((elem) => elem.name !== itemName)
+    );
   };
 
-  return { wishList, addToList, removeToList };
+  return { wishList, addToList, removeToList, getWishList };
 };
 
 export default useHanldeList;
