@@ -87,9 +87,17 @@ const ProductDetails = ({ data }) => {
     } = await axios.get("http://localhost:3000/getkey");
     const {
       data: { order },
-    } = await axios.post("http://localhost:3000/payments/checkout", {
-      amount,
-    });
+    } = await axios.post(
+      "http://localhost:3000/payments/checkout",
+      {
+        amount,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
 
     const options = {
       key: key, // Enter the Key ID generated from the Dashboard
@@ -112,7 +120,7 @@ const ProductDetails = ({ data }) => {
         color: "#3399cc",
       },
     };
-    const razor = new Razorpay(options);
+    const razor = new window.Razorpay(options);
     razor.open();
   };
 
@@ -182,7 +190,9 @@ const ProductDetails = ({ data }) => {
           </span>
 
           <div className="product-buttons">
-            <button className="button" onClick={hanldeCart}>Add TO Cart</button>
+            <button className="button" onClick={hanldeCart}>
+              Add TO Cart
+            </button>
             <button className="button-buy" onClick={() => handlePayment(total)}>
               Buy Now
             </button>

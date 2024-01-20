@@ -10,7 +10,7 @@ import cartState from "../recoil/atoms/cart";
 // import cartState from "../recoil/atoms/cart";
 import wishListState from "../recoil/atoms/wishList";
 import useGetCart from "../hooks/getCart";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAddToCart from "../hooks/addToCart";
 import useUpdateQuantity from "../hooks/updateQuantity";
 import useHanldeList from "../hooks/addToList";
@@ -22,6 +22,8 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
   const [cart, setCart] = useRecoilState(cartState);
   const { getCart } = useGetCart();
   const { updateQuantity } = useUpdateQuantity();
+
+  const navigate = useNavigate();
 
   // const handleMinus = () => {
   //   if (count > 1) setQuantity(count - 1);
@@ -181,9 +183,17 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
           <span>${subTotal}.00 USD</span>
         </div>
         <p>Taxes and shipping calculated at checkout</p>
-        <Link to={"/checkout"}>
-          <button className="button">Check Out</button>
-        </Link>
+        <button
+          className="button"
+          onClick={() => {
+            setCartFlag((prevFlag) => !prevFlag);
+            navigate("/checkout");
+          }}
+        >
+          Check Out
+        </button>
+        {/* <Link to={"/checkout"}> */}
+        {/* </Link> */}
       </div>
     </div>
   );

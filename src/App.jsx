@@ -2,6 +2,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Products from "./pages/Products";
+import OrderConfirmed from "./pages/OrderConfirmed.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import CheckOutPage from "./pages/CheckOutPage";
@@ -10,6 +11,9 @@ import { RecoilRoot } from "recoil";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar.jsx";
+import ProtectedRoute from "./routes/ProtectedRoute.jsx";
+import { useEffect } from "react";
+import useHandleUser from "./hooks/handleUser.js";
 
 function App() {
   return (
@@ -23,8 +27,30 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/products" element={<Products />} />
             <Route path="/product/:id" element={<ProductDetailsPage />} />
-            <Route path="/checkout" element={<CheckOutPage />} />
-            <Route path="/profile" element={<UserProfilePage />} />
+            <Route
+              path="/checkout"
+              element={
+                <ProtectedRoute>
+                  <CheckOutPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <UserProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/paymentsuccess"
+              element={
+                <OrderConfirmed />
+                // <ProtectedRoute>
+                // </ProtectedRoute>
+              }
+            />
           </Routes>
           <ToastContainer
             position="bottom-left"

@@ -12,6 +12,9 @@ import useAddToCart from "../hooks/addToCart";
 import useGetCart from "../hooks/getCart";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
+import { loadStripe } from "@stripe/stripe-js";
+import logoImage from "../assets/images (1).png";
+import { useNavigate } from "react-router-dom";
 
 const CheckOutPage = () => {
   /// ***********************------------ State for getting Address ------------- ****************************8
@@ -28,7 +31,20 @@ const CheckOutPage = () => {
   //   const isoCode=selectedCountry ? selectedCountry.isoCode : undefined ;
 
   /// *******************---------- states for checkout page --------------**************************
-  const paymentsOptions = ["Stripe", "Razorpay", "Cash On Delivery"];
+  const paymentsOptions = [
+    {
+      value: "Stripe",
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/2560px-Stripe_Logo%2C_revised_2016.svg.png",
+    },
+    {
+      value: "Razorpay",
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Razorpay_logo.svg/1200px-Razorpay_logo.svg.png",
+    },
+    {
+      value: "COD",
+      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY-n0bQFbk-Rx0bMmhiwUvDQkZ6o1ymrWRPg&usqp=CAU",
+    },
+  ];
   const [userAddress, setUserAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState("");
@@ -117,8 +133,143 @@ const CheckOutPage = () => {
   const handleSelectAddress = (elem) => {
     setSelectedAddress(elem);
   };
+
+  // ------------------------ Payments functionalities ----------------------------
+
+  const navigate=useNavigate()
+
   const handleSelectPayment = (elem) => {
     setSelectedPayment(elem);
+  };
+
+  const razorPayment = async (amount) => {
+    const {
+      data: { key },
+    } = await axios.get("http://localhost:3000/getkey");
+    const {
+      data: { order },
+    } = await axios.post(
+      "http://localhost:3000/payments/checkout",
+      {
+        amount,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
+
+    if(!data.success){
+      return toast.error(data.error, {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    const options = {
+      key: key, // Enter the Key ID generated from the Dashboard
+      amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: "USD",
+      name: "MOBO",
+      description: "Test Transaction",
+      image: logoImage,
+      order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      callback_url: "http://localhost:3000/payments/paymentVerification",
+      prefill: {
+        name: "Gaurav Kumar",
+        email: "gaurav.kumar@example.com",
+        contact: "9000090000",
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#000000",
+      },
+    };
+    const razor = new window.Razorpay(options);
+    razor.open();
+  };
+
+  const stripePayment = async () => {
+    const stripe = await loadStripe(
+      "pk_test_51NrmThSJ3lmMu3wpebkt5MyUV4PAOGCLDeZA54K9fTGby30HR9cfG4yjWcLdnFkSgDG7MOBqWFrY5ZoSztoV6UNO00DTTAVFqa"
+    );
+
+    const res = await axios.post(
+      "http://localhost:3000/payments/stripePayment",
+      {
+        products: cart,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
+    // const session = await response.json();
+    
+  
+
+    const result = stripe.redirectToCheckout({
+      sessionId: res.data.id,
+    });
+
+    if (result.error) {
+      console.log(result.error);
+    }
+  };
+
+  const selectPaymentMethod = () => {
+    if (!selectedAddress) {
+      return toast.error("Please Select the Address", {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    if (phone === "") {
+      return toast.error("Enter contact no.", {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    // const OrderDeatil={
+    //   name:
+    // }
+    // return console.log(phone, selectedAddress, totalSum);
+
+    switch (selectedPayment) {
+      case "Stripe":
+        // return console.log("Stripe payment selected");
+        return stripePayment();
+      case "Razorpay":
+        // return console.log("Razorpay payment selected");
+        return razorPayment(totalSum);
+      case "COD":
+       navigate("/paymentsuccess")
+      default:
+        return null;
+    }
   };
 
   useEffect(() => {
@@ -154,7 +305,6 @@ const CheckOutPage = () => {
               >
                 <h2>Address</h2>
                 <div style={{ overflowY: "scroll", marginBottom: "0.6rem" }}>
-                  {console.log(userAddress)}
                   {userAddress &&
                     userAddress.map((elem, index) => {
                       return (
@@ -191,24 +341,40 @@ const CheckOutPage = () => {
                     return (
                       <div
                         key={index}
-                        onClick={() => handleSelectPayment(elem)}
-                        style={{ cursor: "pointer" }}
+                        onClick={() => handleSelectPayment(elem.value)}
+                        style={{
+                          cursor: "pointer",
+                          display: "flex",
+                          gap: "1rem",
+                          margin: "1rem 0",
+                        }}
                       >
                         <input
-                          id={elem}
+                          id={elem.value}
                           name="selectPayment"
                           style={{ display: "inline" }}
-                          checked={elem === selectedPayment}
+                          checked={elem.value === selectedPayment}
                           type="radio"
                           onChange={() => {}}
                         />
-                        <label htmlFor="selectAddress">{elem}</label>
+                        <label htmlFor="selectAddress">
+                          {" "}
+                          <img
+                            src={elem.img}
+                            alt={elem.value}
+                            width={120}
+                            height={40}
+                          />
+                        </label>
                       </div>
                     );
                   })}
+                  {/* <button onClick={stripePayment}>Stripe</button> */}
                 </div>
               </div>
-              <button className="button">Order Now</button>
+              <button className="button" onClick={selectPaymentMethod}>
+                Order Now
+              </button>
             </div>
             <div className="checkout-right">
               <div>
@@ -237,7 +403,7 @@ const CheckOutPage = () => {
                   </div>
                   <div>
                     <div>
-                      <h3>Subtotal</h3> <h2>${subTotal}</h2>
+                      <h3>Subtotal</h3> <h2>${subTotal}.00</h2>
                     </div>
                     <div>
                       <h3> Shipping </h3>{" "}
@@ -253,7 +419,7 @@ const CheckOutPage = () => {
                         Estimated taxes
                         {/* <span>&#63;</span> */}
                       </h3>
-                      <h2>${subTotal * 0.08}</h2>
+                      <h2>${subTotal * 0.08}.00</h2>
                     </div>
                     <div>
                       <h2> Total</h2>{" "}
@@ -261,7 +427,7 @@ const CheckOutPage = () => {
                         <span style={{ fontWeight: "100", fontSize: "1rem" }}>
                           USD
                         </span>{" "}
-                        ${totalSum}
+                        ${totalSum}.00
                       </h2>
                     </div>
                   </div>

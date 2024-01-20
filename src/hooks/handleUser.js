@@ -16,7 +16,7 @@ const useHandleUser = () => {
       }
     );
     if (data) {
-    //   console.log("user got");
+      //   console.log("user got");
       setUser(data.user);
     }
   };

@@ -1,19 +1,30 @@
 import { instance } from "../index.js";
-import crypto from 'crypto'
+import crypto from "crypto";
 
 export const checkout = async (req, res) => {
-  var options = {
-    amount: 50000, // amount in the smallest currency unit
-    currency: "INR",
-    receipt: "order_rcptid_11",
-  };
+  try {
+    let { amount } = req.body;
+    // console.log(amount)
+    amount = amount * 100  ;
+    var options = {
+      amount: amount, // amount in the smallest currency unit
+      currency: "INR",
+      receipt: "order_rcptid_11",
+    };
 
-  const order = await instance.orders.create(options);
+    const order = await instance.orders.create(options);
 
-  res.status(200).json({
-    success: true,
-    order,
-  });
+    res.status(200).json({
+      success: true,
+      order,
+    });
+  } catch (error) {
+    // console.error("Error during checkout:", error);
+    res.status(500).json({
+      success: false,
+      error: `Error:${error}`,
+    });
+  }
 };
 
 export const paymentVerification = async (req, res) => {
@@ -32,7 +43,7 @@ export const paymentVerification = async (req, res) => {
   if (isAuthentic) {
     // Database comes here
     res.redirect(
-      `http://localhost:3000/paymentsuccess?reference=${razorpay_payment_id}`
+      `http://localhost:5173/paymentsuccess?reference=${razorpay_payment_id}`
     );
   } else {
     res.status(400).json({
