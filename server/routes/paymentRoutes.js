@@ -6,11 +6,12 @@ import {
 } from "../controller/paymentController.js";
 const router = express.Router();
 import { v4 as uuidv4 } from "uuid";
+import { config } from "dotenv";
 import Stripe from "stripe";
 
-const stripe = new Stripe(
-  "sk_test_51NrmThSJ3lmMu3wpCONrDt35sSlWNjUQSEOGQUvXJBmUZZYkykiZ2XHiDBw8psflkcf3HEWCzZu82Uba1qSV0yLT00MfzDQKqp"
-);
+config({ path: "./config/config.env" });
+
+const stripe = new Stripe(process.env.stripe_Private_Key);
 
 router.post("/stripePayment", authenticateJwt, async (req, res) => {
   const { products } = req.body;
@@ -31,7 +32,7 @@ router.post("/stripePayment", authenticateJwt, async (req, res) => {
     line_items: lineItems,
     mode: "payment",
     success_url: `http://localhost:5173/paymentsuccess`,
-    cancel_url: "http://localhost:3000/cancel",
+    cancel_url: "http://localhost:5173/checkout",
   });
 
   res.json({ id: session.id });

@@ -13,6 +13,7 @@ import Razorpay from "razorpay";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import authenticateJwt from "./auth/authenticateJwt.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -44,8 +45,12 @@ export const instance = new Razorpay({
   key_secret: process.env.razorpay_api_key,
 });
 
-
-
-app.get("/getkey", (req, res) => {
+app.get("/getRazorkey", authenticateJwt, (req, res) => {
   res.status(200).json({ key: process.env.razoarpay_api_id });
 });
+
+app.get("/getStripekey", authenticateJwt, (req, res) => {
+  res.status(200).json({ key: process.env.stripe_Public_key });
+});
+
+

@@ -136,7 +136,7 @@ const CheckOutPage = () => {
 
   // ------------------------ Payments functionalities ----------------------------
 
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const handleSelectPayment = (elem) => {
     setSelectedPayment(elem);
@@ -145,9 +145,13 @@ const CheckOutPage = () => {
   const razorPayment = async (amount) => {
     const {
       data: { key },
-    } = await axios.get("http://localhost:3000/getkey");
+    } = await axios.get("http://localhost:3000/getRazorkey", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
     const {
-      data: { order },
+      data: { order, success },
     } = await axios.post(
       "http://localhost:3000/payments/checkout",
       {
@@ -160,7 +164,7 @@ const CheckOutPage = () => {
       }
     );
 
-    if(!data.success){
+    if (!success) {
       return toast.error(data.error, {
         position: "bottom-left",
         autoClose: 5000,
@@ -175,7 +179,7 @@ const CheckOutPage = () => {
     const options = {
       key: key, // Enter the Key ID generated from the Dashboard
       amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-      currency: "USD",
+      currency: "INR",
       name: "MOBO",
       description: "Test Transaction",
       image: logoImage,
@@ -198,9 +202,14 @@ const CheckOutPage = () => {
   };
 
   const stripePayment = async () => {
-    const stripe = await loadStripe(
-      "pk_test_51NrmThSJ3lmMu3wpebkt5MyUV4PAOGCLDeZA54K9fTGby30HR9cfG4yjWcLdnFkSgDG7MOBqWFrY5ZoSztoV6UNO00DTTAVFqa"
-    );
+    const {
+      data: { key },
+    } = await axios.get("http://localhost:3000/getRazorkey", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    const stripe = await loadStripe(key);
 
     const res = await axios.post(
       "http://localhost:3000/payments/stripePayment",
@@ -214,8 +223,6 @@ const CheckOutPage = () => {
       }
     );
     // const session = await response.json();
-    
-  
 
     const result = stripe.redirectToCheckout({
       sessionId: res.data.id,
@@ -266,7 +273,7 @@ const CheckOutPage = () => {
         // return console.log("Razorpay payment selected");
         return razorPayment(totalSum);
       case "COD":
-       navigate("/paymentsuccess")
+        navigate("/paymentsuccess");
       default:
         return null;
     }
