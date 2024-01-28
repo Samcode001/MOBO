@@ -87,6 +87,6 @@ router.post("/paymentsuccess", async (req, res) => {
 // );
 
 router.post("/checkout", authenticateJwt, checkout);
-router.post("/paymentVerification", authenticateJwt, paymentVerification);
+router.post("/paymentVerification", paymentVerification);
 
 export default router;

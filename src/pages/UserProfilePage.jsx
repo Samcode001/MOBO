@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const UserProfilePage = () => {
-  const { user, setUser } = useHandleUser();
+  const { user, getUser } = useHandleUser();
 
   const [selectedOptions, setSelectedOptions] = useState("details");
 
@@ -33,6 +33,10 @@ const UserProfilePage = () => {
         break;
     }
   };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <div className="profile-container">

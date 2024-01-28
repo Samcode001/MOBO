@@ -5,7 +5,7 @@ export const checkout = async (req, res) => {
   try {
     let { amount } = req.body;
     // console.log(amount)
-    amount = amount * 100  ;
+    amount = amount * 100;
     var options = {
       amount: amount, // amount in the smallest currency unit
       currency: "INR",
@@ -46,8 +46,19 @@ export const paymentVerification = async (req, res) => {
       `http://localhost:5173/paymentsuccess?reference=${razorpay_payment_id}`
     );
   } else {
+    console.log({
+      success: false,
+      isAuthentic,
+      payID: razorpay_payment_id,
+      OrderId: razorpay_order_id,
+      Sign: razorpay_signature,
+    });
     res.status(400).json({
       success: false,
+      isAuthentic,
+      payID: razorpay_payment_id,
+      OrderId: razorpay_order_id,
+      Sign: razorpay_signature,
     });
   }
 };
