@@ -91,4 +91,21 @@ router.post("/updateQuantity", authenticateJwt, async (req, res) => {
   }
 });
 
+router.delete("/clear", authenticateJwt, async (req, res) => {
+  try {
+    const user = req.headers["user"].admin;
+
+    const result = await CART.findOneAndDelete({ user: user });
+
+    if (result) {
+      res
+        .status(200)
+        .json({ success: true, message: "Cart Cleared Succesfully" });
+    } else {
+      res.status(404).json({ success: false, message: "Not FOund" });
+    }
+  } catch (error) {
+    res.status(500).send(`Error in Route:${error}`);
+  }
+});
 export default router;

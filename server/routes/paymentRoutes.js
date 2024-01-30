@@ -6,8 +6,8 @@ import {
 } from "../controller/paymentController.js";
 const router = express.Router();
 import { v4 as uuidv4 } from "uuid";
-import { config } from "dotenv";
 import Stripe from "stripe";
+import { config } from "dotenv";
 
 config({ path: "./config/config.env" });
 

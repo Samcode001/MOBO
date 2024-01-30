@@ -3,13 +3,28 @@ import "../styles/UserProfilePage.css";
 import useHandleUser from "../hooks/handleUser.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import userState from "../recoil/atoms/user.js";
 
 const UserProfilePage = () => {
-  const { user, getUser } = useHandleUser();
+  // const { getUser } = useHandleUser();
 
   const [selectedOptions, setSelectedOptions] = useState("details");
+  // const user = useRecoilValue(userState);
 
   const navigate = useNavigate();
+
+  // const getUser = async () => {
+  //   const { data } = await axios.post(
+  //     "http://localhost:3000/admin/getUser",
+  //     {},
+  //     {
+  //       headers: {
+  //         Authorization: "Bearer " + localStorage.getItem("token"),
+  //       },
+  //     }
+  //   );
+  // };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -27,16 +42,12 @@ const UserProfilePage = () => {
         return <ProfileAddress />;
         break;
       case "details":
-        return <ProfileDeatils user={user} />;
+        return <ProfileDeatils />;
       default:
         return null;
         break;
     }
   };
-
-  useEffect(() => {
-    getUser();
-  }, []);
 
   return (
     <div className="profile-container">
@@ -63,7 +74,13 @@ const UserProfilePage = () => {
 
 export default UserProfilePage;
 
-const ProfileDeatils = ({ user }) => {
+const ProfileDeatils = () => {
+  const { user, getUser } = useHandleUser();
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <>
       <div className="profile-user-details">
@@ -78,37 +95,86 @@ const ProfileDeatils = ({ user }) => {
 };
 
 const ProfileOrders = () => {
-  const orders = [
-    { id: 1, product: "Product A", price: 50.99 },
-    { id: 2, product: "Product B", price: 30.49 },
-    { id: 3, product: "Product C", price: 25.99 },
-    // Add more orders as needed
-  ];
+  // const orders = [
+  //   { id: 1, product: "Product A", price: 50.99 },
+  //   { id: 2, product: "Product B", price: 30.49 },
+  //   { id: 3, product: "Product C", price: 25.99 },
+  //   // Add more orders as needed
+  // ];
+
+  const [orders, setOrders] = useState([]);
+
+  const getOrders = async () => {
+    const { data } = await axios.get("http://localhost:3000/orders/order", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+
+    if (data.success) {
+      setOrders(data.orders.orders);
+    }
+  };
+
+  useEffect(() => {
+    getOrders();
+  }, []);
+
   return (
     <>
       <div className="profile-previous-orders">
         <div>
-          <h2>User Orders</h2>
-          <ul style={{ listStyle: "none", padding: 0 }}>
+          <h2 style={{fontSize:'3rem',fontWeight:"600"}}>User Orders</h2>
+          <ul className="previous-orders-container">
             {orders.map((order) => (
-              <li
-                key={order.id}
-                style={{
-                  marginBottom: "15px",
-                  padding: "10px",
-                  border: "1px solid #ccc",
-                }}
-              >
-                <p>
-                  <strong>Order ID:</strong> {order.id}
+              <div key={order.id} className="previous-orders-items">
+                <p
+                  style={{ fontSize: "1rem", fontWeight: "300", color: "gray" }}
+                >
+                  {/* <strong>Order ID:</strong> {order.id} */}
+                  Order Id:{order.orderId}
                 </p>
+                <ul className="previos-orders-images">
+                  {order.order.slice(0,5).map((elem, index) => {
+                    return (
+                      <li key={index}>
+                        <a href="#">
+                          <img src={elem.img} alt="" />
+                        </a>
+                      </li>
+                    );
+                  })}
+{/* 
+                  <li>
+                    <a href="#">
+                      <img
+                        src="https://fdn2.gsmarena.com/vv/pics/sony/sony-xperia-1-iii-02.jpg"
+                        alt=""
+                      />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <img
+                        src="https://fdn2.gsmarena.com/vv/pics/sony/sony-xperia-1-iii-02.jpg"
+                        alt=""
+                      />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <img
+                        src="https://fdn2.gsmarena.com/vv/pics/sony/sony-xperia-1-iii-02.jpg"
+                        alt=""
+                      />
+                    </a>
+                  </li> */}
+                </ul>
                 <p>
-                  <strong>Product:</strong> {order.product}
+                  <strong style={{ color: "red" }}>Total:</strong> Rs.
+                  {order.total}/-
                 </p>
-                <p>
-                  <strong>Price:</strong> ${order.price.toFixed(2)}
-                </p>
-              </li>
+              </div>
             ))}
           </ul>
         </div>

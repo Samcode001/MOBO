@@ -5,7 +5,7 @@ import "../styles/CheckOut.css";
 import axios from "axios";
 import { IoClose } from "react-icons/io5";
 import { toast } from "react-toastify";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import cartState from "../recoil/atoms/cart";
 import Navbar from "../components/Navbar";
 import useAddToCart from "../hooks/addToCart";
@@ -17,7 +17,7 @@ import logoImage from "../assets/images (1).png";
 import { useNavigate } from "react-router-dom";
 
 const CheckOutPage = () => {
-  /// ***********************------------ State for getting Address ------------- ****************************8
+  /// ***********************------------ State for Adding  Address ------------- ****************************8
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
@@ -31,27 +31,15 @@ const CheckOutPage = () => {
   //   const isoCode=selectedCountry ? selectedCountry.isoCode : undefined ;
 
   /// *******************---------- states for checkout page --------------**************************
-  const paymentsOptions = [
-    {
-      value: "Stripe",
-      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/2560px-Stripe_Logo%2C_revised_2016.svg.png",
-    },
-    {
-      value: "Razorpay",
-      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Razorpay_logo.svg/1200px-Razorpay_logo.svg.png",
-    },
-    {
-      value: "COD",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY-n0bQFbk-Rx0bMmhiwUvDQkZ6o1ymrWRPg&usqp=CAU",
-    },
-  ];
+
   const [userAddress, setUserAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
-  const [selectedPayment, setSelectedPayment] = useState("");
+
   const [subTotal, setSubTotal] = useState(0);
   const [totalSum, setTotalSum] = useState(0);
   const [phone, setPhone] = useState("");
   const { cart, getCart } = useGetCart();
+  const setCart = useSetRecoilState(cartState);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -103,19 +91,6 @@ const CheckOutPage = () => {
 
     if (success) {
       setAddressFlag(true);
-      // address.forEach((elem) => {
-      //   let tempAddress = elem;
-      //   const foramtAddress = `
-      //   ${tempAddress.address} ,
-      //   ${tempAddress.City},
-      //   ${tempAddress.State},
-      //   ${tempAddress.Country} (
-      //     ${tempAddress.Pincode});
-      //     `;
-      //   const filterAddress = userAddress.filter(
-      //     (elem) => elem !== foramtAddress
-      //   );
-      // });
       setUserAddress(address);
       toast.success(message, {
         position: "bottom-left",
@@ -134,8 +109,55 @@ const CheckOutPage = () => {
     setSelectedAddress(elem);
   };
 
+  useEffect(() => {
+    Promise.all([getCart(), getAddress()])
+      .then(() => {
+        // let tempSum = cart.reduce((accumulator, item) => {
+        //   return accumulator + item.price * item.quantity;
+        // }, 0);
+        // setSubTotal(tempSum);
+        // tempSum += tempSum * 0.08;
+        // setTotalSum(tempSum);
+        // console.log("Calc")
+
+        console.log("Cart:", cart); // Log the cart state
+        console.log("User Address:", userAddress); // Log the userAddress state
+
+        let tempSum = cart.reduce((accumulator, item) => {
+          return accumulator + item.price * item.quantity;
+        }, 0);
+
+        console.log("Subtotal Before:", tempSum); // Log the subtotal before calculation
+
+        setSubTotal(tempSum);
+        tempSum += tempSum * 0.08;
+
+        console.log("Subtotal After:", tempSum); // Log the subtotal after calculation
+
+        setTotalSum(tempSum);
+        console.log("Calc");
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   // ------------------------ Payments functionalities ----------------------------
 
+  const paymentsOptions = [
+    {
+      value: "Stripe",
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/2560px-Stripe_Logo%2C_revised_2016.svg.png",
+    },
+    {
+      value: "Razorpay",
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Razorpay_logo.svg/1200px-Razorpay_logo.svg.png",
+    },
+    {
+      value: "COD",
+      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY-n0bQFbk-Rx0bMmhiwUvDQkZ6o1ymrWRPg&usqp=CAU",
+    },
+  ];
+
+  const [selectedPayment, setSelectedPayment] = useState("");
   const navigate = useNavigate();
 
   const handleSelectPayment = (elem) => {
@@ -184,7 +206,78 @@ const CheckOutPage = () => {
       description: "Test Transaction",
       image: logoImage,
       order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      callback_url: "http://localhost:3000/payments/paymentVerification",
+      // callback_url: "http://localhost:3000/payments/paymentVerification",
+      handler: async function (response) {
+        // alert(response.razorpay_payment_id);
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature);
+        // const { data: success } = await axios.post(
+        //   "http://localhost:3000/payments/paymentVerification",
+        //   { response },
+        //   {
+        //     headers: {
+        //       Authorization: "bearer " + localStorage.getItem("token"),
+        //     },
+        //   }
+        // );
+        const d = Date.now();
+        const today = new Date(d);
+        today.toString();
+        if (response) {
+          const {
+            data: { success },
+          } = await axios.post(
+            "http://localhost:3000/orders/order",
+            {
+              order: cart,
+              total: totalSum,
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+              },
+            }
+          );
+
+          if (success) {
+            toast.success("Payment Succesful", {
+              position: "bottom-left",
+              autoClose: 1800,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            setTimeout(async () => {
+              setCart([]);
+
+              const {
+                data: { success },
+              } = await axios.delete("http://localhost:3000/cart/clear", {
+                headers: {
+                  Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+              });
+              if (success) {
+                navigate("/paymentsuccess");
+              }
+            }, 2000);
+          }
+        } else {
+          toast.error("Payment Failed", {
+            position: "bottom-left",
+            autoClose: 1800,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      },
       prefill: {
         name: "Gaurav Kumar",
         email: "gaurav.kumar@example.com",
@@ -278,18 +371,6 @@ const CheckOutPage = () => {
         return null;
     }
   };
-
-  useEffect(() => {
-    getCart();
-    getAddress();
-
-    let tempSum = cart.reduce((accumulator, item) => {
-      return accumulator + item.price * item.quantity;
-    }, 0);
-    setSubTotal(tempSum);
-    tempSum += tempSum * 0.08;
-    setTotalSum(tempSum);
-  }, []);
 
   return (
     <div>

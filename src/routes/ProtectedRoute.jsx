@@ -9,7 +9,6 @@ const ProtectedRoute = ({ children }) => {
   //   getUser();
   // });
   const user = localStorage.getItem("user");
-  console.log(user)
   const isAuthenticated = true;
   if (user) return children;
   else return <Navigate to="/login" replace />;

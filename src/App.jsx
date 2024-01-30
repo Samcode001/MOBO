@@ -14,6 +14,7 @@ import Navbar from "./components/Navbar.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import { useEffect } from "react";
 import useHandleUser from "./hooks/handleUser.js";
+import NotFound from "./components/NotFound.jsx";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
                 // </ProtectedRoute>
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <ToastContainer
             position="bottom-left"

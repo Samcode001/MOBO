@@ -21,9 +21,9 @@ const Login = () => {
     });
   };
 
-  const handleUser=async()=>{
+  const handleUser = async () => {
     await getUser();
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,6 +37,7 @@ const Login = () => {
       if (response.status === 200) {
         handleUser();
         navigate("/");
+        window.location.reload(true);
         localStorage.setItem("token", response.data.token);
       }
       // Redirect or handle success as needed
