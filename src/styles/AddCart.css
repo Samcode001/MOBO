@@ -37,10 +37,11 @@
 }
 
 .cart-details-image {
-  width: 4rem;
+  width: 5rem;
   height: 6rem;
   display: block;
   margin: auto auto;
+  object-fit: contain;
 }
 
 .cart-details > * {

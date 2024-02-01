@@ -9,19 +9,56 @@ import AddCart from "../components/AddCart.jsx";
 import { FaHeart } from "react-icons/fa";
 import AddWishlist from "./AddWishlist.jsx";
 import useHandleUser from "../hooks/handleUser.js";
+import { allPhonesDataState } from "../recoil/atoms/data.js";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import axios from "axios";
 
 const Navbar = () => {
   const [isPage, setIsPage] = useState(false);
   const [isCollection, setIsCollection] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
   const [cartFlag, setCartFlag] = useState(false);
   const [wishlistFlag, setWishlistFlag] = useState(false);
 
   const { user, getUser } = useHandleUser();
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchData, setSearchData] = useState([]);
+  const [phonesData, setPhonesData] = useState([]);
+
+
+const setAllPhones=useSetRecoilState(allPhonesDataState);
+
+  const getData = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/data/phones", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      if (res.status === 200) {
+        setAllPhones(prevData=>[...prevData,res.data.phones])
+        setPhonesData(res.data.phones);
+      } else {
+        console.log("Some Erro occ");
+      }
+    } catch (error) {
+      console.log(`Error in component :${error}`);
+    }
+  };
+
+  const handleSearch = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    const filterPhones = phonesData.filter((product) => {
+      return product.name.toLowerCase().includes(term.toLowerCase());
+    });
+    setSearchData(filterPhones);
+  };
+
   useEffect(() => {
     getUser();
+    getData();
     // console.log(user.avatar);
   }, []);
 
@@ -106,13 +143,37 @@ const Navbar = () => {
                 <div className="search-bar">
                   <input
                     type="text"
-                    value={searchInput}
-                    onChange={() => setSearchInput(e.target.value)}
+                    value={searchTerm}
+                    onChange={handleSearch}
                   />
                   <button>
                     <AiOutlineSearch onClick={submitInput} />
                   </button>
                   <button onClick={() => setIsSearch(false)}></button>
+                  {searchData && searchData.length !== 0 ? (
+                    <div className="search-items-container">
+                      {searchData &&
+                        searchData.map((elem) => {
+                          return (
+                            <Link
+                              to={`/product/${elem._id}`}
+                              style={{ textDecoration: "none" }}
+                              onClick={() => setIsSearch(false)}
+                            >
+                              <div key={elem._id} className="search-items">
+                                <img src={elem.images[0]} alt="img" />
+                                <div className="search-items-deatils">
+                                  <h1>{elem.name}</h1>
+                                  <span>
+                                    {elem.type}/{elem.processor}
+                                  </span>
+                                </div>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                    </div>
+                  ) : null}
                 </div>
               )}
               {!user ? (

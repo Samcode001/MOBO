@@ -220,9 +220,6 @@ const CheckOutPage = () => {
         //     },
         //   }
         // );
-        const d = Date.now();
-        const today = new Date(d);
-        today.toString();
         if (response) {
           const {
             data: { success },
@@ -297,14 +294,14 @@ const CheckOutPage = () => {
   const stripePayment = async () => {
     const {
       data: { key },
-    } = await axios.get("http://localhost:3000/getRazorkey", {
+    } = await axios.get("http://localhost:3000/getStripekey", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
     const stripe = await loadStripe(key);
 
-    const res = await axios.post(
+    const { data } = await axios.post(
       "http://localhost:3000/payments/stripePayment",
       {
         products: cart,
@@ -317,12 +314,31 @@ const CheckOutPage = () => {
     );
     // const session = await response.json();
 
+    // if (data.success) {
+    //   const checkStatus = async () => {
+    //     const updatePaymentIntent = await stripe.retrievePaymentIntent(data.id);
+
+    //     if (updatePaymentIntent.status  === "succeeded") {
+    //       alert(`Payment succeeded:${updatePaymentIntent}`);
+    //       // alert("Payemtn Done");
+    //     } else {
+    //       // alert("payment Failed");
+    //       alert(`Payment Failed:${updatePaymentIntent.status}`);
+    //       setTimeout(checkStatus, 1000);
+    //     }
+    //   };
+
+    //   checkStatus();
+    // }
+
     const result = stripe.redirectToCheckout({
-      sessionId: res.data.id,
+      sessionId: data.id,
     });
 
     if (result.error) {
       console.log(result.error);
+    } else {
+      setCart([]);
     }
   };
 

@@ -53,18 +53,12 @@ const UserProfilePage = () => {
     <div className="profile-container">
       <div className="profile-sidebar">
         <div className="profile-user-info">
-          {/* <img
-            src={`http://localhost:3000/uploads/${user.avatar}`}
-            alt="User Avatar"
-          />
-          <h2>John Doe</h2> */}
         </div>
         <ul className="profile-sidebar-options">
           <li onClick={() => setSelectedOptions("details")}>Details</li>
           <li onClick={() => setSelectedOptions("orders")}>My Orders</li>
           <li onClick={() => setSelectedOptions("address")}>Saved Addresses</li>
           <li onClick={handleLogout}>Logout</li>
-          {/* Add more options as needed */}
         </ul>
       </div>
       <div className="profile-main-content">{handleProfile()}</div>
@@ -95,12 +89,6 @@ const ProfileDeatils = () => {
 };
 
 const ProfileOrders = () => {
-  // const orders = [
-  //   { id: 1, product: "Product A", price: 50.99 },
-  //   { id: 2, product: "Product B", price: 30.49 },
-  //   { id: 3, product: "Product C", price: 25.99 },
-  //   // Add more orders as needed
-  // ];
 
   const [orders, setOrders] = useState([]);
 
@@ -131,7 +119,6 @@ const ProfileOrders = () => {
                 <p
                   style={{ fontSize: "1rem", fontWeight: "300", color: "gray" }}
                 >
-                  {/* <strong>Order ID:</strong> {order.id} */}
                   Order Id:{order.orderId}
                 </p>
                 <ul className="previos-orders-images">
@@ -144,31 +131,6 @@ const ProfileOrders = () => {
                       </li>
                     );
                   })}
-{/* 
-                  <li>
-                    <a href="#">
-                      <img
-                        src="https://fdn2.gsmarena.com/vv/pics/sony/sony-xperia-1-iii-02.jpg"
-                        alt=""
-                      />
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img
-                        src="https://fdn2.gsmarena.com/vv/pics/sony/sony-xperia-1-iii-02.jpg"
-                        alt=""
-                      />
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img
-                        src="https://fdn2.gsmarena.com/vv/pics/sony/sony-xperia-1-iii-02.jpg"
-                        alt=""
-                      />
-                    </a>
-                  </li> */}
                 </ul>
                 <p>
                   <strong style={{ color: "red" }}>Total:</strong> Rs.
@@ -202,7 +164,6 @@ const ProfileAddress = () => {
 
   useEffect(() => {
     getAddress();
-    //   console.log("hello");
   }, []);
 
   return (
@@ -214,21 +175,12 @@ const ProfileAddress = () => {
             return (
               <div
                 key={index}
-                // onClick={() => handleSelectAddress(elem)}
                 style={{
                   cursor: "pointer",
                   marginBlock: "1rem",
                   backgroundColor: "rgb(217, 214, 214)",
                 }}
               >
-                {/* <input
-                  id={index}
-                  name="selectAddress"
-                  style={{ display: "inline" }}
-                  checked={elem === selectedAddress}
-                  type="radio"
-                  onChange={() => {}}
-                /> */}
                 <label htmlFor="selectAddress">{elem}</label>
               </div>
             );

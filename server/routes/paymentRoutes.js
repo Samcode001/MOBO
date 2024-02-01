@@ -8,6 +8,7 @@ const router = express.Router();
 import { v4 as uuidv4 } from "uuid";
 import Stripe from "stripe";
 import { config } from "dotenv";
+import bodyParser from "body-parser";
 
 config({ path: "./config/config.env" });
 
@@ -35,56 +36,40 @@ router.post("/stripePayment", authenticateJwt, async (req, res) => {
     cancel_url: "http://localhost:5173/checkout",
   });
 
-  res.json({ id: session.id });
+  // console.log(session);
+  res.json({ id: session.id, success: true });
 });
 
-router.post("/paymentsuccess", async (req, res) => {
-  const { session_id } = req.body;
+router.post(
+  "/stripeVerification",
+  bodyParser.raw({ type: "application/json" }),
+  async (req, res) => {
+    const sig = req.headers["stripe-signature"];
+    const endpointSecret = "whsec_mat0J7AGWmdUFltu1oCBUyOqmQU499hq";
 
-  const session = await stripe.checkout.sessions.retrieve(session_id);
+    let event;
 
-  if (session.payment_status === "paid") {
-    res.send("Payment Successful!");
-  } else {
-    res.send("Payment Failed.");
+    try {
+      // Use the endpointSecret when constructing the event
+      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    } catch (err) {
+      console.error("Webhook Error:", err.message);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    // Handle the event
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+
+      // Mark the payment as successful
+      // You can update your database or perform other actions here
+
+      console.log("Payment succeeded:", session);
+    }
+
+    res.status(200).send("Success");
   }
-});
-
-// app.post(
-//   "/webhook",
-//   express.raw({ type: "application/json" }),
-//   (request, response) => {
-//     const sig = request.headers["stripe-signature"];
-
-//     let event;
-
-//     try {
-//       event = instance.webhooks.constructEvent(
-//         request.body,
-//         sig,
-//         process.env.stripe_endpoint_secret
-//       );
-//     } catch (err) {
-//       response.status(400).send(`Webhook Error: ${err.message}`);
-//       return;
-//     }
-
-//     // Handle the event
-//     switch (event.type) {
-//       case "payment_intent.succeeded":
-//         const paymentIntentSucceeded = event.data.object;
-//         // Then define and call a function to handle the event payment_intent.succeeded
-//         break;
-//       // ... handle other event types
-//       default:
-//         console.log(`Unhandled event type ${event.type}`);
-//     }
-
-//     console.log(response);
-//     // Return a 200 response to acknowledge receipt of the event
-//     response.send();
-//   }
-// );
+);
 
 router.post("/checkout", authenticateJwt, checkout);
 router.post("/paymentVerification", paymentVerification);
