@@ -64,7 +64,7 @@ const useHanldeList = () => {
     }
   };
 
-  const removeToList = async (itemName) => {
+  const removeToList = async (itemName,flag=true) => {
     const res = await axios.post(
       "http://localhost:3000/wishlist/removeItem",
       {
@@ -76,7 +76,7 @@ const useHanldeList = () => {
         },
       }
     );
-    if (res.status === 201) {
+    if (res.status === 201 && flag) {
       toast.error("Item Removed", {
         position: "bottom-left",
         autoClose: 5000,

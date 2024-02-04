@@ -81,7 +81,7 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
   useEffect(() => {
     let total = 0;
     for (let i = 0; i < cart.length; i++) {
-      total += cart[i].price * cart[i].quantity;
+      total += parseFloat(cart[i].price.replace(/,/g, "")) * cart[i].quantity;
     }
     setSubTotal(total);
   }, [cart]);
@@ -134,7 +134,10 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
                       <span>Type: {elem.type}</span>
                       <span>Os: {elem.os},</span>
                       <span>Memory: {elem.memory},</span>
-                      <h2>${elem.price * elem.quantity}</h2>
+                      <h2>
+                      ₹ {parseFloat(elem.price.replace(/,/g, "")) *
+                          elem.quantity}
+                      </h2>
                     </div>
                   </div>
                   <div
@@ -180,7 +183,7 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
       <div className="cart-footer">
         <div>
           <h2>Subtotal</h2>
-          <span>${subTotal}.00 USD</span>
+          <span>₹ {subTotal}.00</span>
         </div>
         <p>Taxes and shipping calculated at checkout</p>
         <button

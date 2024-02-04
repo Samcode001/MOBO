@@ -2,23 +2,22 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Products from "./pages/Products";
-import OrderConfirmed from "./pages/OrderConfirmed.jsx";
-import UserProfilePage from "./pages/UserProfilePage.jsx";
+import OrderConfirmed from "./pages/OrderConfirmed";
+import UserProfilePage from "./pages/UserProfilePage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
+import BuyPage from "./pages/BuyPage.jsx";
 import CheckOutPage from "./pages/CheckOutPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Navbar from "./components/Navbar.jsx";
-import ProtectedRoute from "./routes/ProtectedRoute.jsx";
+import Navbar from "./components/Navbar";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import { useEffect } from "react";
 import useHandleUser from "./hooks/handleUser.js";
-import NotFound from "./components/NotFound.jsx";
+import NotFound from "./components/NotFound";
 
 function App() {
-
-  
   return (
     <>
       <RecoilRoot>
@@ -54,6 +53,7 @@ function App() {
                 // </ProtectedRoute>
               }
             />
+            <Route path="/buy/:id" element={<BuyPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <ToastContainer

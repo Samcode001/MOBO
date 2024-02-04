@@ -7,6 +7,8 @@ import axios from "axios";
 import wishListState from "../recoil/atoms/wishList";
 import useHanldeList from "../hooks/addToList";
 import useAddToCart from "../hooks/addToCart";
+import { allPhonesDataState } from "../recoil/atoms/data";
+import useGetCart from "../hooks/getCart";
 
 const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
   const [count, setCount] = useState(1);
@@ -14,7 +16,9 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
   const [quantityPrice, setQuantityPrice] = useState(0);
   const [wishlist, setWishList] = useRecoilState(wishListState);
   const { addToCart } = useAddToCart();
+  const { getCart } = useGetCart();
   const { getWishList } = useHanldeList();
+  const allPhones = useRecoilValue(allPhonesDataState);
 
   const { removeToList } = useHanldeList();
 
@@ -23,9 +27,10 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
   };
 
   const handlecart = async (data) => {
-    await addToCart(data);
-
-    // console.log(data)
+    const phone = allPhones.find((elem) => elem.name === data.name);
+    await addToCart(phone);
+    getCart();
+    await removeToList(data.name,false);
   };
 
   // useEffect(() => {
@@ -57,7 +62,9 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
 
       <div style={{ overflowY: "scroll", height: "70vh" }}>
         {wishlist.length === 0 ? (
-          <h2 style={{ fontSize: "2rem",fontWeight:'550' ,color:'red'}}>List empty</h2>
+          <h2 style={{ fontSize: "2rem", fontWeight: "550", color: "red" }}>
+            List empty
+          </h2>
         ) : (
           wishlist &&
           wishlist.map((elem) => {
@@ -72,7 +79,7 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
                       <span>Type: {elem.type}</span>
                       <span>Os: {elem.os},</span>
                       <span>Memory: {elem.memory},</span>
-                      <h2>${elem.price}</h2>
+                      <h2>₹ {elem.price}</h2>
                     </div>
                   </div>
                   <div

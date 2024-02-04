@@ -5,6 +5,7 @@ import "../styles/Products.css";
 import Navbar from "../components/Navbar";
 import { useRecoilState } from "recoil";
 import { allPhonesDataState } from "../recoil/atoms/data";
+import Loader from "../assets/loader.gif";
 
 const Products = () => {
   const [allPhones, setAllPhones] = useRecoilState(allPhonesDataState);
@@ -240,7 +241,17 @@ const Products = () => {
               <ProductsCard key={elem._id} data={elem} />
             ))
           ) : (
-            <p>No data available</p>
+            <img
+              style={{
+                width: "4rem",
+                aspectRatio: "1/1",
+                display: "block",
+                margin: "auto",
+                objectFit: "cover",
+              }}
+              src={Loader}
+              alt="Loading..."
+            />
           )}
         </div>
       </div>

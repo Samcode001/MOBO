@@ -14,7 +14,8 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
 import { loadStripe } from "@stripe/stripe-js";
 import logoImage from "../assets/images (1).png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { allPhonesDataState } from "../recoil/atoms/data";
 
 const CheckOutPage = () => {
   /// ***********************------------ State for Adding  Address ------------- ****************************8
@@ -35,11 +36,43 @@ const CheckOutPage = () => {
   const [userAddress, setUserAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
 
-  const [subTotal, setSubTotal] = useState(0);
+  //   const [subTotal, setSubTotal] = useState(0);
   const [totalSum, setTotalSum] = useState(0);
   const [phone, setPhone] = useState("");
   const { cart, getCart } = useGetCart();
   const setCart = useSetRecoilState(cartState);
+
+  const { id } = useParams();
+
+  const [phones, setPhones] = useState([]);
+  const [phoneData, setPhoneData] = useState(null);
+
+  const getData = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/data/phones", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      if (res.status === 200) {
+        let temp = res.data.phones.find((elem) => elem._id === id);
+
+        setPhoneData(temp);
+        setTotalSum(
+            parseInt(
+              parseFloat(temp.price.replace(/,/g, "")) +
+                parseFloat(temp.price.replace(/,/g, "")) * 0.08
+            )
+          );
+      } else {
+        console.log("Some Erro occ");
+      }
+    } catch (error) {
+      console.log(`Error in component :${error}`);
+    }
+  };
+
+  useEffect(() => {}, [phones]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,35 +143,9 @@ const CheckOutPage = () => {
   };
 
   useEffect(() => {
-    Promise.all([getCart(), getAddress()])
+    Promise.all([getData(), getAddress()])
       .then(() => {
-        // let tempSum = cart.reduce((accumulator, item) => {
-        //   return accumulator + item.price * item.quantity;
-        // }, 0);
-        // setSubTotal(tempSum);
-        // tempSum += tempSum * 0.08;
-        // setTotalSum(tempSum);
-        // console.log("Calc")
-
-        // console.log("Cart:", cart); // Log the cart state
-        // console.log("User Address:", userAddress); // Log the userAddress state
-
-        let tempSum = cart.reduce((accumulator, item) => {
-          return (
-            accumulator +
-            parseFloat(item.price.replace(/,/g, "")) * item.quantity
-          );
-        }, 0);
-
-        // console.log("Subtotal Before:", tempSum); // Log the subtotal before calculation
-
-        setSubTotal(tempSum);
-        tempSum += tempSum * 0.08;
-
-        // console.log("Subtotal After:", tempSum); // Log the subtotal after calculation
-
-        setTotalSum(tempSum);
-        // console.log("Calc");
+       
       })
       .catch((err) => console.log(err));
   }, []);
@@ -229,7 +236,7 @@ const CheckOutPage = () => {
           } = await axios.post(
             "http://localhost:3000/orders/order",
             {
-              order: cart,
+              order: phoneData,
               total: totalSum,
             },
             {
@@ -250,20 +257,20 @@ const CheckOutPage = () => {
               progress: undefined,
               theme: "light",
             });
-            setTimeout(async () => {
-              setCart([]);
+            //     setTimeout(async () => {
+            //       setCart([]);
 
-              const {
-                data: { success },
-              } = await axios.delete("http://localhost:3000/cart/clear", {
-                headers: {
-                  Authorization: "Bearer " + localStorage.getItem("token"),
-                },
-              });
-              if (success) {
-                navigate("/paymentsuccess");
-              }
-            }, 2000);
+            //       const {
+            //         data: { success },
+            //       } = await axios.delete("http://localhost:3000/cart/clear", {
+            //         headers: {
+            //           Authorization: "Bearer " + localStorage.getItem("token"),
+            //         },
+            //       });
+            //       if (success) {
+            //     }
+            // }, 2000);
+            navigate("/paymentsuccess");
           }
         } else {
           toast.error("Payment Failed", {
@@ -487,7 +494,7 @@ const CheckOutPage = () => {
               <div>
                 <div className="checkout-right-container">
                   <div>
-                    {cart &&
+                    {/* {cart &&
                       cart.map((elem) => {
                         return (
                           <div key={elem._id} className="checkout-right-items">
@@ -503,14 +510,30 @@ const CheckOutPage = () => {
                                 {elem.type}/{elem.memory}/{elem.os}
                               </span>
                             </div>
-                            <h2>₹ {elem.price}</h2>
+                            <h2>${elem.price}</h2>
                           </div>
                         );
-                      })}
+                      })} */}
+                    <div className="checkout-right-items">
+                      <div style={{ position: "relative" }}>
+                        <img src={phoneData.images[0]} alt="" />
+                        <span className="checkout-right-quantity">1</span>
+                      </div>
+                      <div className="checkout-right-items-details">
+                        <h3>{phoneData.name}</h3>
+                        <span>
+                          {phoneData.type}/{phoneData.memory}/{phoneData.os}
+                        </span>
+                      </div>
+                      <h2>₹ {phoneData.price}</h2>
+                    </div>
                   </div>
                   <div>
                     <div>
-                      <h3>Subtotal</h3> <h2>₹ {subTotal}.00</h2>
+                      <h3>Subtotal</h3>{" "}
+                      <h2>
+                        ₹ {parseFloat(phoneData.price.replace(/,/g, ""))}.00
+                      </h2>
                     </div>
                     <div>
                       <h3> Shipping </h3>{" "}
@@ -526,7 +549,13 @@ const CheckOutPage = () => {
                         Estimated taxes
                         {/* <span>&#63;</span> */}
                       </h3>
-                      <h2>₹ {parseInt(subTotal * 0.08)}.00</h2>
+                      <h2>
+                        ₹{" "}
+                        {parseInt(
+                          parseFloat(phoneData.price.replace(/,/g, "")) * 0.08
+                        )}
+                        .00
+                      </h2>
                     </div>
                     <div>
                       <h2> Total</h2>{" "}
@@ -534,7 +563,8 @@ const CheckOutPage = () => {
                         <span
                           style={{ fontWeight: "100", fontSize: "1rem" }}
                         ></span>{" "}
-                        ₹ {parseInt(totalSum)}.00
+                        ₹ {totalSum}
+                        .00
                       </h2>
                     </div>
                   </div>

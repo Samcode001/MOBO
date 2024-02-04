@@ -5,7 +5,7 @@ import ProductCard from "./ProductsCard";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa";
 import { IoMdShare } from "react-icons/io";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Ratings from "../components/Ratings.jsx";
 import GeneraetStars from "../components/GeneraetStars.jsx";
 import { FaStar } from "react-icons/fa";
@@ -23,9 +23,11 @@ const ProductDetails = ({ data }) => {
   const [totalRatings, setTotalRatings] = useState(0);
   const { addToCart } = useAddToCart();
 
+  const navigate = useNavigate();
+
   const allPhones = useRecoilValue(allPhonesDataState);
 
-  const parsedData = allPhones.slice(0, 4);
+  const parsedData = allPhones.slice(5, 9);
 
   const productPermalink = `http://localhost:5173/products/${data._id}`;
 
@@ -48,9 +50,9 @@ const ProductDetails = ({ data }) => {
     }
   };
 
-  const handleRatingChange = (newRating) => {
-    setRating(newRating);
-  };
+  // const handleRatingChange = (newRating) => {
+  //   setRating(newRating);
+  // };
 
   const hanldeCart = async () => {
     await addToCart(data);
@@ -81,51 +83,9 @@ const ProductDetails = ({ data }) => {
     }
   };
 
-  const handlePayment = async (amount) => {
-    const {
-      data: { key },
-    } = await axios.get("http://localhost:3000/getkey");
-    const {
-      data: { order },
-    } = await axios.post(
-      "http://localhost:3000/payments/checkout",
-      {
-        amount,
-      },
-      {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      }
-    );
-
-    const options = {
-      key: key, // Enter the Key ID generated from the Dashboard
-      amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-      currency: "INR",
-      name: "Acme Corp",
-      description: "Test Transaction",
-      image: "https://example.com/your_logo",
-      order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      callback_url: "http://localhost:3000/payments/paymentVerification",
-      prefill: {
-        name: "Gaurav Kumar",
-        email: "gaurav.kumar@example.com",
-        contact: "9000090000",
-      },
-      notes: {
-        address: "Razorpay Corporate Office",
-      },
-      theme: {
-        color: "#3399cc",
-      },
-    };
-    const razor = new window.Razorpay(options);
-    razor.open();
-  };
-
   useEffect(() => {
     getRatings();
+    setTotal(data.price * count);
   }, []);
 
   useEffect(() => {
@@ -152,7 +112,7 @@ const ProductDetails = ({ data }) => {
         <div className="product-right">
           <h2>{data.name}</h2>
           <span style={{ fontSize: "1.2rem", fontWeight: "550" }}>
-            ${data.price}
+            ₹ {data.price}
           </span>
 
           <h3>
@@ -167,7 +127,7 @@ const ProductDetails = ({ data }) => {
           <h3>
             Os <span>{data.os}</span>
           </h3>
-
+{/* 
           <div className="quantity">
             Quantity
             <FaMinus
@@ -185,15 +145,18 @@ const ProductDetails = ({ data }) => {
           <span style={{ fontSize: "1.2rem", fontWeight: "550" }}>
             SubTotal{" "}
             <span style={{ color: "rgb(236, 57, 17)", paddingLeft: "1rem" }}>
-              ${total}
+              ₹ {total}
             </span>
-          </span>
+          </span> */}
 
           <div className="product-buttons">
             <button className="button" onClick={hanldeCart}>
               Add TO Cart
             </button>
-            <button className="button-buy" onClick={() => handlePayment(total)}>
+            <button
+              className="button-buy"
+              onClick={() => navigate(`/buy/${data._id}`)}
+            >
               Buy Now
             </button>
             <button className="share-button" onClick={handleShareClick}>
@@ -317,7 +280,7 @@ const ProductDetails = ({ data }) => {
             }}
             onClick={() => setWriteReview((prevFlag) => !prevFlag)}
           >
-            Write a Review
+            {!writeReview ? "Write a Review" : " Close"}
           </h3>
         </div>
         <br />
@@ -362,7 +325,13 @@ const ProductDetails = ({ data }) => {
 
       <div className="related-container">
         {parsedData &&
-          parsedData.map((elem) => <ProductCard key={elem._id} data={elem} />)}
+          parsedData.map((elem) => (
+            <ProductCard
+              key={elem._id}
+              data={elem}
+              onClick={() => window.scrollTo(0, 0)}
+            />
+          ))}
       </div>
     </>
   );

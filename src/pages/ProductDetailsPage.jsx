@@ -33,13 +33,15 @@ const ProductDetailsPage = () => {
     getData();
     // console.log(phone_data);
     // console.log(phones);
-    console.log("hello")
+    // console.log("hello")
   }, []);
+
+  
 
   return (
     <div>
-      {phone_data ? <ProductDetails data={phone_data} /> : null}
-      {phone_data && console.log(phone_data)}
+      {phone_data &&  <ProductDetails data={phone_data} /> }
+      {/* {phone_data && console.log(phone_data)} */}
       <Footer />
     </div>
   );

@@ -52,8 +52,7 @@ const UserProfilePage = () => {
   return (
     <div className="profile-container">
       <div className="profile-sidebar">
-        <div className="profile-user-info">
-        </div>
+        <div className="profile-user-info"></div>
         <ul className="profile-sidebar-options">
           <li onClick={() => setSelectedOptions("details")}>Details</li>
           <li onClick={() => setSelectedOptions("orders")}>My Orders</li>
@@ -89,7 +88,6 @@ const ProfileDeatils = () => {
 };
 
 const ProfileOrders = () => {
-
   const [orders, setOrders] = useState([]);
 
   const getOrders = async () => {
@@ -112,32 +110,46 @@ const ProfileOrders = () => {
     <>
       <div className="profile-previous-orders">
         <div>
-          <h2 style={{fontSize:'3rem',fontWeight:"600"}}>User Orders</h2>
+          <h2 style={{ fontSize: "3rem", fontWeight: "600" }}>User Orders</h2>
           <ul className="previous-orders-container">
-            {orders.map((order) => (
-              <div key={order.id} className="previous-orders-items">
-                <p
-                  style={{ fontSize: "1rem", fontWeight: "300", color: "gray" }}
-                >
-                  Order Id:{order.orderId}
-                </p>
-                <ul className="previos-orders-images">
-                  {order.order.slice(0,5).map((elem, index) => {
-                    return (
-                      <li key={index}>
-                        <a href="#">
-                          <img src={elem.img} alt="" />
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ul>
-                <p>
-                  <strong style={{ color: "red" }}>Total:</strong> Rs.
-                  {order.total}/-
-                </p>
-              </div>
-            ))}
+            {orders.length !== 0
+              ? orders.map((order) => (
+                  <div key={order.id} className="previous-orders-items">
+                    <p
+                      style={{
+                        fontSize: "1rem",
+                        fontWeight: "300",
+                        color: "gray",
+                      }}
+                    >
+                      Order Id:{order.orderId}
+                    </p>
+                    <ul className="previos-orders-images">
+                      {order.order.length > 1 ? (
+                        order.order.slice(0, 5).map((elem, index) => {
+                          return (
+                            <li key={index}>
+                              <a href="#">
+                                <img src={elem.img} alt="" />
+                              </a>
+                            </li>
+                          );
+                        })
+                      ) : (
+                        <li>
+                          <a href="#">
+                            <img src={order.order.images[0]} alt="" />
+                          </a>
+                        </li>
+                      )}
+                    </ul>
+                    <p>
+                      <strong style={{ color: "red" }}>Total:</strong> Rs.
+                      {parseInt(order.total)}
+                    </p>
+                  </div>
+                ))
+              : "No Orders"}
           </ul>
         </div>
       </div>

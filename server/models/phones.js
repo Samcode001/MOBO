@@ -22,7 +22,7 @@ const phonesSchema=new mongoose.Schema({
         Required:true
     },
     price:{
-        type:Number,
+        type:String,
         Required:true
     },
     priceRange:{

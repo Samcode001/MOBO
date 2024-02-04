@@ -11,6 +11,7 @@ router.get("/phones", async (req, res) => {
   try {
     // const phonesData = await phonesModel.find({}).exec();
     const phonesData = await PHONES.find({});
+    // console.log(phonesData)
     if (phonesData) return res.status(200).json({ phones: phonesData });
     res.status(404).send("Data Not Found");
   } catch (error) {
