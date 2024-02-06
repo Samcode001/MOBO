@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Hero from "../components/Hero";
-import Navbar from "../components/Navbar.jsx";
-import Footer from "../components/Footer.jsx";
 import "../styles/Hero.css";
 import { useSetRecoilState } from "recoil";
 import axios from "axios";
@@ -50,7 +48,7 @@ const Home = () => {
     <div>
       <Hero />
 
-      <div className="cta container">
+      <div className="cta ">
         <div className="cta-items">
           <img src={image1} alt="" />
           {/* <FaTruckFast /> */}
@@ -107,8 +105,8 @@ const Home = () => {
       </div>
 
       <div className="cta3">
-        <h2>POSSIBILITIES. PERFORMANCE. POWER.</h2>
-        <span>FASTER PROCESSING WITH LESS POWER</span>
+        <h2 style={{fontSize:"2rem",fontWeight:"550"}}>POSSIBILITIES. PERFORMANCE. POWER.</h2>
+        <span style={{fontSize:"1.2rem",fontWeight:"400"}}>FASTER PROCESSING WITH LESS POWER</span>
         <img src={cta3_image} alt="cta-image" />
         <div>
           <div className="cta3-items item-1">
@@ -163,7 +161,6 @@ const Home = () => {
         </div>
       </div>
 
-      <Footer />
     </div>
   );
 };

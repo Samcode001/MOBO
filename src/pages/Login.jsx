@@ -49,7 +49,7 @@ const Login = () => {
   return (
     <div className="signup-container">
       <div className="form-container">
-        <h2>Login</h2>
+        <h2 className="form-heading">Login</h2>
         <label className="label">
           Email:
           <input
@@ -70,13 +70,13 @@ const Login = () => {
             onChange={handleChange}
           />
         </label>
-        <button className="button" type="submit" onClick={handleSubmit}>
+        <button style={{marginBottom:"1rem"}} className="button" type="submit" onClick={handleSubmit}>
           Login
         </button>
         <br />
         <hr />
-        <Link to={"/signup"}>
-          <h2>Create New Account</h2>
+        <Link to={"/signup"} style={{textDecoration:'none'}}>
+          <h2 style={{margin:'1rem 0rem'}}>Create New Account</h2>
         </Link>
       </div>
     </div>

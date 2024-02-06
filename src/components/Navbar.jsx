@@ -92,10 +92,10 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <a href="#">About</a>
+                  <a href="/about">About</a>
                 </li>
                 <li>
-                  <a href="#">FAQ's</a>
+                  <a href="/faq">FAQ's</a>
                 </li>
               </ul>
             </nav>

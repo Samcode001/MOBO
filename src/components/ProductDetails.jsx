@@ -95,11 +95,14 @@ const ProductDetails = ({ data }) => {
   return (
     <>
       <div className="product-container">
-        <div className="product-left">
+      <div className="product-left">
+          <div className="big-img">
           <div className="main-image item-1">
             <img src={data.images[0]} alt="" />
           </div>
-          <div className="images item-2">
+          </div>
+         <div className="child-img">
+         <div className="images item-2">
             <img src={data.images[1]} alt="" />
           </div>
           <div className="images item-3">
@@ -108,7 +111,9 @@ const ProductDetails = ({ data }) => {
           <div className="images item-4">
             <img src={data.images[2]} alt="" />
           </div>
+         </div>
         </div>
+
         <div className="product-right">
           <h2>{data.name}</h2>
           <span style={{ fontSize: "1.2rem", fontWeight: "550" }}>
@@ -260,7 +265,7 @@ const ProductDetails = ({ data }) => {
           Customer review
         </h2>
         <div className="review-header">
-          <div style={{ display: "flex", gap: "5px" }}>
+          <div className="set-rating">
             {<GeneraetStars rating={totalRatings} size={25} />}
             <h2
               style={{

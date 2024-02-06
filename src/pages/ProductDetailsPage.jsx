@@ -42,7 +42,6 @@ const ProductDetailsPage = () => {
     <div>
       {phone_data &&  <ProductDetails data={phone_data} /> }
       {/* {phone_data && console.log(phone_data)} */}
-      <Footer />
     </div>
   );
 };

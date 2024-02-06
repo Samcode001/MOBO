@@ -7,7 +7,6 @@
   gap: 20px;
   position: relative;
   border-radius: 1rem;
-
 }
 
 .card-image {
@@ -18,8 +17,8 @@
   padding: 0.4rem 0.3rem;
 }
 
-.card-details{
-    text-decoration: none;
+.card-details {
+  text-decoration: none;
 }
 .card-details > * {
   padding-inline: 1rem;
@@ -76,3 +75,24 @@
 .button-buy:hover::after {
   opacity: 0.4;
 }
+/* 
+@media (max-width: 57em) {
+  .card-container {
+    width: 14rem;
+    height: 22rem;
+  }
+
+  .card-image {
+    width: 10rem;
+    height: 9rem;
+  }
+
+  .buttons {
+    gap: 8px;
+  }
+
+  .card-button{
+    font-size: clamp(1rem,2vw,1.2rem);
+  }
+
+} */

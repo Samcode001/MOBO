@@ -104,3 +104,20 @@
   border-radius: 5px;
 outline: 1px solid gray;
 }
+
+
+@media (max-width:62em){
+
+  .previous-orders-container{
+    /* flex-direction: row; */
+  }
+
+   .previous-orders-items{
+    flex-direction: column;
+    height: max-content;
+   }
+   .previous-orders-items>*{
+    margin-block: 10px;
+   }
+
+}

@@ -29,24 +29,31 @@ const ProductCard = ({ data, onClick }) => {
   const { addToList, removeToList, getWishList } = useHanldeList();
   const { getCart } = useGetCart();
 
+  const user = localStorage.getItem("user");
+
   const id = data._id;
 
   const navigate = useNavigate();
 
   const handleCart = async () => {
-    console.log(data);
-    await addToCart(data);
-    getCart();
+    if (user) {
+      await addToCart(data);
+      getCart();
+    } else navigate("/login");
   };
 
   const hanldeWishList = async () => {
-    await addToList(data);
-    getWishList();
+    if (user) {
+      await addToList(data);
+      getWishList();
+    } else navigate("/login");
   };
 
   const deleteListItem = async () => {
-    await removeToList(data.name);
-    console.log("Delete Ahppened");
+    if (user) {
+      await removeToList(data.name);
+      // console.log("Delete Ahppened");
+    } else navigate("/login");
   };
 
   // for setting the ratings of the products
@@ -85,18 +92,7 @@ const ProductCard = ({ data, onClick }) => {
     <div className="card-container">
       <div onClick={onClick}>
         <Link to={`/product/${id}`}>
-          <img
-            src={data.images[0]}
-            alt=""
-            style={{
-              // width: "18rem",
-              // height: "17rem",
-              // borderRadius: "1rem",
-              // objectFit: "contain",
-              // padding: "0.4rem 0.3rem",
-            }}
-            className="card-image"
-          />
+          <img src={data.images[0]} alt="" className="card-image" />
         </Link>
       </div>
       {/* <Link to={"/"}>{data.shop.name}</Link> */}
@@ -112,10 +108,7 @@ const ProductCard = ({ data, onClick }) => {
 
           <div>
             <div>{/* <h4>{data.price ? data.price + "$" : null}</h4> */}</div>
-            <h5 style={{ marginBottom: "0.4rem" }}>
-              {/* We are doing this because in data some prices are not given so we can use the discount_price  */}
-              ₹ {data.price}
-            </h5>
+            <h5 style={{ marginBottom: "0.4rem" }}>₹ {data.price}</h5>
             <span style={{ fontSize: "clamp(0.8rem,2vw,1rem)", color: "gray" }}>
               {data.os} / {data.memory}
             </span>
@@ -156,13 +149,18 @@ const ProductCard = ({ data, onClick }) => {
       </div>
 
       <div className="buttons">
-        <button className="button" onClick={handleCart}>
+        <button
+          className="button card-button"
+          // style={{fontSize:"clamp(1rem,2vw,1.2rem)"}}
+          onClick={handleCart}
+        >
           Add Cart
         </button>
         <button
           className="button-buy"
           onClick={() => {
-            navigate(`/buy/${id}`);
+            if (user) navigate(`/buy/${id}`);
+            else navigate("/login");
           }}
         >
           Buy

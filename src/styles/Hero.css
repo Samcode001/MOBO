@@ -1,6 +1,6 @@
 .cta {
   width: 100%;
-  height: 6.5rem;
+  height: fit-content;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -225,4 +225,22 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+}
+
+
+@media (max-width:62em){
+  .cta3{
+    display: none;
+  }
+
+  .cta{
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cta2-grid{
+    flex-direction: column;
+  }
 }

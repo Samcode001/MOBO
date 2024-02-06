@@ -16,6 +16,9 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import { useEffect } from "react";
 import useHandleUser from "./hooks/handleUser.js";
 import NotFound from "./components/NotFound";
+import Faq from "./pages/Faq.jsx";
+import About from "./pages/About.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App() {
   return (
@@ -28,6 +31,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/faq" element={<Faq />} />
+            <Route path="/about" element={<About />} />
             <Route path="/product/:id" element={<ProductDetailsPage />} />
             <Route
               path="/checkout"
@@ -68,6 +73,7 @@ function App() {
             pauseOnHover
             theme="light"
           />
+          <Footer />
         </Router>
       </RecoilRoot>
     </>

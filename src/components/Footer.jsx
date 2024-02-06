@@ -1,27 +1,47 @@
-
-import React from 'react';
-import '../styles/Footer.css';
+import React from "react";
+import "../styles/Footer.css";
+import logo from "../assets/images (1).png";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <div className="footer">
-      <p>&copy; 2023 Your Mobile Store. All rights reserved.</p>
-      <p>Free Shipping on Orders Over $50</p>
-      <p>
-        <a href="/terms" target="_blank" rel="noopener noreferrer">
-          Terms of Service
-        </a>{' '}
-        |{' '}
-        <a href="/privacy" target="_blank" rel="noopener noreferrer">
-          Privacy Policy
-        </a>
-      </p>
-      <p>
-        Made with <span role="img" aria-label="heart">❤️</span> by{' '}
-        <a href="https://www.example.com" target="_blank" rel="noopener noreferrer">
-          Your Brand
-        </a>
-      </p>
+      <footer class="primary-footer">
+        <div class="container">
+          <div class="primary-footer-wrapper">
+            <div>
+              <a href="#">
+                <img
+                  style={{ filter: "invert(100%)" }}
+                  class="footer-logo"
+                  src={logo}
+                  alt="footer-logo"
+                />
+              </a>
+              <ul role="list" class="primary-footer-navigation  animated">
+                <li>
+                  <Link to="/">Home</Link>
+                </li>
+                <li>
+                  <Link to="/products">Shop</Link>
+                </li>
+                <li>
+                  <Link to="/about">About</Link>
+                </li>
+                <li>
+                  <Link to="/faq">Faq's</Link>
+                </li>
+                <li>
+                  <Link to="/">Support</Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <span>&copy; 2023 MOBO. All rights reserved.</span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

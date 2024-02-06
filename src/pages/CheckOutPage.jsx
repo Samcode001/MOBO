@@ -392,7 +392,7 @@ const CheckOutPage = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       {addressFlag ? (
         <>
           <div className="checkout-container">
@@ -404,6 +404,7 @@ const CheckOutPage = () => {
                   enableSearch={true}
                   value={phone}
                   onChange={(phone) => setPhone(phone)}
+                  className="checkout-phone"
                 />
               </div>
               <div
@@ -411,7 +412,7 @@ const CheckOutPage = () => {
                 style={{ backgroundColor: "rgb(217, 214, 214)" }}
               >
                 <h2>Address</h2>
-                <div style={{ overflowY: "scroll", marginBottom: "0.6rem" }}>
+                <div className="checlout-addresse-container" style={{ overflowY: "scroll", marginBottom: "0.6rem" }}>
                   {userAddress &&
                     userAddress.map((elem, index) => {
                       return (
@@ -455,6 +456,7 @@ const CheckOutPage = () => {
                           gap: "1rem",
                           margin: "1rem 0",
                         }}
+                        className="payment-item"
                       >
                         <input
                           id={elem.value}

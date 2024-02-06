@@ -1,10 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom";
 
 const Ratings = ({ id, getRatings }) => {
   const fullRating = 5;
+
+  const navigate = useNavigate();
 
   const [review, setReview] = useState(0);
   const [title, setTitle] = useState(""); // for review title
@@ -34,12 +36,16 @@ const Ratings = ({ id, getRatings }) => {
 
       //  console.log(review,title,desc);
 
+      if (res.status === 402) {
+        return alert("Please Login");
+      }
       if (res.status === 200) {
         alert("Review Submitted");
         setReview(0);
         setTitle("");
         setDesc("");
       }
+
       getRatings(id);
     } catch (error) {
       console.log(`Error in Rating Component:${error}`);

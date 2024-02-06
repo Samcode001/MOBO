@@ -6,6 +6,7 @@ import "../styles/HeroCarousel.css"; // Create a CSS file for styling
 import image1 from "../assets/phono-slider-1.webp";
 import image2 from "../assets/phono-slider-2.webp";
 import image3 from "../assets/phono-slider-3.webp";
+import { Link } from "react-router-dom";
 // import { FaTruckFast } from "react-icons/fa";
 
 const Hero = () => {
@@ -31,7 +32,14 @@ const Hero = () => {
               <h1>CURVY BEWEL</h1>
               {/* <br /> */}
               <h1>DUAL AUDIO</h1>
-              <button>SHOP NOW</button>
+              <button>
+                <Link
+                  to={"/products"}
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  SHOP NOW
+                </Link>
+              </button>
             </div>
           </div>
 
@@ -41,7 +49,15 @@ const Hero = () => {
               <h2>4K RESOLUTION</h2>
               <h1>EXCLUSIVE</h1>
               <h1>STEEL FRAME</h1>
-              <button>SHOP NOW</button>
+              <button>
+                {" "}
+                <Link
+                  to={"/products"}
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  SHOP NOW
+                </Link>
+              </button>
             </div>
           </div>
 
@@ -51,14 +67,20 @@ const Hero = () => {
               <h2>DELTA ZERTIGA PROCESSOR</h2>
               <h1>FULL SCREEN</h1>
               <h1>DISPLAY</h1>
-              <button>SHOP NOW</button>
+              <button>
+                {" "}
+                <Link
+                  to={"/products"}
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  SHOP NOW
+                </Link>
+              </button>
             </div>
           </div>
           {/* Add more slides as needed */}
         </Slider>
       </div>
-
-     
     </>
   );
 };
