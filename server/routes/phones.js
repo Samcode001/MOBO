@@ -58,10 +58,11 @@ router.post("/set-rating", authenticateJwt, async (req, res) => {
   }
 });
 
-router.post("/ratings", authenticateJwt, async (req, res) => {
+router.post("/ratings", async (req, res) => {
   try {
     const product = await RATINGS.findOne({ productId: req.body.id });
-    res.status(200).json({ ratings: product.ratings });
+    if (product) res.status(200).json({ ratings: product.ratings });
+    else res.status(200).json({ ratings: 0 });
   } catch (error) {
     res.status(500).send(`Error in Route:${error}`);
   }

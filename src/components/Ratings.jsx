@@ -40,7 +40,7 @@ const Ratings = ({ id, getRatings }) => {
         setTitle("");
         setDesc("");
       }
-      getRatings();
+      getRatings(id);
     } catch (error) {
       console.log(`Error in Rating Component:${error}`);
     }

@@ -10,10 +10,12 @@
 
 }
 
-.card-container > :nth-child(1) > img {
-  width: 4rem;
-
-  height: 4rem;
+.card-image {
+  width: 18rem;
+  height: 17rem;
+  border-radius: 1rem;
+  object-fit: contain;
+  padding: 0.4rem 0.3rem;
 }
 
 .card-details{

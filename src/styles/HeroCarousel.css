@@ -1,7 +1,10 @@
 /* Hero Carousel styles */
 .hero-carousel {
-  width: 100%;
-  margin: 0 auto;
+  --max-width: 1440px;
+  --container-padding: 0rem;
+
+  width: min(var(--max-width), 100% - var(--container-padding));
+  margin-inline: auto;
   /* outline: 2px solid red; */
   /* display: none; */
   overflow: hidden; /* Ensure no overflow */

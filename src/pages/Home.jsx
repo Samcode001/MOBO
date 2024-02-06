@@ -50,7 +50,7 @@ const Home = () => {
     <div>
       <Hero />
 
-      <div className="cta">
+      <div className="cta container">
         <div className="cta-items">
           <img src={image1} alt="" />
           {/* <FaTruckFast /> */}
@@ -154,10 +154,13 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-      <div className="items-section">
-        {parsedData &&
-          parsedData.map((elem) => <ProductsCard key={elem.id} data={elem} />)}
+      <div className="container">
+        <div className="items-section">
+          {parsedData &&
+            parsedData.map((elem) => (
+              <ProductsCard key={elem.id} data={elem} />
+            ))}
+        </div>
       </div>
 
       <Footer />

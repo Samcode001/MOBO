@@ -58,11 +58,11 @@ const ProductDetails = ({ data }) => {
     await addToCart(data);
   };
 
-  const getRatings = async () => {
+  const getRatings = async (id) => {
     const res = await axios.post(
       "http://localhost:3000/data/ratings",
       {
-        id: data._id,
+        id: id,
       },
       {
         headers: {
@@ -84,7 +84,7 @@ const ProductDetails = ({ data }) => {
   };
 
   useEffect(() => {
-    getRatings();
+    getRatings(data._id);
     setTotal(data.price * count);
   }, []);
 
@@ -127,7 +127,7 @@ const ProductDetails = ({ data }) => {
           <h3>
             Os <span>{data.os}</span>
           </h3>
-{/* 
+          {/* 
           <div className="quantity">
             Quantity
             <FaMinus
@@ -329,7 +329,10 @@ const ProductDetails = ({ data }) => {
             <ProductCard
               key={elem._id}
               data={elem}
-              onClick={() => window.scrollTo(0, 0)}
+              onClick={async () => {
+                await getRatings(elem._id);
+                window.scrollTo(0, 0);
+              }}
             />
           ))}
       </div>

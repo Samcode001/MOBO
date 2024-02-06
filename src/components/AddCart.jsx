@@ -115,7 +115,7 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
         />
       </div>
 
-      <div style={{ overflowY: "scroll", height: "70vh" }}>
+      <div className="cart-content">
         {cart.length === 0 ? (
           <h2 style={{ fontSize: "2rem", fontWeight: "550", color: "red" }}>
             Cart empty

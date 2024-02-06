@@ -60,7 +60,7 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
         />
       </div>
 
-      <div style={{ overflowY: "scroll", height: "70vh" }}>
+      <div className="cart-content">
         {wishlist.length === 0 ? (
           <h2 style={{ fontSize: "2rem", fontWeight: "550", color: "red" }}>
             List empty

@@ -6,6 +6,8 @@ import Navbar from "../components/Navbar";
 import { useRecoilState } from "recoil";
 import { allPhonesDataState } from "../recoil/atoms/data";
 import Loader from "../assets/loader.gif";
+import iconClose from "../assets/icon-close.svg";
+import { FaFilter } from "react-icons/fa";
 
 const Products = () => {
   const [allPhones, setAllPhones] = useRecoilState(allPhonesDataState);
@@ -20,6 +22,8 @@ const Products = () => {
     memory: [],
     os: [],
   });
+
+  const [filtersFlag, setFiltersFlag] = useState(false);
 
   const getData = async () => {
     try {
@@ -133,10 +137,46 @@ const Products = () => {
 
   return (
     <>
-      <h1>BEST DEALS</h1>
+      <div
+        style={{
+          // position: "fixed",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "90%",
+          zIndex: 999,
+          backgroundColor: "white",
+        }}
+      >
+        <h1 style={{ fontSize: "clamp(2rem,5vw,3rem)", padding: "4px 1rem" }}>
+          BEST DEALS{" "}
+        </h1>
+        <FaFilter
+          className="products-filter"
+          onClick={() => setFiltersFlag((prevFlag) => !prevFlag)}
+        />
+      </div>
       <div className="container">
-        <div className="left">
-          <h2 style={{ fontSize: "2rem", fontWeight: "600" }}>Filters</h2>
+        <div
+          className="left"
+          style={filtersFlag ? { right: "8rem" } : { right: "119rem" }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <h2 style={{ fontSize: "2rem", fontWeight: "600" }}>Filters</h2>
+            <img
+              src={iconClose}
+              alt="close"
+              onClick={() => setFiltersFlag((prevFlag) => !prevFlag)}
+              className="produtcs-close"
+              style={{ cursor: "pointer" }}
+            />
+          </div>
 
           <br />
           <br />
@@ -231,7 +271,13 @@ const Products = () => {
           </ul>
 
           <br />
-          <button className="button" onClick={applyFilters}>
+          <button
+            className="button"
+            onClick={() => {
+              applyFilters();
+              setFiltersFlag(false);
+            }}
+          >
             Apply Filters
           </button>
         </div>

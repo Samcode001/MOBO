@@ -89,12 +89,13 @@ const ProductCard = ({ data, onClick }) => {
             src={data.images[0]}
             alt=""
             style={{
-              width: "18rem",
-              height: "17rem",
-              borderRadius: "1rem",
-              objectFit: "contain",
-              padding: "0.4rem 0.3rem",
+              // width: "18rem",
+              // height: "17rem",
+              // borderRadius: "1rem",
+              // objectFit: "contain",
+              // padding: "0.4rem 0.3rem",
             }}
+            className="card-image"
           />
         </Link>
       </div>

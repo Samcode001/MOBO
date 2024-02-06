@@ -5,10 +5,16 @@
   top: 0;
   right: 0;
   background-color: whitesmoke;
-  outline: 2px solid red;
+  /* outline: 2px solid red; */
   z-index: 9999;
   padding: 1rem;
   transition: all 300ms ease-in-out;
+  box-shadow: 0em 0em 8em 10em rgba(0, 0, 0, 0.3);
+}
+
+.cart-content {
+  overflow-y: scroll;
+  height: 70vh;
 }
 
 /* .cart-container::before{
@@ -79,4 +85,13 @@
 .cart-footer > :first-child > * {
   font-size: 1.2rem;
   font-weight: 550;
+}
+
+@media (max-width: 57em) {
+  .cart-container {
+    width: 80vw;
+  }
+  .cart-content {
+    height: 60vh;
+  }
 }

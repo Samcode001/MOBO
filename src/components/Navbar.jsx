@@ -19,6 +19,7 @@ const Navbar = () => {
   const [isSearch, setIsSearch] = useState(false);
   const [cartFlag, setCartFlag] = useState(false);
   const [wishlistFlag, setWishlistFlag] = useState(false);
+  const [navFlag, setNavFlag] = useState(false);
 
   const { user, getUser } = useHandleUser();
 
@@ -26,8 +27,7 @@ const Navbar = () => {
   const [searchData, setSearchData] = useState([]);
   const [phonesData, setPhonesData] = useState([]);
 
-
-const setAllPhones=useSetRecoilState(allPhonesDataState);
+  const setAllPhones = useSetRecoilState(allPhonesDataState);
 
   const getData = async () => {
     try {
@@ -37,7 +37,7 @@ const setAllPhones=useSetRecoilState(allPhonesDataState);
         },
       });
       if (res.status === 200) {
-        setAllPhones(prevData=>[...prevData,res.data.phones])
+        setAllPhones((prevData) => [...prevData, res.data.phones]);
         setPhonesData(res.data.phones);
       } else {
         console.log("Some Erro occ");
@@ -64,7 +64,7 @@ const setAllPhones=useSetRecoilState(allPhonesDataState);
 
   const submitInput = () => {};
   return (
-    <div>
+    <div className="container">
       <header className="primary-header">
         <div className="container">
           <div className="nav-wrapper">
@@ -74,62 +74,28 @@ const setAllPhones=useSetRecoilState(allPhonesDataState);
             <button
               className="mobile-nav-toggle"
               aria-controls="primary-navigation"
-              aria-expanded="false"
+              aria-expanded={navFlag}
+              onClick={() => setNavFlag((prev) => !prev)}
             >
               <span className="visually-hidden">Menu</span>
             </button>
-            <nav className="primary-navigation">
+            <nav className="primary-navigation" aria-expanded={navFlag}>
               <ul role="list" id="primary-navigation" className="nav-list">
                 <li>
                   <Link to={"/"}>
                     <a href="#">Home</a>
                   </Link>
                 </li>
-                {/* <li
-                  className="dropdown"
-                  onMouseEnter={() => setIsCollection(true)}
-                  onMouseLeave={() => setIsCollection(false)}
-                >
-                  <a href="#">Collection</a>
-                  {isCollection && (
-                    <div
-                      className="dropdown-content"
-                      style={{ width: "70vw", top: "4rem", left: "-18rem" }}
-                    >
-                      <div className="dropdown-options">
-                        {options.map((option) => (
-                          <div
-                            key={option}
-                            onClick={() => handleOptionSelect(option)}
-                          >
-                            {option}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </li> */}
                 <li>
                   <Link to={"/products"}>
                     <a href="#">Shop</a>
                   </Link>
                 </li>
                 <li>
-                  <a href="#">Android</a>
+                  <a href="#">About</a>
                 </li>
-                <li
-                  className="dropdown"
-                  onMouseEnter={() => setIsPage(true)}
-                  onMouseLeave={() => setIsPage(false)}
-                >
-                  <a href="#">Pages</a>
-                  {isPage && (
-                    <div className="dropdown-content">
-                      <a href="#">About</a>
-                      <a href="#">Carrers</a>
-                      <a href="#">Blogs</a>
-                    </div>
-                  )}
+                <li>
+                  <a href="#">FAQ's</a>
                 </li>
               </ul>
             </nav>
@@ -138,7 +104,7 @@ const setAllPhones=useSetRecoilState(allPhonesDataState);
               Request Invite
             </button> */}
             <div className="right-nav">
-              <AiOutlineSearch onClick={() => setIsSearch(true)} />
+              <AiOutlineSearch size={22} onClick={() => setIsSearch(prev=>!prev)} />
               {isSearch && (
                 <div className="search-bar">
                   <input
@@ -153,12 +119,12 @@ const setAllPhones=useSetRecoilState(allPhonesDataState);
                   {searchData && searchData.length !== 0 ? (
                     <div className="search-items-container">
                       {searchData &&
-                        searchData.map((elem) => {
+                        searchData.slice(0,5).map((elem) => {
                           return (
                             <Link
                               to={`/product/${elem._id}`}
                               style={{ textDecoration: "none" }}
-                              onClick={() => setIsSearch(false)}
+                              onClick={() => setIsSearch(prev=>!prev)}
                             >
                               <div key={elem._id} className="search-items">
                                 <img src={elem.images[0]} alt="img" />
@@ -180,15 +146,17 @@ const setAllPhones=useSetRecoilState(allPhonesDataState);
                 <>
                   {" "}
                   <Link to={"/login"}>
-                    <FiUser />
+                    <FiUser size={22} />
                   </Link>
                 </>
               ) : (
                 <>
                   <FaHeart
+                    size={22}
                     onClick={() => setWishlistFlag((prevFlag) => !prevFlag)}
                   />
                   <FaShoppingCart
+                    size={22}
                     onClick={() => setCartFlag((prevFlag) => !prevFlag)}
                   />
                   <Link to={"/profile"}>

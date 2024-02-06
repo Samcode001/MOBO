@@ -22,7 +22,7 @@ const Hero = () => {
 
   return (
     <>
-      <div className="hero-carousel">
+      <div className="hero-carousel ">
         <Slider {...settings}>
           <div className="hero-item">
             <img src={image1} alt="Slide 1" />
