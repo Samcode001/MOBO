@@ -17,7 +17,7 @@ const useHandleUser = () => {
     );
     if (data) {
       setUser(data.user);
-      localStorage.setItem("user", data.user.username);
+      localStorage.setItem("user",data.user.username)
     }
   };
 

@@ -14,8 +14,17 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleAvatar = (e) => {
-    let file = e.target.files[0];
-    setAvatar(file);
+    // let file = e.target.files[0];
+    // setAvatar(file);
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
@@ -27,10 +36,12 @@ const Signup = () => {
       formData.append("username", username);
       formData.append("password", password);
       formData.append("file", avatar);
-      const res = await axios.post(
-        "https://mobo-service.onrender.com/admin/signup",
-        formData
-      );
+      const res = await axios.post("http://localhost:3000/admin/signup", {
+        name,
+        username,
+        password,
+        avatar,
+      });
 
       if (res.status === 200) {
         localStorage.setItem("token", res.data.token);
@@ -90,7 +101,7 @@ const Signup = () => {
         <div style={{ marginBlock: "1rem" }}>
           {avatar ? (
             <img
-              src={URL.createObjectURL(avatar)}
+              src={avatar}
               alt="avatar"
               style={{ width: "40px", height: "40px", borderRadius: "100vmax" }}
             />

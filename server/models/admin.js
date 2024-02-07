@@ -10,12 +10,19 @@ const adminSchema = new mongoose.Schema({
   password: {
     type: String,
   },
-  avatar:{
-    type:String
+  avatar: {
+    public_id: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      requireed: true,
+    },
   },
-  address:{
-    type:Array
-  }
+  address: {
+    type: Array,
+  },
 });
 
 const USER = mongoose.model("Admin", adminSchema);

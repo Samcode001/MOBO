@@ -167,9 +167,7 @@ const Navbar = () => {
                   />
                   <Link to={"/profile"}>
                     <img
-                      src={`https://mobo-service.onrender.com
-
-/uploads/${user.avatar}`}
+                      src={user.avatar?.url}
                       alt="avatar"
                       className="avatar"
                       style={{

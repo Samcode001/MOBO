@@ -15,6 +15,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import authenticateJwt from "./auth/authenticateJwt.js";
+import { v2 as cloudinary } from "cloudinary";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -41,6 +42,12 @@ mongoose
     console.log("Database connected");
   })
   .catch((error) => console.log(error));
+
+cloudinary.config({
+  cloud_name: process.env.cloudinary_Name,
+  api_key: process.env.cloudinary_API_Key,
+  api_secret: process.env.cloudinary_API_Secret,
+});
 
 export const instance = new Razorpay({
   key_id: process.env.razoarpay_api_id,

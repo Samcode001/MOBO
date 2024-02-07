@@ -5,9 +5,7 @@ import jwt from "jsonwebtoken";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import authenticateJwt from "../auth/authenticateJwt.js";
-import { upload } from "../multer.js";
-import fs from "fs";
-import path from "path";
+import { v2 as cloudinary } from "cloudinary";
 
 const adminInputProps = z.object({
   username: z.string().min(1),
@@ -15,7 +13,7 @@ const adminInputProps = z.object({
   name: z.string().min(2),
 });
 
-router.post("/signup", upload.single("file"), async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     // console.log(req.body);
     const parsedData = adminInputProps.safeParse(req.body);
@@ -23,29 +21,37 @@ router.post("/signup", upload.single("file"), async (req, res) => {
       return res.status(401).send("Please Provide Valid Inputs");
     }
 
-    const { username, password, name } = req.body;
+    const { username, password, name, avatar } = req.body;
+    // console.log(username, password, name, avatar);
 
     const salt = await bcrypt.genSalt(10);
     const securePassword = await bcrypt.hash(password, salt);
 
     const admin = await USER.findOne({ username: username });
     if (admin) {
-      const fileName = req.file.filename;
-      const filePath = `uploads/${fileName}`;
-      fs.unlink(filePath, (error) => {
-        if (error) console.log(`Error in deleting file :${error}`);
-      });
+      // const fileName = req.file.filename;
+      // const filePath = `uploads/${fileName}`;
+      // fs.unlink(filePath, (error) => {
+      //   if (error) console.log(`Error in deleting file :${error}`);
+      // });
 
       res.status(409).json({ message: "User Already Exist", success: false });
     } else {
-      const fileName = req.file.filename;
-      const fileUrl = path.join(fileName);
+      // const fileName = req.avatar.filename;
+      // const fileUrl = path.join(fileName);
+
+      const myCloud = await cloudinary.uploader.upload(avatar, {
+        folder: "user",
+      });
 
       const newAdmin = new USER({
         name: name,
         username: username,
         password: securePassword,
-        avatar: fileUrl,
+        avatar: {
+          public_id: myCloud.public_id,
+          url: myCloud.secure_url,
+        },
         address: [],
       });
 
@@ -59,6 +65,7 @@ router.post("/signup", upload.single("file"), async (req, res) => {
       });
     }
   } catch (error) {
+    // console.log(error);
     res.status(500).send(`Error in Route: ${error}`);
   }
 });
