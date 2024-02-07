@@ -1,7 +1,6 @@
 import express from "express";
 const router = express.Router();
 import authenticateJwt from "../auth/authenticateJwt.js";
-import { send } from "vite";
 import WISHLIST from "../models/wishList.js";
 
 router.post("/addItem", authenticateJwt, async (req, res) => {

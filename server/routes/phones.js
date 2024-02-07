@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 import PHONES from "../models/phones.js";
 import RATINGS from "../models/ratings.js";
 import authenticateJwt from "../auth/authenticateJwt.js";
