@@ -24,11 +24,14 @@ const Home = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/data/phones", {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
+      const res = await axios.get(
+        "https://mobo-service.onrender.com/data/phones",
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
       if (res.status === 200) {
         setAllPhones((prevData) => [...prevData, res.data.phones]);
         setParsedData(res.data.phones.slice(0, 4));
@@ -105,8 +108,12 @@ const Home = () => {
       </div>
 
       <div className="cta3">
-        <h2 style={{fontSize:"2rem",fontWeight:"550"}}>POSSIBILITIES. PERFORMANCE. POWER.</h2>
-        <span style={{fontSize:"1.2rem",fontWeight:"400"}}>FASTER PROCESSING WITH LESS POWER</span>
+        <h2 style={{ fontSize: "2rem", fontWeight: "550" }}>
+          POSSIBILITIES. PERFORMANCE. POWER.
+        </h2>
+        <span style={{ fontSize: "1.2rem", fontWeight: "400" }}>
+          FASTER PROCESSING WITH LESS POWER
+        </span>
         <img src={cta3_image} alt="cta-image" />
         <div>
           <div className="cta3-items item-1">
@@ -160,7 +167,6 @@ const Home = () => {
             ))}
         </div>
       </div>
-
     </div>
   );
 };

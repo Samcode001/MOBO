@@ -29,7 +29,7 @@ const ProductDetails = ({ data }) => {
 
   const parsedData = allPhones.slice(5, 9);
 
-  const productPermalink = `http://localhost:5173/products/${data._id}`;
+  const productPermalink = `https://sam-mobo.netlify.app/products/${data._id}`;
 
   const handleplus = () => setCount(count + 1);
   const handleminus = () => {
@@ -60,7 +60,7 @@ const ProductDetails = ({ data }) => {
 
   const getRatings = async (id) => {
     const res = await axios.post(
-      "http://localhost:3000/data/ratings",
+      "https://mobo-service.onrender.com/data/ratings",
       {
         id: id,
       },
@@ -95,23 +95,23 @@ const ProductDetails = ({ data }) => {
   return (
     <>
       <div className="product-container">
-      <div className="product-left">
+        <div className="product-left">
           <div className="big-img">
-          <div className="main-image item-1">
-            <img src={data.images[0]} alt="" />
+            <div className="main-image item-1">
+              <img src={data.images[0]} alt="" />
+            </div>
           </div>
+          <div className="child-img">
+            <div className="images item-2">
+              <img src={data.images[1]} alt="" />
+            </div>
+            <div className="images item-3">
+              <img src={data.images[2]} alt="" />
+            </div>
+            <div className="images item-4">
+              <img src={data.images[2]} alt="" />
+            </div>
           </div>
-         <div className="child-img">
-         <div className="images item-2">
-            <img src={data.images[1]} alt="" />
-          </div>
-          <div className="images item-3">
-            <img src={data.images[2]} alt="" />
-          </div>
-          <div className="images item-4">
-            <img src={data.images[2]} alt="" />
-          </div>
-         </div>
         </div>
 
         <div className="product-right">

@@ -28,7 +28,7 @@ const Signup = () => {
       formData.append("password", password);
       formData.append("file", avatar);
       const res = await axios.post(
-        "http://localhost:3000/admin/signup",
+        "https://mobo-service.onrender.com/admin/signup",
         formData
       );
 
@@ -39,7 +39,7 @@ const Signup = () => {
 
       // Redirect or handle success as needed
     } catch (error) {
-      toast.error( error.response.data.message, {
+      toast.error(error.response.data.message, {
         position: "bottom-left",
         autoClose: 5000,
         hideProgressBar: false,

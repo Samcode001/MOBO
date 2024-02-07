@@ -6,12 +6,12 @@ import { toast } from "react-toastify";
 const useAddToCart = () => {
   const [cart, setCart] = useRecoilState(cartState);
 
-  const addToCart = async (productData, quantity=1) => {
+  const addToCart = async (productData, quantity = 1) => {
     console.log(productData);
     const {
       data: { success, message },
     } = await axios.post(
-      "http://localhost:3000/cart/addItem",
+      "https://mobo-service.onrender.com/cart/addItem",
       {
         name: productData.name,
         price: productData.price,

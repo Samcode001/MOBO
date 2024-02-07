@@ -16,7 +16,7 @@ const UserProfilePage = () => {
 
   // const getUser = async () => {
   //   const { data } = await axios.post(
-  //     "http://localhost:3000/admin/getUser",
+  //     "https://mobo-service.onrender.com/admin/getUser",
   //     {},
   //     {
   //       headers: {
@@ -79,7 +79,7 @@ const ProfileDeatils = () => {
     <>
       <div className="profile-user-details">
         <img
-          src={`http://localhost:3000/uploads/${user.avatar}`}
+          src={`https://mobo-service.onrender.com/uploads/${user.avatar}`}
           alt="User Avatar"
         />
         <h1>{user.name}</h1>
@@ -92,11 +92,14 @@ const ProfileOrders = () => {
   const [orders, setOrders] = useState([]);
 
   const getOrders = async () => {
-    const { data } = await axios.get("http://localhost:3000/orders/order", {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
+    const { data } = await axios.get(
+      "https://mobo-service.onrender.com/orders/order",
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
 
     if (data.success) {
       setOrders(data.orders.orders);
@@ -164,7 +167,7 @@ const ProfileAddress = () => {
   const getAddress = async () => {
     const {
       data: { success, address },
-    } = await axios.get("http://localhost:3000/admin/address", {
+    } = await axios.get("https://mobo-service.onrender.com/admin/address", {
       headers: {
         Authorization: "bearer " + localStorage.getItem("token"),
       },

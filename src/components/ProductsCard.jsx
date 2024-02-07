@@ -59,7 +59,7 @@ const ProductCard = ({ data, onClick }) => {
   // for setting the ratings of the products
   const getRatings = async () => {
     const res = await axios.post(
-      "http://localhost:3000/data/ratings",
+      "https://mobo-service.onrender.com/data/ratings",
       {
         id: id,
       },

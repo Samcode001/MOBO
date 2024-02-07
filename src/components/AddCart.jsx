@@ -39,7 +39,7 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
   // const getWishList = async () => {
   //   const {
   //     data: { wishListItems },
-  //   } = await axios.get("http://localhost:3000/wishlist/getItems", {
+  //   } = await axios.get("https://mobo-service.onrender.com/wishlist/getItems", {
   //     headers: {
   //       Authorization: "Bearer " + localStorage.getItem("token"),
   //     },
@@ -51,7 +51,7 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
 
   const deleteCartItem = async (itemName) => {
     const res = await axios.post(
-      "http://localhost:3000/cart/removeItem",
+      "https://mobo-service.onrender.com/cart/removeItem",
       {
         name: itemName,
       },
@@ -135,7 +135,8 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
                       <span>Os: {elem.os},</span>
                       <span>Memory: {elem.memory},</span>
                       <h2>
-                      ₹ {parseFloat(elem.price.replace(/,/g, "")) *
+                        ₹{" "}
+                        {parseFloat(elem.price.replace(/,/g, "")) *
                           elem.quantity}
                       </h2>
                     </div>

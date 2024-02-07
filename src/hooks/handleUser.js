@@ -7,7 +7,7 @@ const useHandleUser = () => {
 
   const getUser = async () => {
     const { data } = await axios.post(
-      "http://localhost:3000/admin/getUser",
+      "https://mobo-service.onrender.com/admin/getUser",
       {},
       {
         headers: {
@@ -17,7 +17,7 @@ const useHandleUser = () => {
     );
     if (data) {
       setUser(data.user);
-      localStorage.setItem("user",data.user.username)
+      localStorage.setItem("user", data.user.username);
     }
   };
 

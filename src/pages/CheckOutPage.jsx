@@ -56,7 +56,7 @@ const CheckOutPage = () => {
     const {
       data: { success, message },
     } = await axios.post(
-      "http://localhost:3000/admin/address",
+      "https://mobo-service.onrender.com/admin/address",
       {
         address: deliveryAddress,
       },
@@ -83,7 +83,7 @@ const CheckOutPage = () => {
   const getAddress = async () => {
     const {
       data: { success, message, address },
-    } = await axios.get("http://localhost:3000/admin/address", {
+    } = await axios.get("https://mobo-service.onrender.com/admin/address", {
       headers: {
         Authorization: "bearer " + localStorage.getItem("token"),
       },
@@ -170,7 +170,7 @@ const CheckOutPage = () => {
   const razorPayment = async (amount) => {
     const {
       data: { key },
-    } = await axios.get("http://localhost:3000/getRazorkey", {
+    } = await axios.get("https://mobo-service.onrender.com/getRazorkey", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
@@ -178,7 +178,7 @@ const CheckOutPage = () => {
     const {
       data: { order, success },
     } = await axios.post(
-      "http://localhost:3000/payments/checkout",
+      "https://mobo-service.onrender.com/payments/checkout",
       {
         amount,
       },
@@ -209,13 +209,13 @@ const CheckOutPage = () => {
       description: "Test Transaction",
       image: logoImage,
       order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      // callback_url: "http://localhost:3000/payments/paymentVerification",
+      // callback_url: "https://mobo-service.onrender.com/payments/paymentVerification",
       handler: async function (response) {
         // alert(response.razorpay_payment_id);
         // alert(response.razorpay_order_id);
         // alert(response.razorpay_signature);
         // const { data: success } = await axios.post(
-        //   "http://localhost:3000/payments/paymentVerification",
+        //   "https://mobo-service.onrender.com/payments/paymentVerification",
         //   { response },
         //   {
         //     headers: {
@@ -227,7 +227,7 @@ const CheckOutPage = () => {
           const {
             data: { success },
           } = await axios.post(
-            "http://localhost:3000/orders/order",
+            "https://mobo-service.onrender.com/orders/order",
             {
               order: cart,
               total: totalSum,
@@ -255,11 +255,14 @@ const CheckOutPage = () => {
 
               const {
                 data: { success },
-              } = await axios.delete("http://localhost:3000/cart/clear", {
-                headers: {
-                  Authorization: "Bearer " + localStorage.getItem("token"),
-                },
-              });
+              } = await axios.delete(
+                "https://mobo-service.onrender.com/cart/clear",
+                {
+                  headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                  },
+                }
+              );
               if (success) {
                 navigate("/paymentsuccess");
               }
@@ -297,7 +300,7 @@ const CheckOutPage = () => {
   const stripePayment = async () => {
     const {
       data: { key },
-    } = await axios.get("http://localhost:3000/getStripekey", {
+    } = await axios.get("https://mobo-service.onrender.com/getStripekey", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
@@ -305,7 +308,7 @@ const CheckOutPage = () => {
     const stripe = await loadStripe(key);
 
     const { data } = await axios.post(
-      "http://localhost:3000/payments/stripePayment",
+      "https://mobo-service.onrender.com/payments/stripePayment",
       {
         products: cart,
       },
@@ -412,7 +415,10 @@ const CheckOutPage = () => {
                 style={{ backgroundColor: "rgb(217, 214, 214)" }}
               >
                 <h2>Address</h2>
-                <div className="checlout-addresse-container" style={{ overflowY: "scroll", marginBottom: "0.6rem" }}>
+                <div
+                  className="checlout-addresse-container"
+                  style={{ overflowY: "scroll", marginBottom: "0.6rem" }}
+                >
                   {userAddress &&
                     userAddress.map((elem, index) => {
                       return (

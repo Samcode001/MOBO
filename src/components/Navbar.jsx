@@ -31,11 +31,14 @@ const Navbar = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/data/phones", {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
+      const res = await axios.get(
+        "https://mobo-service.onrender.com/data/phones",
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
       if (res.status === 200) {
         setAllPhones((prevData) => [...prevData, res.data.phones]);
         setPhonesData(res.data.phones);
@@ -104,7 +107,10 @@ const Navbar = () => {
               Request Invite
             </button> */}
             <div className="right-nav">
-              <AiOutlineSearch size={22} onClick={() => setIsSearch(prev=>!prev)} />
+              <AiOutlineSearch
+                size={22}
+                onClick={() => setIsSearch((prev) => !prev)}
+              />
               {isSearch && (
                 <div className="search-bar">
                   <input
@@ -119,12 +125,12 @@ const Navbar = () => {
                   {searchData && searchData.length !== 0 ? (
                     <div className="search-items-container">
                       {searchData &&
-                        searchData.slice(0,5).map((elem) => {
+                        searchData.slice(0, 5).map((elem) => {
                           return (
                             <Link
                               to={`/product/${elem._id}`}
                               style={{ textDecoration: "none" }}
-                              onClick={() => setIsSearch(prev=>!prev)}
+                              onClick={() => setIsSearch((prev) => !prev)}
                             >
                               <div key={elem._id} className="search-items">
                                 <img src={elem.images[0]} alt="img" />
@@ -161,7 +167,9 @@ const Navbar = () => {
                   />
                   <Link to={"/profile"}>
                     <img
-                      src={`http://localhost:3000/uploads/${user.avatar}`}
+                      src={`https://mobo-service.onrender.com
+
+/uploads/${user.avatar}`}
                       alt="avatar"
                       className="avatar"
                       style={{

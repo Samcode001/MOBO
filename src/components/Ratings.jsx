@@ -20,7 +20,7 @@ const Ratings = ({ id, getRatings }) => {
   const handleSubmit = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:3000/data/set-rating",
+        "https://mobo-service.onrender.com/data/set-rating",
         {
           id: id,
           rate: review,

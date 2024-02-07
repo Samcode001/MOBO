@@ -10,7 +10,7 @@ const useHanldeList = () => {
     const {
       data: { success, message },
     } = await axios.post(
-      "http://localhost:3000/wishlist/addItem",
+      "https://mobo-service.onrender.com/wishlist/addItem",
       {
         name: productData.name,
         img: productData.images[0],
@@ -54,7 +54,7 @@ const useHanldeList = () => {
   const getWishList = async () => {
     const {
       data: { wishListItems },
-    } = await axios.get("http://localhost:3000/wishlist/getItems", {
+    } = await axios.get("https://mobo-service.onrender.com/wishlist/getItems", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
@@ -64,9 +64,9 @@ const useHanldeList = () => {
     }
   };
 
-  const removeToList = async (itemName,flag=true) => {
+  const removeToList = async (itemName, flag = true) => {
     const res = await axios.post(
-      "http://localhost:3000/wishlist/removeItem",
+      "https://mobo-service.onrender.com/wishlist/removeItem",
       {
         name: itemName,
       },

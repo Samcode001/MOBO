@@ -30,7 +30,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/admin/login",
+        "https://mobo-service.onrender.com/admin/login",
         formData
       );
 
@@ -70,13 +70,18 @@ const Login = () => {
             onChange={handleChange}
           />
         </label>
-        <button style={{marginBottom:"1rem"}} className="button" type="submit" onClick={handleSubmit}>
+        <button
+          style={{ marginBottom: "1rem" }}
+          className="button"
+          type="submit"
+          onClick={handleSubmit}
+        >
           Login
         </button>
         <br />
         <hr />
-        <Link to={"/signup"} style={{textDecoration:'none'}}>
-          <h2 style={{margin:'1rem 0rem'}}>Create New Account</h2>
+        <Link to={"/signup"} style={{ textDecoration: "none" }}>
+          <h2 style={{ margin: "1rem 0rem" }}>Create New Account</h2>
         </Link>
       </div>
     </div>
