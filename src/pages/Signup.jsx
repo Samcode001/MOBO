@@ -36,16 +36,31 @@ const Signup = () => {
       formData.append("username", username);
       formData.append("password", password);
       formData.append("file", avatar);
-      const res = await axios.post("https://mobo-service.onrender.com/admin/signup", {
-        name,
-        username,
-        password,
-        avatar,
-      });
+      const res = await axios.post(
+        "https://mobo-service.onrender.com/admin/signup",
+        {
+          name,
+          username,
+          password,
+          avatar,
+        }
+      );
 
-      if (res.status === 200) {
+      if (res.data.success) {
         localStorage.setItem("token", res.data.token);
         navigate("/");
+        window.location.reload(true);
+      } else {
+        toast.error(res.data.message, {
+          position: "bottom-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       // Redirect or handle success as needed

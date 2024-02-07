@@ -18,7 +18,9 @@ router.post("/signup", async (req, res) => {
     // console.log(req.body);
     const parsedData = adminInputProps.safeParse(req.body);
     if (!parsedData.success) {
-      return res.status(401).send("Please Provide Valid Inputs");
+      return res
+        .status(401)
+        .json({ message: "Provide Valid Inputs", success: false });
     }
 
     const { username, password, name, avatar } = req.body;
@@ -57,7 +59,7 @@ router.post("/signup", async (req, res) => {
 
       await newAdmin.save();
       res.status(200).json({
-        message: "Admin created",
+        message: "User created",
         success: true,
         token: jwt.sign({ admin: newAdmin.username }, process.env.jwtSecret, {
           expiresIn: "4h",
@@ -75,7 +77,10 @@ router.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
     const admin = await USER.findOne({ username });
-    if (!admin) return res.status(404).send("User Not Found");
+    if (!admin)
+      return res
+        .status(404)
+        .json({ message: "User Not Found", success: false });
 
     const flag = await bcrypt.compare(password, admin.password);
     if (flag)
@@ -86,7 +91,7 @@ router.post("/login", async (req, res) => {
         }),
       });
     else {
-      res.status(401).send("Invalid Credentials");
+      res.status(401).json({ message: "Invalid Credentials", success: false });
     }
   } catch (error) {
     res.status(500).send(`Error in Route : ${error}`);
