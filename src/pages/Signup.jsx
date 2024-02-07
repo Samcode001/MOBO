@@ -37,7 +37,8 @@ const Signup = () => {
       formData.append("password", password);
       formData.append("file", avatar);
       const res = await axios.post(
-        "https://mobo-service.onrender.com/admin/signup",
+        // "https://mobo-service.onrender.com/admin/signup",
+        "http://localhost:3000/admin/signup",
         {
           name,
           username,
@@ -103,8 +104,20 @@ const Signup = () => {
             onChange={(e) => setUsername(e.target.value)}
           />
         </label>
-        <label className="label">
+        <label className="label" style={{position:"relative"}}>
           Password:
+          <span
+            style={{
+              fontSize: "0.8rem",
+              color: "gray",
+              height: "fit-content",
+              // outline: "1px solid gray",
+              position:'absolute',
+              right:"0"
+            }}
+          >
+            Password must be 8 characters long.
+          </span>
           <input
             className="input"
             type="password"
@@ -113,6 +126,7 @@ const Signup = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
+
         <div style={{ marginBlock: "1rem" }}>
           {avatar ? (
             <img

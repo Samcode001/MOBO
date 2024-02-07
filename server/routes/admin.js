@@ -68,7 +68,7 @@ router.post("/signup", async (req, res) => {
     }
   } catch (error) {
     // console.log(error);
-    res.status(500).send(`Error in Route: ${error}`);
+    res.status(500).json({ message: "Internal Server Error ", success: false });
   }
 });
 
@@ -94,7 +94,7 @@ router.post("/login", async (req, res) => {
       res.status(401).json({ message: "Invalid Credentials", success: false });
     }
   } catch (error) {
-    res.status(500).send(`Error in Route : ${error}`);
+    res.status(500).json({ message: "Internal Server Error ", success: false });
   }
 });
 

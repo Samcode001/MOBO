@@ -3,6 +3,7 @@ import "../styles/Login.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import useHandleUser from "../hooks/handleUser";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -30,20 +31,42 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://mobo-service.onrender.com/admin/login",
+        // "https://mobo-service.onrender.com/admin/login",
+        "http://localhost:3000/admin/login",
         formData
       );
 
-      if (response.status === 200) {
+      if (response.data.success) {
         handleUser();
         navigate("/");
         window.location.reload(true);
         localStorage.setItem("token", response.data.token);
+      } else {
+        toast.error(response.data.message, {
+          position: "bottom-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       // Redirect or handle success as needed
     } catch (error) {
-      console.error("Signup error:", error.response.data);
+      // console.error("Signup error:", error.response.data);
       // Handle error (e.g., display error message)
+      toast.error(error.response.data.message, {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
   return (

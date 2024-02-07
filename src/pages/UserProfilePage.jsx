@@ -78,10 +78,7 @@ const ProfileDeatils = () => {
   return (
     <>
       <div className="profile-user-details">
-        <img
-          src={`https://mobo-service.onrender.com/uploads/${user.avatar}`}
-          alt="User Avatar"
-        />
+        <img src={user.avatar?.url} alt="User Avatar" />
         <h1>{user.name}</h1>
       </div>
     </>
