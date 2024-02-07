@@ -10,13 +10,21 @@ const OrderConfirmed = () => {
   //     const res=await axios.post('hht')
   //   }
 
-//   useEffect(() => {
-//     const urlSearch = new URLSearchParams(location.search);
-//     const reference = urlSearch.get("reference");
-//   }, [location.search]);
+  //   useEffect(() => {
+  //     const urlSearch = new URLSearchParams(location.search);
+  //     const reference = urlSearch.get("reference");
+  //   }, [location.search]);
   return (
     <div>
-      <div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          padding: "3rem 2rem",
+        }}
+      >
         <img src={confirmationLogo} alt="" />
         <h1>Order Confirmed</h1>
         <p>Reference:</p>

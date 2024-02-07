@@ -36,7 +36,7 @@ const Signup = () => {
       formData.append("username", username);
       formData.append("password", password);
       formData.append("file", avatar);
-      const res = await axios.post("http://localhost:3000/admin/signup", {
+      const res = await axios.post("https://mobo-service.onrender.com/admin/signup", {
         name,
         username,
         password,
