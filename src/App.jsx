@@ -1,6 +1,6 @@
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import Signup from "./pages/Signup.jsx";
 import Products from "./pages/Products";
 import OrderConfirmed from "./pages/OrderConfirmed";
 import UserProfilePage from "./pages/UserProfilePage";

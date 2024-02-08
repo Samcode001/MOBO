@@ -154,7 +154,7 @@ const Signup = () => {
                 height: "fit-content",
               }}
             >
-              ".jpg,.png.jpeg",max-size:50kb
+              Support's ".jpg,.png.jpeg" only.
             </span>
           </span>
           <input
