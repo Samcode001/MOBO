@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/AddCart.css";
 import { IoClose } from "react-icons/io5";
-import { MdOutlineDeleteForever } from "react-icons/md";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 import { useRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
 import wishListState from "../recoil/atoms/wishList";
@@ -98,7 +98,7 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
                         Add to cart
                       </button>
                     </div>
-                    <MdOutlineDeleteForever
+                    <RiDeleteBin5Fill
                       style={{ cursor: "pointer" }}
                       size={32}
                       onClick={() => deleteListItem(elem.name)}

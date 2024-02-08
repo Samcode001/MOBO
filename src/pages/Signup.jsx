@@ -4,6 +4,7 @@ import axios from "axios";
 import { RxAvatar } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import imageCompression from "browser-image-compression";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -13,18 +14,26 @@ const Signup = () => {
 
   const navigate = useNavigate();
 
-  const handleAvatar = (e) => {
-    // let file = e.target.files[0];
-    // setAvatar(file);
-    const reader = new FileReader();
+  const handleAvatar = async (e) => {
+    try {
+      const file = e.target.files[0];
+      const options = {
+        maxSizeMB: 0.05, // Max size in megabytes
+        maxWidthOrHeight: 500, // Max width or height of the image
+        useWebWorker: true, // Use web worker for faster compression
+      };
 
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setAvatar(reader.result);
-      }
-    };
-
-    reader.readAsDataURL(e.target.files[0]);
+      const compressedFile = await imageCompression(file, options);
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setAvatar(reader.result);
+        }
+      };
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error("Error compressing image:", error);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -37,7 +46,8 @@ const Signup = () => {
       formData.append("password", password);
       formData.append("file", avatar);
       const res = await axios.post(
-        "https://mobo-service.onrender.com/admin/signup",
+        // "https://mobo-service.onrender.com/admin/signup",
+        "http://localhost:3000/admin/signup",
         {
           name,
           username,
@@ -103,7 +113,7 @@ const Signup = () => {
             onChange={(e) => setUsername(e.target.value)}
           />
         </label>
-        <label className="label" style={{position:"relative"}}>
+        <label className="label" style={{ position: "relative" }}>
           Password:
           <span
             style={{
@@ -111,8 +121,8 @@ const Signup = () => {
               color: "gray",
               height: "fit-content",
               // outline: "1px solid gray",
-              position:'absolute',
-              right:"0"
+              position: "absolute",
+              right: "0",
             }}
           >
             Password must be 8 characters long.
@@ -136,7 +146,18 @@ const Signup = () => {
           ) : (
             <RxAvatar size={30} />
           )}
-          <span>Upload a File</span>
+          <span>
+            Upload a File{" "}
+            <span
+              style={{
+                fontSize: "0.8rem",
+                color: "gray",
+                height: "fit-content",
+              }}
+            >
+              ".jpg,.png.jpeg",max-size:50kb
+            </span>
+          </span>
           <input
             type="file"
             name="avatar"

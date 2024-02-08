@@ -3,7 +3,7 @@ import "../styles/AddCart.css";
 import { IoClose } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
-import { MdOutlineDeleteForever } from "react-icons/md";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import axios from "axios";
 import cartState from "../recoil/atoms/cart";
@@ -167,7 +167,7 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
                         }}
                       />
                     </div>
-                    <MdOutlineDeleteForever
+                    <RiDeleteBin5Fill
                       style={{ cursor: "pointer" }}
                       size={30}
                       onClick={() => deleteCartItem(elem.name)}

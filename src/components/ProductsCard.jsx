@@ -139,13 +139,6 @@ const ProductCard = ({ data, onClick }) => {
             title="Add to wishlist"
           />
         )}
-        {/* <AiOutlineShoppingCart
-          size={25}
-          onClick={handleCart}
-          style={{ cursor: "pointer" }}
-          color="#444"
-          title="Add to cart"
-        /> */}
       </div>
 
       <div className="buttons">

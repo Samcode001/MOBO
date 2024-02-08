@@ -34,7 +34,7 @@ router.post("/addItem", authenticateJwt, async (req, res) => {
       await WISHLIST.findOneAndUpdate({ user: user }, userExist, { new: true });
     }
 
-    res.status(200).json({ success: true, message: "Item Added" });
+    res.status(200).json({ success: true, message: "Item wishlisted" });
     //   return res
     //     .status(201)
     //     .json({ success: false, message: "Item Already Added" });
@@ -79,7 +79,7 @@ router.post("/removeItem", authenticateJwt, async (req, res) => {
     userList.list = updatedList;
     await WISHLIST.findOneAndUpdate({ user: user }, userList, { new: true });
   
-    res.status(201).send("ItemDeleted");
+    res.status(201).send("Item Deleted");
   } catch (error) {
     res.status(500).send("Internal Server Error");
   }

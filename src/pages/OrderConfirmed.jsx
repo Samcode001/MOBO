@@ -27,7 +27,7 @@ const OrderConfirmed = () => {
       >
         <img src={confirmationLogo} alt="" />
         <h1>Order Confirmed</h1>
-        <p>Reference:</p>
+        {/* <p>Reference:</p> */}
       </div>
     </div>
   );

@@ -35,7 +35,7 @@ router.post("/addItem", authenticateJwt, async (req, res) => {
       await CART.findOneAndUpdate({ user: user }, userExist, { new: true });
     }
 
-    res.status(200).json({ success: true, message: "Item Added" });
+    res.status(200).json({ success: true, message: "Added to Cart" });
   } catch (error) {
     res.status(500).send(`Error In Route :${error}`);
   }

@@ -85,20 +85,20 @@ const Navbar = () => {
             <nav className="primary-navigation" aria-expanded={navFlag}>
               <ul role="list" id="primary-navigation" className="nav-list">
                 <li>
-                  <Link to={"/"}>
+                  <Link to="/">
                     <a href="#">Home</a>
                   </Link>
                 </li>
                 <li>
-                  <Link to={"/products"}>
-                    <a href="#">Shop</a>
+                  <Link to="/products">
+                   Shop
                   </Link>
                 </li>
                 <li>
-                  <a href="/about">About</a>
+                <Link to="/about">About</Link>
                 </li>
                 <li>
-                  <a href="/faq">FAQ's</a>
+                <Link to="/faq">Faq's</Link>
                 </li>
               </ul>
             </nav>

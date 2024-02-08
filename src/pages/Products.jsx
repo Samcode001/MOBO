@@ -88,10 +88,10 @@ const Products = () => {
   };
 
   const priceRanges = [
-    { label: "0-500", value: "range1" },
-    { label: "500-1000", value: "range2" },
-    { label: "1000-1500", value: "range3" },
-    // { label: "20000 Above", value: "range4" },
+    { label: "5000-10000", value: "range1" },
+    { label: "10000-20000", value: "range2" },
+    { label: "20000-50000", value: "range3" },
+    { label: "50000 Above", value: "range4" },
   ];
 
   const handleCheckboxChange = (category, value) => {
@@ -285,10 +285,14 @@ const Products = () => {
           </button>
         </div>
         <div className="right">
-          {filterData && filterData.length > 0 ? (
-            filterData.map((elem) => (
-              <ProductsCard key={elem._id} data={elem} />
-            ))
+          {allPhones && allPhones.length > 0 ? (
+            filterData.length > 0 ? (
+              filterData.map((elem) => (
+                <ProductsCard key={elem._id} data={elem} />
+              ))
+            ) : (
+              <h1>No data Found</h1>
+            )
           ) : (
             <img
               style={{

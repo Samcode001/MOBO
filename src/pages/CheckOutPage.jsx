@@ -77,6 +77,18 @@ const CheckOutPage = () => {
       setLastName("");
       setAddress("");
       setPincode("");
+      let tempSum = cart.reduce((accumulator, item) => {
+        return (
+          accumulator + parseFloat(item.price.replace(/,/g, "")) * item.quantity
+        );
+      }, 0);
+
+      console.log("Subtotal Before:", tempSum); // Log the subtotal before calculation
+
+      setSubTotal(tempSum);
+      tempSum += tempSum * 0.08;
+
+      setTotalSum(tempSum);
     }
   };
 
@@ -130,14 +142,13 @@ const CheckOutPage = () => {
           );
         }, 0);
 
-        // console.log("Subtotal Before:", tempSum); // Log the subtotal before calculation
+        console.log("Subtotal Before:", tempSum); // Log the subtotal before calculation
 
         setSubTotal(tempSum);
         tempSum += tempSum * 0.08;
 
-        // console.log("Subtotal After:", tempSum); // Log the subtotal after calculation
-
         setTotalSum(tempSum);
+        // console.log("Subtotal After:", tempSum); // Log the subtotal after calculation
         // console.log("Calc");
       })
       .catch((err) => console.log(err));
@@ -559,7 +570,18 @@ const CheckOutPage = () => {
           >
             <div className="address-modal">
               <div className="address-modal-banner">Enter Delevery Address</div>
-              <IoClose size={25} />
+              <IoClose
+                size={45}
+                onClick={() => setAddressFlag((prev) => !prev)}
+                style={{
+                  position: "absolute",
+                  top: "1rem",
+                  right: "1rem",
+                  zIndex: 999999,
+                  cursor: "pointer",
+                }}
+                color="red"
+              />
               <form>
                 <div
                   className="adrress-name-section"

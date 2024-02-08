@@ -59,6 +59,7 @@ const CheckOutPage = () => {
       );
       if (res.status === 200) {
         let temp = res.data.phones.find((elem) => elem._id === id);
+        console.log(temp);
 
         setPhoneData(temp);
         setTotalSum(
@@ -75,7 +76,7 @@ const CheckOutPage = () => {
     }
   };
 
-  useEffect(() => {}, [phones]);
+  // useEffect(() => {}, [phones]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -113,6 +114,7 @@ const CheckOutPage = () => {
       setLastName("");
       setAddress("");
       setPincode("");
+      await getData();
     }
   };
 
@@ -146,9 +148,11 @@ const CheckOutPage = () => {
   };
 
   useEffect(() => {
-    Promise.all([getData(), getAddress()])
-      .then(() => {})
-      .catch((err) => console.log(err));
+    getData();
+    getAddress();
+    // Promise.all([getData(), getAddress()])
+    //   .then(() => {})
+    //   .catch((err) => console.log(err));
   }, []);
 
   // ------------------------ Payments functionalities ----------------------------
@@ -517,23 +521,23 @@ const CheckOutPage = () => {
                       })} */}
                     <div className="checkout-right-items">
                       <div style={{ position: "relative" }}>
-                        <img src={phoneData.images[0]} alt="" />
+                        <img src={phoneData?.images[0]} alt="" />
                         <span className="checkout-right-quantity">1</span>
                       </div>
                       <div className="checkout-right-items-details">
-                        <h3>{phoneData.name}</h3>
+                        <h3>{phoneData?.name}</h3>
                         <span>
-                          {phoneData.type}/{phoneData.memory}/{phoneData.os}
+                          {phoneData?.type}/{phoneData?.memory}/{phoneData?.os}
                         </span>
                       </div>
-                      <h2>₹ {phoneData.price}</h2>
+                      <h2>₹ {phoneData?.price}</h2>
                     </div>
                   </div>
                   <div>
                     <div>
                       <h3>Subtotal</h3>{" "}
                       <h2>
-                        ₹ {parseFloat(phoneData.price.replace(/,/g, ""))}.00
+                        ₹ {parseFloat(phoneData?.price.replace(/,/g, ""))}.00
                       </h2>
                     </div>
                     <div>
@@ -553,7 +557,7 @@ const CheckOutPage = () => {
                       <h2>
                         ₹{" "}
                         {parseInt(
-                          parseFloat(phoneData.price.replace(/,/g, "")) * 0.08
+                          parseFloat(phoneData?.price.replace(/,/g, "")) * 0.08
                         )}
                         .00
                       </h2>
@@ -580,9 +584,22 @@ const CheckOutPage = () => {
             style={addressFlag ? { display: "none" } : { display: "block" }}
             className="address-overlay-container"
           >
-            <div className="address-modal">
+            <div
+              className="address-modal"
+              style={{ transform: "translate(-50%, -5%)" }}
+            >
               <div className="address-modal-banner">Enter Delevery Address</div>
-              <IoClose size={25} />
+              <IoClose
+                size={45}
+                onClick={() => setAddressFlag((prev) => !prev)}
+                style={{
+                  position: "absolute",
+                  top: "1rem",
+                  right: "1rem",
+                  cursor: "pointer",
+                }}
+                color="red"
+              />
               <form>
                 <div
                   className="adrress-name-section"

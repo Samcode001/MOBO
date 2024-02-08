@@ -8,11 +8,12 @@ import { IoMdShare } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import Ratings from "../components/Ratings.jsx";
 import GeneraetStars from "../components/GeneraetStars.jsx";
-import { FaStar } from "react-icons/fa";
-import { FaRegStar } from "react-icons/fa";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import axios from "axios";
 import { allPhonesDataState } from "../recoil/atoms/data.js";
 import useAddToCart from "../hooks/addToCart.js";
+import useGetCart from "../hooks/getCart.js";
+import useHanldeList from "../hooks/addToList.js";
 
 const ProductDetails = ({ data }) => {
   const [count, setCount] = useState(1);
@@ -21,7 +22,10 @@ const ProductDetails = ({ data }) => {
   const [ratings, setRatings] = useState([]);
   const [writeReview, setWriteReview] = useState(false);
   const [totalRatings, setTotalRatings] = useState(0);
+  const [click, setClick] = useState(false);
   const { addToCart } = useAddToCart();
+  const { getCart } = useGetCart();
+  const { addToList, removeToList, getWishList } = useHanldeList();
 
   const navigate = useNavigate();
 
@@ -54,8 +58,27 @@ const ProductDetails = ({ data }) => {
   //   setRating(newRating);
   // };
 
+  const user = localStorage.getItem("user");
+
+  const hanldeWishList = async () => {
+    if (user) {
+      await addToList(data);
+      getWishList();
+    } else navigate("/login");
+  };
+
+  const deleteListItem = async () => {
+    if (user) {
+      await removeToList(data.name);
+      // console.log("Delete Ahppened");
+    } else navigate("/login");
+  };
+
   const hanldeCart = async () => {
-    await addToCart(data);
+    if (user) {
+      await addToCart(data);
+      getCart();
+    } else navigate("/login");
   };
 
   const getRatings = async (id) => {
@@ -115,7 +138,33 @@ const ProductDetails = ({ data }) => {
         </div>
 
         <div className="product-right">
-          <h2>{data.name}</h2>
+          <h2 style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
+            {data.name}{" "}
+            <span>
+              {" "}
+              {click ? (
+                <AiFillHeart
+                  size={30}
+                  onClick={() => {
+                    setClick(!click);
+                    deleteListItem();
+                  }}
+                  color={click ? "red" : "#333"}
+                  title="Remove from wishlist"
+                />
+              ) : (
+                <AiOutlineHeart
+                  size={30}
+                  onClick={() => {
+                    setClick(!click);
+                    hanldeWishList();
+                  }}
+                  color={click ? "red" : "#333"}
+                  title="Add to wishlist"
+                />
+              )}
+            </span>
+          </h2>
           <span style={{ fontSize: "1.2rem", fontWeight: "550" }}>
             ₹ {data.price}
           </span>
@@ -283,7 +332,12 @@ const ProductDetails = ({ data }) => {
               fontWeight: "550",
               cursor: "pointer",
             }}
-            onClick={() => setWriteReview((prevFlag) => !prevFlag)}
+            onClick={() => {
+              if (user) setWriteReview((prevFlag) => !prevFlag);
+              else {
+                navigate("/login");
+              }
+            }}
           >
             {!writeReview ? "Write a Review" : " Close"}
           </h3>
@@ -296,7 +350,11 @@ const ProductDetails = ({ data }) => {
             display: `${writeReview ? "block" : "none"}`,
           }}
         >
-          <Ratings id={data._id} getRatings={getRatings} />
+          <Ratings
+            id={data._id}
+            getRatings={getRatings}
+            setWriteReview={setWriteReview}
+          />
         </div>
 
         <div className="ratings">

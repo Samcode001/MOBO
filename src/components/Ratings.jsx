@@ -2,8 +2,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const Ratings = ({ id, getRatings }) => {
+const Ratings = ({ id, getRatings, setWriteReview }) => {
   const fullRating = 5;
 
   const navigate = useNavigate();
@@ -19,8 +20,33 @@ const Ratings = ({ id, getRatings }) => {
 
   const handleSubmit = async () => {
     try {
+      if (review === 0)
+        return toast.error("Review At least one star", {
+          position: "bottom-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+      if (title === "" || desc === "")
+        return toast.error("Please Fill All Fileds", {
+          position: "bottom-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
       const res = await axios.post(
         "https://mobo-service.onrender.com/data/set-rating",
+        // "http://localhost:3000/data/set-rating",
         {
           id: id,
           rate: review,
@@ -36,19 +62,43 @@ const Ratings = ({ id, getRatings }) => {
 
       //  console.log(review,title,desc);
 
-      if (res.status === 402) {
-        return alert("Please Login");
-      }
-      if (res.status === 200) {
-        alert("Review Submitted");
+      if (res.data.success) {
+        toast.success(res.data.message, {
+          position: "bottom-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setReview(0);
         setTitle("");
         setDesc("");
+        setTimeout(() => {
+          setWriteReview((prev) => !prev);
+        }, 1500);
       }
 
       getRatings(id);
     } catch (error) {
-      console.log(`Error in Rating Component:${error}`);
+      toast.error(error.response.data.message, {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setReview(0);
+      setTitle("");
+      setDesc("");
+      setTimeout(() => {
+        setWriteReview((prev) => !prev);
+      }, 1500);
     }
   };
 

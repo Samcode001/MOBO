@@ -86,6 +86,7 @@ router.post("/login", async (req, res) => {
     if (flag)
       res.status(200).json({
         message: "Logged in Succesfully",
+        success: true,
         token: jwt.sign({ admin: admin.username }, process.env.jwtSecret, {
           expiresIn: "4h",
         }),
