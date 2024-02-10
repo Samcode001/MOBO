@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;700&display=swap");
 
 :root {
   --clr-primary-300: hsl(192, 70%, 51%);
@@ -10,9 +10,13 @@
   --clr-neutral-300: hsl(220, 16%, 96%);
   --clr-neutral-500: hsl(233, 8%, 62%);
 
-  --clr-gradient-primary: linear-gradient(to right, var(--clr-primary-600), var(--clr-primary-300));
+  --clr-gradient-primary: linear-gradient(
+    to right,
+    var(--clr-primary-600),
+    var(--clr-primary-300)
+  );
 
-  --ff-primary: 'Public Sans', sans-serif;
+  --ff-primary: "Public Sans", sans-serif;
 
   --fw-light: 300;
   --fw-regular: 400;
@@ -56,6 +60,12 @@ main {
 
 .button:hover::after {
   opacity: 0.4;
+}
+
+.button:active {
+  background-color: whitesmoke;
+  border: 1px solid black;
+  color: black;
 }
 
 /* h1 {
@@ -128,8 +138,8 @@ p {
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
-ul[role='list'],
-ol[role='list'] {
+ul[role="list"],
+ol[role="list"] {
   list-style: none;
 }
 
@@ -162,7 +172,6 @@ svg {
   display: block;
 }
 
-
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {
@@ -178,9 +187,6 @@ svg {
     scroll-behavior: auto !important;
   }
 }
-
-
-
 
 /* ---------------------- Utility Classes ------------------------------------- */
 .visually-hidden {
@@ -208,7 +214,6 @@ svg {
   padding: 2rem;
 }
 
-
 .container {
   --max-width: 1440px;
   --container-padding: 0rem;
@@ -221,10 +226,7 @@ svg {
   display: grid;
 }
 
-
-
-@media (min-width:47em) {
-
+@media (min-width: 47em) {
   .display-sm-none {
     display: block;
   }
@@ -244,3 +246,8 @@ svg {
   }
 }
 
+/* ------------------- toast ---------------- */
+
+.Toastify__toast-container--bottom-left {
+  bottom: 60px;
+}

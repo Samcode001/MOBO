@@ -25,6 +25,7 @@ const CheckOutPage = () => {
   const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
   const [pincode, setPincode] = useState("");
+  const [pincodeAddress, setPincodeAddress] = useState("");
   const [addressFlag, setAddressFlag] = useState(false);
   //   the operator '?.' is called optional chaining operator
   //   selectedCountry?.isoCode
@@ -89,6 +90,29 @@ const CheckOutPage = () => {
       tempSum += tempSum * 0.08;
 
       setTotalSum(tempSum);
+    }
+  };
+
+  const handlePincode = async (e) => {
+    setPincode(e.target.value);
+    const { data } = await axios.get(
+      `https://api.postalpincode.in/pincode/${e.target.value}`
+    );
+    if (data[0].Status === "Success") {
+      let postOffice = data[0].PostOffice[0];
+      setPincodeAddress(
+        postOffice.Name +
+          " " +
+          postOffice.Region +
+          " " +
+          postOffice.State +
+          " " +
+          postOffice.Country +
+          " " +
+          postOffice.Pincode
+      );
+      // console.log(data);
+      // console.log(postOffice)
     }
   };
 
@@ -295,7 +319,7 @@ const CheckOutPage = () => {
       prefill: {
         name: "Gaurav Kumar",
         email: "gaurav.kumar@example.com",
-        contact: "9000090000",
+        contact: phone,
       },
       notes: {
         address: "Razorpay Corporate Office",
@@ -659,11 +683,17 @@ const CheckOutPage = () => {
                     placeholder="City"
                   />
                   <input
-                    type="text"
+                    type="tel"
                     placeholder="Pincode"
                     value={pincode}
-                    onChange={(e) => setPincode(e.target.value)}
+                    onChange={handlePincode}
                   />
+                  <span
+                    style={{ color: "red", fontSize: "1rem", display: "block" }}
+                  >
+                    {pincodeAddress && pincodeAddress}
+                  </span>
+                  {/* <span>{console.log(pincodeAddress)}</span> */}
                 </div>
                 <button type="submit" onClick={handleSubmit} className="button">
                   Submit

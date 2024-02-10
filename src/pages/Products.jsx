@@ -182,6 +182,16 @@ const Products = () => {
           </div>
 
           <br />
+          <button
+            className="button"
+            onClick={() => {
+              applyFilters();
+              setFiltersFlag(false);
+            }}
+          >
+            Apply Filters
+          </button>
+          <br />
           <br />
           <h2>Price</h2>
           <ul>
@@ -272,17 +282,6 @@ const Products = () => {
                 );
               })}
           </ul>
-
-          <br />
-          <button
-            className="button"
-            onClick={() => {
-              applyFilters();
-              setFiltersFlag(false);
-            }}
-          >
-            Apply Filters
-          </button>
         </div>
         <div className="right">
           {allPhones && allPhones.length > 0 ? (

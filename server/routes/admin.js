@@ -61,9 +61,7 @@ router.post("/signup", async (req, res) => {
       res.status(200).json({
         message: "User created",
         success: true,
-        token: jwt.sign({ admin: newAdmin.username }, process.env.jwtSecret, {
-          expiresIn: "4h",
-        }),
+        token: jwt.sign({ admin: newAdmin.username }, process.env.jwtSecret),
       });
     }
   } catch (error) {
@@ -87,9 +85,7 @@ router.post("/login", async (req, res) => {
       res.status(200).json({
         message: "Logged in Succesfully",
         success: true,
-        token: jwt.sign({ admin: admin.username }, process.env.jwtSecret, {
-          expiresIn: "4h",
-        }),
+        token: jwt.sign({ admin: admin.username }, process.env.jwtSecret),
       });
     else {
       res.status(401).json({ message: "Invalid Credentials", success: false });
@@ -141,7 +137,7 @@ router.get("/address", authenticateJwt, async (req, res) => {
       res.status(200).json({
         success: true,
         message: "Address Found",
-        address: admin.address,
+        address: admin.address
       });
     }
   } catch (error) {

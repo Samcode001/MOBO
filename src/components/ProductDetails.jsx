@@ -22,6 +22,7 @@ const ProductDetails = ({ data }) => {
   const [ratings, setRatings] = useState([]);
   const [writeReview, setWriteReview] = useState(false);
   const [totalRatings, setTotalRatings] = useState(0);
+  const [selectImage, setSelectImage] = useState(data?.images[0]);
   const [click, setClick] = useState(false);
   const { addToCart } = useAddToCart();
   const { getCart } = useGetCart();
@@ -121,17 +122,26 @@ const ProductDetails = ({ data }) => {
         <div className="product-left">
           <div className="big-img">
             <div className="main-image item-1">
-              <img src={data.images[0]} alt="" />
+              <img src={selectImage} alt="" />
             </div>
           </div>
           <div className="child-img">
-            <div className="images item-2">
+            <div
+              className="images item-2"
+              onClick={() => setSelectImage(data?.images[0])}
+            >
+              <img src={data.images[0]} alt="" />
+            </div>
+            <div
+              className="images item-3"
+              onClick={() => setSelectImage(data?.images[1])}
+            >
               <img src={data.images[1]} alt="" />
             </div>
-            <div className="images item-3">
-              <img src={data.images[2]} alt="" />
-            </div>
-            <div className="images item-4">
+            <div
+              className="images item-4"
+              onClick={() => setSelectImage(data?.images[2])}
+            >
               <img src={data.images[2]} alt="" />
             </div>
           </div>
@@ -222,8 +232,18 @@ const ProductDetails = ({ data }) => {
 
       <div className="product-description">
         <div className="desc-buttons">
-          <h2 onClick={() => setDescFlag(!descFlag)}>Description</h2>
-          <h2 onClick={() => setDescFlag(!descFlag)}>Shipping & Returns</h2>
+          <h2
+            onClick={() => setDescFlag(!descFlag)}
+            className={descFlag ? "desc-active-button" : ""}
+          >
+            Description
+          </h2>
+          <h2
+            onClick={() => setDescFlag(!descFlag)}
+            className={!descFlag ? "desc-active-button" : ""}
+          >
+            Shipping & Returns
+          </h2>
         </div>
         {descFlag === true ? (
           <>
@@ -311,7 +331,7 @@ const ProductDetails = ({ data }) => {
             marginBottom: "1rem",
           }}
         >
-          Customer review
+          Customer review's
         </h2>
         <div className="review-header">
           <div className="set-rating">
@@ -323,7 +343,7 @@ const ProductDetails = ({ data }) => {
                 marginInlineStart: "1rem",
               }}
             >
-              Based on {ratings.length} reviews
+              Based on {ratings.length > 0 ? ratings.length : 0} review's
             </h2>
           </div>
           <h3
@@ -331,6 +351,7 @@ const ProductDetails = ({ data }) => {
               fontSize: "1.2rem",
               fontWeight: "550",
               cursor: "pointer",
+              color: "red",
             }}
             onClick={() => {
               if (user) setWriteReview((prevFlag) => !prevFlag);
@@ -358,7 +379,7 @@ const ProductDetails = ({ data }) => {
         </div>
 
         <div className="ratings">
-          {ratings &&
+          {ratings.length > 0 &&
             ratings.map((elem) => {
               return (
                 <div key={elem._id}>
@@ -381,8 +402,10 @@ const ProductDetails = ({ data }) => {
       </div>
 
       <div>
-        <h1 style={{ fontSize: "3.5rem", fontWeight: "600" }}>
-          Related Products
+        <h1
+          style={{ fontSize: "2.5rem", fontWeight: "600", paddingLeft: "1rem" }}
+        >
+          {parsedData && "Related Products"}
         </h1>
       </div>
 

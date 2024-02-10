@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../styles/AddCart.css";
 import { IoClose } from "react-icons/io5";
 import { RiDeleteBin5Fill } from "react-icons/ri";
@@ -19,8 +19,25 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
   const { getCart } = useGetCart();
   const { getWishList } = useHanldeList();
   const allPhones = useRecoilValue(allPhonesDataState);
-
   const { removeToList } = useHanldeList();
+
+  const wishListRef = useRef();
+
+  const handleClickOutside = (event) => {
+    if (wishListRef.current && !wishListRef.current.contains(event.target)) {
+      setWishlistFlag(false);
+    }
+  };
+
+  useEffect(() => {
+    // Add event listener when the component mounts
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Remove event listener when the component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const deleteListItem = async (itemName) => {
     await removeToList(itemName);
@@ -30,7 +47,7 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
     const phone = allPhones.find((elem) => elem.name === data.name);
     await addToCart(phone);
     getCart();
-    await removeToList(data.name,false);
+    await removeToList(data.name, false);
   };
 
   // useEffect(() => {
@@ -49,6 +66,7 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
           ? { right: "0rem", opacity: "1" }
           : { right: "-100rem", opacity: "0" }
       }
+      ref={wishListRef}
     >
       <div>
         <h2 style={{ fontSize: "1.5rem", fontWeight: "550" }}>Your WishList</h2>
@@ -101,6 +119,7 @@ const AddWishlist = ({ wishlistFlag, setWishlistFlag }) => {
                     <RiDeleteBin5Fill
                       style={{ cursor: "pointer" }}
                       size={32}
+                      className="remove-button-cart"
                       onClick={() => deleteListItem(elem.name)}
                     />
                   </div>

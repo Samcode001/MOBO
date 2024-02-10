@@ -31,7 +31,7 @@ h1 {
   gap: 1.5rem;
   padding: 2rem 1rem;
   justify-content: center;
-  /* align-items: center; */
+  align-items: center;
 }
 
 ul {
@@ -55,5 +55,8 @@ ul {
 
   .produtcs-close {
     display: block;
+  }
+  .right{
+    padding: 0;
   }
 }

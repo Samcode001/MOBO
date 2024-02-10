@@ -219,7 +219,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  z-index: 9999999999999;
+  z-index: 999;
   background-color: white;
 }
 
@@ -257,6 +257,8 @@
   width: 30vw;
   display: block;
   margin: auto;
+  /* position: absolute;
+  z-index: 999999999999; */
 }
 
 @media (max-width: 62em) {

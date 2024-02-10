@@ -92,7 +92,7 @@
   align-items: center;
   justify-content: center;
   /* outline: 2px solid red; */
-  z-index: 100000000000;
+  z-index: 10000000;
   background-color: whitesmoke;
 }
 
@@ -104,6 +104,7 @@
   /* height: 100%; */
   background-color: white;
   border-radius: 1rem;
+  z-index: 100000000000;
 }
 
 .search-items {
@@ -114,7 +115,8 @@
   padding: 8px 1rem;
   border-bottom: 1px solid gray;
   border-radius: 1rem;
-
+  position: relative;
+  z-index: 100000000;
   /* justify-content: space-between; */
 }
 

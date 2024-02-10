@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../styles/AddCart.css";
 import { IoClose } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
@@ -24,30 +24,27 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
   const { updateQuantity } = useUpdateQuantity();
 
   const navigate = useNavigate();
+  const cartRef = useRef();
 
-  // const handleMinus = () => {
-  //   if (count > 1) setQuantity(count - 1);
-  // };
-  // const hanldePlus = () => {
-  //   setQuantity(count + 1);
-  // };
+  const handleClickOutside = (event) => {
+    if (cartRef.current && !cartRef.current.contains(event.target)) {
+      setCartFlag(false);
+    }
+  };
+
+  useEffect(() => {
+    // Add event listener when the component mounts
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Remove event listener when the component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   //  ----------------------- For Loading data into wishlist and cart ----------------------------
-  // const setWishList = useSetRecoilState(wishListState);
-  const { getWishList } = useHanldeList();
 
-  // const getWishList = async () => {
-  //   const {
-  //     data: { wishListItems },
-  //   } = await axios.get("https://mobo-service.onrender.com/wishlist/getItems", {
-  //     headers: {
-  //       Authorization: "Bearer " + localStorage.getItem("token"),
-  //     },
-  //   });
-  //   if (wishListItems) {
-  //     setWishList(wishListItems);
-  //   }
-  // };
+  const { getWishList } = useHanldeList();
 
   const deleteCartItem = async (itemName) => {
     const res = await axios.post(
@@ -104,6 +101,7 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
           ? { right: "0rem", opacity: "1" }
           : { right: "-100rem", opacity: "0" }
       }
+      ref={cartRef}
     >
       <div>
         <h2 style={{ fontSize: "1.5rem", fontWeight: "550" }}>Your Cart</h2>
@@ -170,6 +168,7 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
                     <RiDeleteBin5Fill
                       style={{ cursor: "pointer" }}
                       size={30}
+                      className="remove-button-cart"
                       onClick={() => deleteCartItem(elem.name)}
                     />
                   </div>

@@ -1,6 +1,6 @@
 .cart-container {
   width: 30vw;
-  height: 99vh;
+  height: 100%;
   position: fixed;
   top: 0;
   right: 0;
@@ -14,7 +14,7 @@
 
 .cart-content {
   overflow-y: scroll;
-  height: 65vh;
+  height: 65%;
 }
 
 /* .cart-container::before{
@@ -85,6 +85,17 @@
 .cart-footer > :first-child > * {
   font-size: 1.2rem;
   font-weight: 550;
+}
+
+.remove-button-cart:hover{
+  border: 1px solid gray;
+  border-radius: 50%;
+}
+
+.remove-button-cart:active {
+  border: 1px solid gray;
+  border-radius: 50%;
+  padding: 5px;
 }
 
 @media (max-width: 57em) {

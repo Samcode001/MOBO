@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "../styles/Footer.css";
 import logo from "../assets/images (1).png";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const navigationRef = useRef(null);
+
+  useEffect(() => {
+    // Scroll to the top when the component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleLinkClick = () => {
+    // Scroll to the top when a link is clicked
+    window.scrollTo(0, 0);
+  };
   return (
     <div className="footer">
       <footer class="primary-footer">
@@ -18,21 +29,35 @@ const Footer = () => {
                   alt="footer-logo"
                 />
               </a>
-              <ul role="list" class="primary-footer-navigation  animated">
+              <ul
+                role="list"
+                class="primary-footer-navigation  animated"
+                ref={navigationRef}
+              >
                 <li>
-                  <Link to="/">Home</Link>
+                  <Link to="/" onClick={handleLinkClick}>
+                    Home
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/products">Shop</Link>
+                  <Link to="/products" onClick={handleLinkClick}>
+                    Shop
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/about">About</Link>
+                  <Link to="/about" onClick={handleLinkClick}>
+                    About
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/faq">Faq's</Link>
+                  <Link to="/faq" onClick={handleLinkClick}>
+                    Faq's
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/">Support</Link>
+                  <Link to="/" onClick={handleLinkClick}>
+                    Support
+                  </Link>
                 </li>
               </ul>
             </div>
