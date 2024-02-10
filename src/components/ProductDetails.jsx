@@ -334,7 +334,15 @@ const ProductDetails = ({ data }) => {
           Customer review's
         </h2>
         <div className="review-header">
-          <div className="set-rating">
+          <div
+            className="set-rating"
+            onClick={() => {
+              if (user) setWriteReview((prevFlag) => !prevFlag);
+              else {
+                navigate("/login");
+              }
+            }}
+          >
             {<GeneraetStars rating={totalRatings} size={25} />}
             <h2
               style={{
@@ -418,6 +426,7 @@ const ProductDetails = ({ data }) => {
               onClick={async () => {
                 await getRatings(elem._id);
                 window.scrollTo(0, 0);
+                setSelectImage(elem.images[0])
               }}
             />
           ))}

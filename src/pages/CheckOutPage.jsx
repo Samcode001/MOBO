@@ -451,8 +451,8 @@ const CheckOutPage = () => {
               >
                 <h2>Address</h2>
                 <div
-                  className="checlout-addresse-container"
-                  style={{ overflowY: "scroll", marginBottom: "0.6rem" }}
+                  className="checlout-addresse-container hidden-scrollbar"
+                  // style={{ overflowY: "scroll", marginBottom: "0.6rem" }}
                 >
                   {userAddress &&
                     userAddress.map((elem, index) => {
@@ -461,6 +461,7 @@ const CheckOutPage = () => {
                           key={index}
                           onClick={() => handleSelectAddress(elem)}
                           style={{ cursor: "pointer" }}
+                          className="checkout-address-item"
                         >
                           <input
                             id={index}
@@ -491,12 +492,12 @@ const CheckOutPage = () => {
                       <div
                         key={index}
                         onClick={() => handleSelectPayment(elem.value)}
-                        style={{
-                          cursor: "pointer",
-                          display: "flex",
-                          gap: "1rem",
-                          margin: "1rem 0",
-                        }}
+                        // style={{
+                        //   cursor: "pointer",
+                        //   display: "flex",
+                        //   gap: "1rem",
+                        //   margin: "1rem 0",
+                        // }}
                         className="payment-item"
                       >
                         <input
@@ -683,7 +684,7 @@ const CheckOutPage = () => {
                     placeholder="City"
                   />
                   <input
-                    type="tel"
+                    type="text"
                     placeholder="Pincode"
                     value={pincode}
                     onChange={handlePincode}

@@ -26,6 +26,7 @@ const CheckOutPage = () => {
   const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
   const [pincode, setPincode] = useState("");
+  const [pincodeAddress, setPincodeAddress] = useState("");
   const [addressFlag, setAddressFlag] = useState(false);
   //   the operator '?.' is called optional chaining operator
   //   selectedCountry?.isoCode
@@ -115,6 +116,29 @@ const CheckOutPage = () => {
       setAddress("");
       setPincode("");
       await getData();
+    }
+  };
+
+  const handlePincode = async (e) => {
+    setPincode(e.target.value);
+    const { data } = await axios.get(
+      `https://api.postalpincode.in/pincode/${e.target.value}`
+    );
+    if (data[0].Status === "Success") {
+      let postOffice = data[0].PostOffice[0];
+      setPincodeAddress(
+        postOffice.Name +
+          " " +
+          postOffice.Region +
+          " " +
+          postOffice.State +
+          " " +
+          postOffice.Country +
+          " " +
+          postOffice.Pincode
+      );
+      // console.log(data);
+      // console.log(postOffice)
     }
   };
 
@@ -680,8 +704,13 @@ const CheckOutPage = () => {
                     type="text"
                     placeholder="Pincode"
                     value={pincode}
-                    onChange={(e) => setPincode(e.target.value)}
+                    onChange={handlePincode}
                   />
+                  <span
+                    style={{ color: "red", fontSize: "1rem", display: "block" }}
+                  >
+                    {pincodeAddress && pincodeAddress}
+                  </span>
                 </div>
                 <button type="submit" onClick={handleSubmit} className="button">
                   Submit

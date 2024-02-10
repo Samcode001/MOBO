@@ -5,38 +5,6 @@
   padding: 2rem 10rem;
 }
 
-@media (max-width: 62em) {
-  .checkout-container {
-    grid-auto-flow: row;
-    grid-auto-rows: 1fr;
-    padding: 0;
-    /* outline: 1px solid red; */
-  }
-
-  .checkout-left {
-    order: 1;
-    /* outline: 1px solid lime; */
-    /* width: 80vw; */
-  }
-
-  .payment-item {
-    width: 80vw;
-  }
-
-  .checkout-right {
-    height: fit-content;
-    /* outline: 1px solid red; */
-  }
-
-  .checkout-right-items {
-    /* flex-direction: column; */
-  }
-  .checlout-addresse-container {
-    /* outline: 1px solid blue; */
-    width: 80vw;
-  }
-}
-
 .checkout-left {
   display: flex;
   gap: 2rem;
@@ -261,6 +229,22 @@
   z-index: 999999999999; */
 }
 
+.checkout-address > div {
+  scrollbar-width: thin; /* "auto" can also be used */
+  scrollbar-color: #888 transparent; /* color of the thumb and the track */
+}
+
+/* Style the thumb */
+.checkout-address > div ::-webkit-scrollbar-thumb {
+  background-color: #888; /* color of the thumb */
+  border-radius: 10px; /* roundness of the thumb */
+}
+
+/* Style the track */
+.checkout-address > div ::-webkit-scrollbar-track {
+  background-color: transparent; /* color of the track */
+}
+
 @media (max-width: 62em) {
   .address-modal {
     width: 100%;
@@ -268,7 +252,7 @@
     height: 100%;
   }
 
-  .address-modal input{
+  .address-modal input {
     width: 80%;
   }
 
@@ -276,7 +260,60 @@
     width: 80%;
   }
 
-  .address-select{
+  .address-select {
     width: 80%;
+  }
+
+  .checkout-container {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1.5fr 1fr;
+    padding: 2rem 10rem;
+  }
+
+  .checkout-container {
+    grid-auto-flow: row;
+    grid-auto-rows: 1fr;
+    padding: 0 1rem;
+    /* outline: 1px solid red; */
+    /* justify-content: center;
+    align-items: center; */
+    /* outline: 1px solid lime; */
+    padding-bottom: 1rem;
+  }
+
+  .checkout-left {
+    order: 1;
+    /* outline: 1px solid black; */
+    transform: translateY(-50%);
+    /* width: 80vw; */
+  }
+
+  .checkout-payment-options {
+    /* outline: 1px solid lime; */
+    width: 80%;
+  }
+
+  .checkout-payment-options > div {
+    /* outline: 1px solid red; */
+    width: 100%;
+  }
+
+  .checkout-right {
+    height: fit-content;
+    /* outline: 1px solid red; */
+  }
+
+  .checkout-right-items {
+    /* flex-direction: column; */
+  }
+  .checkout-address {
+    /* outline: 1px solid lime; */
+    width: 80%;
+    padding: 1rem;
+  }
+  .checkout-address > div {
+    width: 80%;
+    outline: 1px solid red;
   }
 }
