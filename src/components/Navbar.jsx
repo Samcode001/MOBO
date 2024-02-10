@@ -113,6 +113,14 @@ const Navbar = () => {
                     </a>
                   </Link>
                 </li>
+                {/* <li>
+                  <Link
+                    to="/android"
+                    onClick={() => setNavFlag((prev) => !prev)}
+                  >
+                    Android
+                  </Link>
+                </li> */}
                 <li>
                   <Link
                     to="/products"
@@ -121,6 +129,7 @@ const Navbar = () => {
                     Shop
                   </Link>
                 </li>
+
                 <li>
                   <Link to="/about" onClick={() => setNavFlag((prev) => !prev)}>
                     About
@@ -162,9 +171,9 @@ const Navbar = () => {
                               to={`/product/${elem._id}`}
                               style={{ textDecoration: "none" }}
                               onClick={() => {
-                                setIsSearch((prev) => !prev)
-                                setSearchTerm("")
-                                setSearchData([])
+                                setIsSearch((prev) => !prev);
+                                setSearchTerm("");
+                                setSearchData([]);
                               }}
                             >
                               <div key={elem._id} className="search-items">
