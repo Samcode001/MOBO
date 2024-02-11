@@ -314,11 +314,11 @@ const CheckOutPage = () => {
           });
         }
       },
-      prefill: {
-        name: "Gaurav Kumar",
-        email: "gaurav.kumar@example.com",
-        contact: "9000090000",
-      },
+      // prefill: {
+      //   name: "Gaurav Kumar",
+      //   email: "gaurav.kumar@example.com",
+      //   contact: "9000090000",
+      // },
       notes: {
         address: "Razorpay Corporate Office",
       },
