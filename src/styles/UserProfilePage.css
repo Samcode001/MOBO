@@ -40,7 +40,7 @@
   align-items: center;
   flex-direction: column;
   gap: 2rem;
-  outline: 2px solid red;
+  /* outline: 2px solid red; */
   padding: 20px;
 }
 
@@ -109,6 +109,10 @@ outline: 1px solid gray;
 
 
 @media (max-width:62em){
+
+  .profile-main-content{
+    width: 90%;
+  }
 
   .previous-orders-container{
     /* flex-direction: row; */

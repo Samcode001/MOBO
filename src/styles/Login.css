@@ -12,7 +12,7 @@
 }
 
 .form-container {
-  width: 500px;
+  width: 600px;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -47,4 +47,12 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+@media (min-width:62em){
+
+  .form-container{
+    width: 90vw;
+  }
+
 }
