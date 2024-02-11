@@ -442,8 +442,8 @@ const CheckOutPage = () => {
                   enableSearch={true}
                   value={phone}
                   onChange={(phone) => setPhone(phone)}
-                  className="checkout-phone"
-                />
+                  
+className="checkout-phone"                />
               </div>
               <div
                 className="checkout-address"
@@ -451,8 +451,8 @@ const CheckOutPage = () => {
               >
                 <h2>Address</h2>
                 <div
-                  className="checlout-addresse-container hidden-scrollbar"
-                  // style={{ overflowY: "scroll", marginBottom: "0.6rem" }}
+                  
+                  style={{ overflowY: "scroll", marginBottom: "0.6rem" }}
                 >
                   {userAddress &&
                     userAddress.map((elem, index) => {
@@ -461,7 +461,6 @@ const CheckOutPage = () => {
                           key={index}
                           onClick={() => handleSelectAddress(elem)}
                           style={{ cursor: "pointer" }}
-                          className="checkout-address-item"
                         >
                           <input
                             id={index}
@@ -492,13 +491,13 @@ const CheckOutPage = () => {
                       <div
                         key={index}
                         onClick={() => handleSelectPayment(elem.value)}
-                        // style={{
-                        //   cursor: "pointer",
-                        //   display: "flex",
-                        //   gap: "1rem",
-                        //   margin: "1rem 0",
-                        // }}
-                        className="payment-item"
+                        style={{
+                          cursor: "pointer",
+                          display: "flex",
+                          gap: "1rem",
+                          margin: "1rem 0",
+                        }}
+                        // className="payment-item"
                       >
                         <input
                           id={elem.value}

@@ -455,6 +455,7 @@ const CheckOutPage = () => {
                           key={index}
                           onClick={() => handleSelectAddress(elem)}
                           style={{ cursor: "pointer" }}
+                          
                         >
                           <input
                             id={index}
