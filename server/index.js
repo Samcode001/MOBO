@@ -61,3 +61,5 @@ app.get("/getRazorkey", authenticateJwt, (req, res) => {
 app.get("/getStripekey", authenticateJwt, (req, res) => {
   res.status(200).json({ key: process.env.stripe_Public_key });
 });
+
+export default  app
