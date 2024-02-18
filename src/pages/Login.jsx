@@ -31,7 +31,8 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://mobo-service.onrender.com/admin/login",
+        "
+https://mobo-alpha.vercel.app/admin/login",
         // "http://localhost:3000/admin/login",
         formData
       );

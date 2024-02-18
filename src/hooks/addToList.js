@@ -10,7 +10,8 @@ const useHanldeList = () => {
     const {
       data: { success, message },
     } = await axios.post(
-      "https://mobo-service.onrender.com/wishlist/addItem",
+      "
+https://mobo-alpha.vercel.app/wishlist/addItem",
       {
         name: productData.name,
         img: productData.images[0],
@@ -54,7 +55,8 @@ const useHanldeList = () => {
   const getWishList = async () => {
     const {
       data: { wishListItems },
-    } = await axios.get("https://mobo-service.onrender.com/wishlist/getItems", {
+    } = await axios.get("
+https://mobo-alpha.vercel.app/wishlist/getItems", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
@@ -66,7 +68,8 @@ const useHanldeList = () => {
 
   const removeToList = async (itemName, flag = true) => {
     const res = await axios.post(
-      "https://mobo-service.onrender.com/wishlist/removeItem",
+      "
+https://mobo-alpha.vercel.app/wishlist/removeItem",
       {
         name: itemName,
       },

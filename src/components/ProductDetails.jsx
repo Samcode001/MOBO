@@ -84,7 +84,8 @@ const ProductDetails = ({ data }) => {
 
   const getRatings = async (id) => {
     const res = await axios.post(
-      "https://mobo-service.onrender.com/data/ratings",
+      "
+https://mobo-alpha.vercel.app/data/ratings",
       {
         id: id,
       },

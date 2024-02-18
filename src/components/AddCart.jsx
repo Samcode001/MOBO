@@ -48,7 +48,8 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
 
   const deleteCartItem = async (itemName) => {
     const res = await axios.post(
-      "https://mobo-service.onrender.com/cart/removeItem",
+      "
+https://mobo-alpha.vercel.app/cart/removeItem",
       {
         name: itemName,
       },

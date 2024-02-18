@@ -8,7 +8,8 @@ const useGetCart = () => {
   const getCart = async () => {
     const {
       data: { cartItems },
-    } = await axios.get("https://mobo-service.onrender.com/cart/getItems", {
+    } = await axios.get("
+https://mobo-alpha.vercel.app/cart/getItems", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
