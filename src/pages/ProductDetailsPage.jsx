@@ -12,8 +12,7 @@ const ProductDetailsPage = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get("
-https://mobo-alpha.vercel.app/data/phones", {
+      const res = await axios.get("https://mobo-alpha.vercel.app/data/phones", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -37,11 +36,9 @@ https://mobo-alpha.vercel.app/data/phones", {
     // console.log("hello")
   }, []);
 
-  
-
   return (
     <div>
-      {phone_data &&  <ProductDetails data={phone_data} /> }
+      {phone_data && <ProductDetails data={phone_data} />}
       {/* {phone_data && console.log(phone_data)} */}
     </div>
   );

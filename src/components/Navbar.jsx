@@ -54,8 +54,7 @@ const Navbar = () => {
   const getData = async () => {
     try {
       const res = await axios.get(
-        "
-https://mobo-alpha.vercel.app/data/phones",
+        "https://mobo-alpha.vercel.app/data/phones",
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),

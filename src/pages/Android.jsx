@@ -28,8 +28,7 @@ const Android = () => {
   const getData = async () => {
     try {
       const res = await axios.get(
-        "
-https://mobo-alpha.vercel.app/data/android",
+        "https://mobo-alpha.vercel.app/data/android",
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),

@@ -7,8 +7,7 @@ const useHandleUser = () => {
 
   const getUser = async () => {
     const { data } = await axios.post(
-      "
-https://mobo-alpha.vercel.app/admin/getUser",
+      "https://mobo-alpha.vercel.app/admin/getUser",
       {},
       {
         headers: {
@@ -18,7 +17,7 @@ https://mobo-alpha.vercel.app/admin/getUser",
     );
     if (data) {
       setUser(data.user);
-      localStorage.setItem("user",data.user.username)
+      localStorage.setItem("user", data.user.username);
     }
   };
 

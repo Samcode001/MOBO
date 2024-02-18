@@ -59,8 +59,7 @@ const ProductCard = ({ data, onClick }) => {
   // for setting the ratings of the products
   const getRatings = async () => {
     const res = await axios.post(
-      "
-https://mobo-alpha.vercel.app/data/ratings",
+      "https://mobo-alpha.vercel.app/data/ratings",
       {
         id: id,
       },

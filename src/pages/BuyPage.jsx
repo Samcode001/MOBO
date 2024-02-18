@@ -245,8 +245,7 @@ const CheckOutPage = () => {
       description: "Test Transaction",
       image: logoImage,
       order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      // callback_url: "
-https://mobo-alpha.vercel.app/payments/paymentVerification",
+      // callback_url: https://mobo-alpha.vercel.app/payments/paymentVerification",
       handler: async function (response) {
         // alert(response.razorpay_payment_id);
         // alert(response.razorpay_order_id);
@@ -293,8 +292,7 @@ https://mobo-alpha.vercel.app/payments/paymentVerification",
 
             //       const {
             //         data: { success },
-            //       } = await axios.delete("
-https://mobo-alpha.vercel.app/cart/clear", {
+            //       } = await axios.delete("https://mobo-alpha.vercel.app/cart/clear", {
             //         headers: {
             //           Authorization: "Bearer " + localStorage.getItem("token"),
             //         },
@@ -336,8 +334,7 @@ https://mobo-alpha.vercel.app/cart/clear", {
   const stripePayment = async () => {
     const {
       data: { key },
-    } = await axios.get("
-https://mobo-alpha.vercel.app/getStripekey", {
+    } = await axios.get("https://mobo-alpha.vercel.app/getStripekey", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
@@ -345,8 +342,7 @@ https://mobo-alpha.vercel.app/getStripekey", {
     const stripe = await loadStripe(key);
 
     const { data } = await axios.post(
-      "
-https://mobo-alpha.vercel.app/payments/stripePayment",
+      "https://mobo-alpha.vercel.app/payments/stripePayment",
       {
         products: cart,
       },

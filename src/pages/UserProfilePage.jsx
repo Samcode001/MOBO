@@ -16,8 +16,7 @@ const UserProfilePage = () => {
 
   // const getUser = async () => {
   //   const { data } = await axios.post(
-  //     "
-https://mobo-alpha.vercel.app/admin/getUser",
+  //     "https://mobo-alpha.vercel.app/admin/getUser",
   //     {},
   //     {
   //       headers: {
@@ -91,8 +90,7 @@ const ProfileOrders = () => {
 
   const getOrders = async () => {
     const { data } = await axios.get(
-      "
-https://mobo-alpha.vercel.app/orders/order",
+      "https://mobo-alpha.vercel.app/orders/order",
       {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -166,8 +164,7 @@ const ProfileAddress = () => {
   const getAddress = async () => {
     const {
       data: { success, address },
-    } = await axios.get("
-https://mobo-alpha.vercel.app/admin/address", {
+    } = await axios.get("https://mobo-alpha.vercel.app/admin/address", {
       headers: {
         Authorization: "bearer " + localStorage.getItem("token"),
       },
