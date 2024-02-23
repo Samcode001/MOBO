@@ -36,24 +36,24 @@ const ProductCard = ({ data, onClick }) => {
   const navigate = useNavigate();
 
   const handleCart = async () => {
-    if (user) {
+    // if (user) {
+    // } else navigate("/login");
       await addToCart(data);
-      getCart();
-    } else navigate("/login");
+    getCart();
   };
 
   const hanldeWishList = async () => {
-    if (user) {
+    // if (user) {
+    // } else navigate("/login");
       await addToList(data);
       getWishList();
-    } else navigate("/login");
   };
 
   const deleteListItem = async () => {
-    if (user) {
-      await removeToList(data.name);
-      // console.log("Delete Ahppened");
-    } else navigate("/login");
+    // if (user) {
+    //   // console.log("Delete Ahppened");
+    // } else navigate("/login");
+    await removeToList(data.name);
   };
 
   // for setting the ratings of the products

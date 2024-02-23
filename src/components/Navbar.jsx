@@ -53,14 +53,11 @@ const Navbar = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(
-        "https://mobo-alpha.vercel.app/data/phones",
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+      const res = await axios.get("https://mobo-alpha.vercel.app/data/phones", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
       if (res.status === 200) {
         setAllPhones((prevData) => [...prevData, res.data.phones]);
         setPhonesData(res.data.phones);
@@ -192,74 +189,68 @@ const Navbar = () => {
                   ) : null}
                 </div>
               )}
-              {!user ? (
+
+              <div style={{ position: "relative" }}>
+                <FaHeart
+                  size={22}
+                  onClick={() => setWishlistFlag((prevFlag) => !prevFlag)}
+                />
+                <span
+                  style={
+                    wishList.length > 0
+                      ? {
+                          position: "absolute",
+                          right: "-10px",
+                          top: "-8px",
+                          width: "16px",
+                          height: "17px",
+                          backgroundColor: "#ed6161",
+                          borderRadius: "50%",
+                          textAlign: "center",
+                          fontSize: "11px",
+                          fontWeight: "600",
+                          color: "white",
+                          zIndex: "-1",
+                        }
+                      : { display: "none" }
+                  }
+                >
+                  {wishList.length}
+                </span>
+              </div>
+              <div style={{ position: "relative" }}>
+                <FaShoppingCart
+                  size={22}
+                  onClick={() => setCartFlag((prevFlag) => !prevFlag)}
+                />
+                <span
+                  style={
+                    cart.length > 0
+                      ? {
+                          position: "absolute",
+                          right: "-10px",
+                          top: "-8px",
+                          width: "16px",
+                          height: "17px",
+                          backgroundColor: "#ed6161",
+                          borderRadius: "50%",
+                          textAlign: "center",
+                          fontSize: "11px",
+                          fontWeight: "600",
+                          color: "white",
+                          zIndex: "-1",
+                        }
+                      : { display: "none" }
+                  }
+                >
+                  {cart.length}
+                </span>
+              </div>
+              {user ? (
                 <>
-                  {" "}
-                  <Link to={"/login"}>
-                    <FiUser size={22} />
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <div style={{ position: "relative" }}>
-                    <FaHeart
-                      size={22}
-                      onClick={() => setWishlistFlag((prevFlag) => !prevFlag)}
-                    />
-                    <span
-                      style={
-                        wishList.length > 0
-                          ? {
-                              position: "absolute",
-                              right: "-10px",
-                              top: "-8px",
-                              width: "16px",
-                              height: "17px",
-                              backgroundColor: "#ed6161",
-                              borderRadius: "50%",
-                              textAlign: "center",
-                              fontSize: "11px",
-                              fontWeight: "600",
-                              color: "white",
-                              zIndex: "-1",
-                            }
-                          : { display: "none" }
-                      }
-                    >
-                      {wishList.length}
-                    </span>
-                  </div>
-                  <div style={{ position: "relative" }}>
-                    <FaShoppingCart
-                      size={22}
-                      onClick={() => setCartFlag((prevFlag) => !prevFlag)}
-                    />
-                    <span
-                      style={
-                        cart.length > 0
-                          ? {
-                              position: "absolute",
-                              right: "-10px",
-                              top: "-8px",
-                              width: "16px",
-                              height: "17px",
-                              backgroundColor: "#ed6161",
-                              borderRadius: "50%",
-                              textAlign: "center",
-                              fontSize: "11px",
-                              fontWeight: "600",
-                              color: "white",
-                              zIndex: "-1",
-                            }
-                          : { display: "none" }
-                      }
-                    >
-                      {cart.length}
-                    </span>
-                  </div>
                   <Link to={"/profile"}>
                     <img
-                      src={user.avatar?.url}
+                      src={user?.avatar?.url}
                       alt="avatar"
                       className="avatar"
                       style={{
@@ -268,6 +259,12 @@ const Navbar = () => {
                         borderRadius: "100vmax",
                       }}
                     />
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to={"/login"}>
+                    <FiUser size={22} />
                   </Link>
                 </>
               )}
