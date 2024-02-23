@@ -62,24 +62,24 @@ const ProductDetails = ({ data }) => {
   const user = localStorage.getItem("user");
 
   const hanldeWishList = async () => {
-    if (user) {
+    // if (user) {
+    // } else navigate("/login");
       await addToList(data);
       getWishList();
-    } else navigate("/login");
   };
 
   const deleteListItem = async () => {
-    if (user) {
-      await removeToList(data.name);
-      // console.log("Delete Ahppened");
-    } else navigate("/login");
+    // if (user) {
+    //   // console.log("Delete Ahppened");
+    // } else navigate("/login");
+    await removeToList(data.name);
   };
 
   const hanldeCart = async () => {
-    if (user) {
+    // if (user) {
+    // } else navigate("/login");
       await addToCart(data);
       getCart();
-    } else navigate("/login");
   };
 
   const getRatings = async (id) => {
