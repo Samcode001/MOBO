@@ -7,7 +7,7 @@ const useHandleUser = () => {
 
   const getUser = async () => {
     const { data } = await axios.post(
-      "https://mobo-alpha.vercel.app/admin/getUser",
+      "https://mobo-acxx.vercel.app/admin/getUser",
       {},
       {
         headers: {

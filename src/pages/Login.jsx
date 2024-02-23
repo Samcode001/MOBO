@@ -31,7 +31,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://mobo-alpha.vercel.app/admin/login",
+        "https://mobo-acxx.vercel.app/admin/login",
         // "http://localhost:3000/admin/login",
         formData
       );

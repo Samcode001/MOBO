@@ -46,7 +46,7 @@ const Signup = () => {
       formData.append("password", password);
       formData.append("file", avatar);
       const res = await axios.post(
-        "https://mobo-alpha.vercel.app/admin/signup",
+        "https://mobo-acxx.vercel.app/admin/signup",
         {
           name,
           username,
