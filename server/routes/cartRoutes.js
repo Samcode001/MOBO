@@ -3,7 +3,7 @@ const router = express.Router();
 import authenticateJwt from "../auth/authenticateJwt.js";
 import CART from "../models/cart.js";
 
-router.post("/addItem", async (req, res) => {
+router.post("/addItem", authenticateJwt, async (req, res) => {
   try {
     const { name, img, price, os, memory, quantity, type } = req.body;
     const user = req.headers["user"].admin;
@@ -41,7 +41,7 @@ router.post("/addItem", async (req, res) => {
   }
 });
 
-router.get("/getItems", async (req, res) => {
+router.get("/getItems", authenticateJwt, async (req, res) => {
   try {
     const user = req.headers["user"].admin;
     const userCart = await CART.findOne({ user: user });
@@ -51,7 +51,7 @@ router.get("/getItems", async (req, res) => {
   }
 });
 
-router.post("/removeItem", async (req, res) => {
+router.post("/removeItem", authenticateJwt, async (req, res) => {
   const { name } = req.body;
   const user = req.headers["user"].admin;
   const userCart = await CART.findOne({ user: user });
@@ -66,7 +66,7 @@ router.post("/removeItem", async (req, res) => {
   res.status(201).send("ItemDeleted");
 });
 
-router.post("/updateQuantity", async (req, res) => {
+router.post("/updateQuantity", authenticateJwt, async (req, res) => {
   try {
     const { updateQuantity, productName } = req.body;
     if (updateQuantity === 0 || updateQuantity === 11) {
@@ -91,7 +91,7 @@ router.post("/updateQuantity", async (req, res) => {
   }
 });
 
-router.delete("/clear", async (req, res) => {
+router.delete("/clear", authenticateJwt, async (req, res) => {
   try {
     const user = req.headers["user"].admin;
 

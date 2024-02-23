@@ -36,30 +36,30 @@ const ProductCard = ({ data, onClick }) => {
   const navigate = useNavigate();
 
   const handleCart = async () => {
-    // if (user) {
-    // } else navigate("/login");
+    if (user) {
       await addToCart(data);
-    getCart();
+      getCart();
+    } else navigate("/login");
   };
 
   const hanldeWishList = async () => {
-    // if (user) {
-    // } else navigate("/login");
+    if (user) {
       await addToList(data);
       getWishList();
+    } else navigate("/login");
   };
 
   const deleteListItem = async () => {
-    // if (user) {
-    //   // console.log("Delete Ahppened");
-    // } else navigate("/login");
-    await removeToList(data.name);
+    if (user) {
+      await removeToList(data.name);
+      // console.log("Delete Ahppened");
+    } else navigate("/login");
   };
 
   // for setting the ratings of the products
   const getRatings = async () => {
     const res = await axios.post(
-      "https://mobo-acxx.vercel.app/data/ratings",
+      "https://mobo-alpha.vercel.app/data/ratings",
       {
         id: id,
       },

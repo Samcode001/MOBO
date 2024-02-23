@@ -62,29 +62,29 @@ const ProductDetails = ({ data }) => {
   const user = localStorage.getItem("user");
 
   const hanldeWishList = async () => {
-    // if (user) {
-    // } else navigate("/login");
+    if (user) {
       await addToList(data);
       getWishList();
+    } else navigate("/login");
   };
 
   const deleteListItem = async () => {
-    // if (user) {
-    //   // console.log("Delete Ahppened");
-    // } else navigate("/login");
-    await removeToList(data.name);
+    if (user) {
+      await removeToList(data.name);
+      // console.log("Delete Ahppened");
+    } else navigate("/login");
   };
 
   const hanldeCart = async () => {
-    // if (user) {
-    // } else navigate("/login");
+    if (user) {
       await addToCart(data);
       getCart();
+    } else navigate("/login");
   };
 
   const getRatings = async (id) => {
     const res = await axios.post(
-      "https://mobo-acxx.vercel.app/data/ratings",
+      "https://mobo-alpha.vercel.app/data/ratings",
       {
         id: id,
       },
