@@ -285,7 +285,7 @@
   .checkout-left {
     order: 1;
     /* outline: 1px solid black; */
-    transform: translateY(-50%);
+    /* transform: translateY(-30%); */
     /* width: 80vw; */
   }
 
@@ -304,8 +304,11 @@
     /* outline: 1px solid red; */
   }
 
-  .checkout-right-items {
+  .checkout-right-products {
     /* flex-direction: column; */
+    height: 60vh;
+    /* outline: 1px solid red; */
+    overflow-y: scroll;
   }
   .checkout-address {
     /* outline: 1px solid lime; */

@@ -534,7 +534,7 @@ const CheckOutPage = () => {
             <div className="checkout-right">
               <div>
                 <div className="checkout-right-container">
-                  <div>
+                  <div className="checkout-right-products">
                     {cart &&
                       cart.map((elem) => {
                         return (
