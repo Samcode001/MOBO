@@ -107,10 +107,10 @@ router.post("/getUser", authenticateJwt, async (req, res) => {
   }
 });
 
-router.post("/address", async (req, res) => {
+router.post("/address", authenticateJwt, async (req, res) => {
   try {
-    const { address, user } = req.body;
-    // const user = req.headers["user"].admin;
+    const { address } = req.body;
+    const user = req.headers["user"].admin;
     const admin = await USER.findOne({ username: user });
 
     // if (admin.address.length === 0) {
@@ -126,10 +126,10 @@ router.post("/address", async (req, res) => {
   }
 });
 
-router.get("/address", async (req, res) => {
+router.post("/address", authenticateJwt, async (req, res) => {
   try {
-    const { address, user } = req.body;
-    // const user = req.headers["user"].admin;
+    const { address } = req.body;
+    const user = req.headers["user"].admin;
     const admin = await USER.findOne({ username: user });
     if (admin.address.length === 0) {
       return res
