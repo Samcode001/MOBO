@@ -111,7 +111,7 @@ router.post("/order", authenticateJwt, async (req, res) => {
   }
 });
 
-router.post("/order", authenticateJwt, async (req, res) => {
+router.get("/order", authenticateJwt, async (req, res) => {
   try {
     const user = req.headers["user"].admin;
     // const { user } = req.user;

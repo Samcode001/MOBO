@@ -94,7 +94,7 @@ const CheckOutPage = () => {
       "https://mobo-shzp.vercel.app/admin/address",
       {
         address: deliveryAddress,
-      user:   sessionStorage.getItem("user")
+        user: sessionStorage.getItem("user"),
       },
       {
         headers: {
@@ -141,17 +141,11 @@ const CheckOutPage = () => {
   const getAddress = async () => {
     const {
       data: { success, message, address },
-    } = await axios.post(
-      "https://mobo-shzp.vercel.app/admin/address",
-      {
-      user:   sessionStorage.getItem("user")
+    } = await axios.get("https://mobo-shzp.vercel.app/admin/address", {
+      headers: {
+        Authorization: "bearer " + localStorage.getItem("token"),
       },
-      {
-        headers: {
-          Authorization: "bearer " + localStorage.getItem("token"),
-        },
-      }
-    );
+    });
 
     if (success) {
       setAddressFlag(true);
@@ -269,7 +263,7 @@ const CheckOutPage = () => {
             {
               order: phoneData,
               total: totalSum,
-            user:   sessionStorage.getItem("user")
+              user: sessionStorage.getItem("user"),
             },
             {
               headers: {

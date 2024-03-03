@@ -89,11 +89,8 @@ const ProfileOrders = () => {
   const [orders, setOrders] = useState([]);
 
   const getOrders = async () => {
-    const { data } = await axios.post(
+    const { data } = await axios.get(
       "https://mobo-shzp.vercel.app/orders/order",
-      {
-      user:   sessionStorage.getItem("user")
-      },
       {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -170,7 +167,7 @@ const ProfileAddress = () => {
     } = await axios.post(
       "https://mobo-shzp.vercel.app/admin/address",
       {
-      user:   sessionStorage.getItem("user")
+        user: sessionStorage.getItem("user"),
       },
       {
         headers: {

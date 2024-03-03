@@ -120,11 +120,8 @@ const CheckOutPage = () => {
   const getAddress = async () => {
     const {
       data: { success, message, address },
-    } = await axios.post(
+    } = await axios.get(
       "https://mobo-shzp.vercel.app/admin/address",
-      {
-        user: sessionStorage.getItem("user"),
-      },
       {
         headers: {
           Authorization: "bearer " + localStorage.getItem("token"),
