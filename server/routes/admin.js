@@ -126,7 +126,7 @@ router.post("/address", authenticateJwt, async (req, res) => {
   }
 });
 
-router.post("/address", authenticateJwt, async (req, res) => {
+router.get("/address", authenticateJwt, async (req, res) => {
   try {
     const { address } = req.body;
     const user = req.headers["user"].admin;
