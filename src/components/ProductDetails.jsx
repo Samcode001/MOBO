@@ -84,7 +84,7 @@ const ProductDetails = ({ data }) => {
 
   const getRatings = async (id) => {
     const res = await axios.post(
-      "http://localhost:3000/data/ratings",
+      "https://mobo-shzp.vercel.app/data/ratings",
       {
         id: id,
       },

@@ -7,7 +7,7 @@ const useHandleUser = () => {
 
   const getUser = async () => {
     const { data } = await axios.post(
-      "http://localhost:3000/admin/getUser",
+      "https://mobo-shzp.vercel.app/admin/getUser",
       {},
       {
         headers: {

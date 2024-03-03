@@ -53,7 +53,7 @@ const Navbar = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/data/phones", {
+      const res = await axios.get("https://mobo-shzp.vercel.app/data/phones", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

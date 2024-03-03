@@ -10,7 +10,7 @@ const useHanldeList = () => {
     const {
       data: { success, message },
     } = await axios.post(
-      "http://localhost:3000/wishlist/addItem",
+      "https://mobo-shzp.vercel.app/wishlist/addItem",
       {
         name: productData.name,
         img: productData.images[0],
@@ -56,7 +56,7 @@ const useHanldeList = () => {
     const {
       data: { wishListItems },
     } = await axios.post(
-      "http://localhost:3000/wishlist/getItems",
+      "https://mobo-shzp.vercel.app/wishlist/getItems",
       {
         user:   sessionStorage.getItem("user")
       },
@@ -73,7 +73,7 @@ const useHanldeList = () => {
 
   const removeToList = async (itemName, flag = true) => {
     const res = await axios.post(
-      "http://localhost:3000/wishlist/removeItem",
+      "https://mobo-shzp.vercel.app/wishlist/removeItem",
       {
         name: itemName,
         user:   sessionStorage.getItem("user")

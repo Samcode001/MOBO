@@ -45,8 +45,8 @@ const Ratings = ({ id, getRatings, setWriteReview }) => {
         });
 
       const res = await axios.post(
-        "http://localhost:3000/data/set-rating",
-        // "http://localhost:3000/data/set-rating",
+        "https://mobo-shzp.vercel.app/data/set-rating",
+        // "https://mobo-shzp.vercel.app/data/set-rating",
         {
           id: id,
           rate: review,

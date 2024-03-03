@@ -9,7 +9,7 @@ const useGetCart = () => {
     const {
       data: { cartItems },
     } = await axios.post(
-      "http://localhost:3000/cart/getItems",
+      "https://mobo-shzp.vercel.app/cart/getItems",
       {
       user:   sessionStorage.getItem("user")
       },

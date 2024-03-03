@@ -50,7 +50,7 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
 
   const deleteCartItem = async (itemName) => {
     const res = await axios.post(
-      "http://localhost:3000/cart/removeItem",
+      "https://mobo-shzp.vercel.app/cart/removeItem",
       {
         name: itemName,
         user: sessionStorage.getItem("user"),

@@ -10,7 +10,7 @@ const useUpdateQuantity = () => {
     const {
       data: { updatedCart },
     } = await axios.post(
-      "http://localhost:3000/cart/updateQuantity",
+      "https://mobo-shzp.vercel.app/cart/updateQuantity",
       {
         updateQuantity: quantity,
         productName: productName,

@@ -28,7 +28,7 @@ const Android = () => {
   const getData = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/data/android",
+        "https://mobo-shzp.vercel.app/data/android",
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),

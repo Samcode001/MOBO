@@ -46,7 +46,7 @@ const Signup = () => {
       formData.append("password", password);
       formData.append("file", avatar);
       const res = await axios.post(
-        "http://localhost:3000/admin/signup",
+        "https://mobo-shzp.vercel.app/admin/signup",
         {
           name,
           username,

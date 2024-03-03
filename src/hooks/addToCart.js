@@ -11,7 +11,7 @@ const useAddToCart = () => {
     const {
       data: { success, message },
     } = await axios.post(
-      "http://localhost:3000/cart/addItem",
+      "https://mobo-shzp.vercel.app/cart/addItem",
       {
         name: productData.name,
         price: productData.price,

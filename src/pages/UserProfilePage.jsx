@@ -16,7 +16,7 @@ const UserProfilePage = () => {
 
   // const getUser = async () => {
   //   const { data } = await axios.post(
-  //     "http://localhost:3000/admin/getUser",
+  //     "https://mobo-shzp.vercel.app/admin/getUser",
   //     {},
   //     {
   //       headers: {
@@ -90,7 +90,7 @@ const ProfileOrders = () => {
 
   const getOrders = async () => {
     const { data } = await axios.post(
-      "http://localhost:3000/orders/order",
+      "https://mobo-shzp.vercel.app/orders/order",
       {
       user:   sessionStorage.getItem("user")
       },
@@ -168,7 +168,7 @@ const ProfileAddress = () => {
     const {
       data: { success, address },
     } = await axios.post(
-      "http://localhost:3000/admin/address",
+      "https://mobo-shzp.vercel.app/admin/address",
       {
       user:   sessionStorage.getItem("user")
       },
