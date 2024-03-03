@@ -36,10 +36,10 @@ const ProductCard = ({ data, onClick }) => {
   const navigate = useNavigate();
 
   const handleCart = async () => {
-    if (user) {
+    // if (user) {
+      // } else navigate("/login");
       await addToCart(data);
       getCart();
-    } else navigate("/login");
   };
 
   const hanldeWishList = async () => {
@@ -59,7 +59,7 @@ const ProductCard = ({ data, onClick }) => {
   // for setting the ratings of the products
   const getRatings = async () => {
     const res = await axios.post(
-      "https://mobo-alpha.vercel.app/data/ratings",
+      "http://localhost:3000/data/ratings",
       {
         id: id,
       },

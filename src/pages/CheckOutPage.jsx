@@ -57,9 +57,10 @@ const CheckOutPage = () => {
     const {
       data: { success, message },
     } = await axios.post(
-      "https://mobo-alpha.vercel.app/admin/address",
+      "http://localhost:3000/admin/address",
       {
         address: deliveryAddress,
+      user:   sessionStorage.getItem("user")
       },
       {
         headers: {
@@ -119,11 +120,17 @@ const CheckOutPage = () => {
   const getAddress = async () => {
     const {
       data: { success, message, address },
-    } = await axios.get("https://mobo-alpha.vercel.app/admin/address", {
-      headers: {
-        Authorization: "bearer " + localStorage.getItem("token"),
+    } = await axios.post(
+      "http://localhost:3000/admin/address",
+      {
+      user:   sessionStorage.getItem("user")
       },
-    });
+      {
+        headers: {
+          Authorization: "bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
 
     if (success) {
       setAddressFlag(true);
@@ -205,7 +212,7 @@ const CheckOutPage = () => {
   const razorPayment = async (amount) => {
     const {
       data: { key },
-    } = await axios.get("https://mobo-alpha.vercel.app/getRazorkey", {
+    } = await axios.get("http://localhost:3000/getRazorkey", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
@@ -213,7 +220,7 @@ const CheckOutPage = () => {
     const {
       data: { order, success },
     } = await axios.post(
-      "https://mobo-alpha.vercel.app/payments/checkout",
+      "http://localhost:3000/payments/checkout",
       {
         amount,
       },
@@ -244,13 +251,13 @@ const CheckOutPage = () => {
       description: "Test Transaction",
       image: logoImage,
       order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      // callback_url: "https://mobo-alpha.vercel.app/payments/paymentVerification",
+      // callback_url: "http://localhost:3000/payments/paymentVerification",
       handler: async function (response) {
         // alert(response.razorpay_payment_id);
         // alert(response.razorpay_order_id);
         // alert(response.razorpay_signature);
         // const { data: success } = await axios.post(
-        //   "https://mobo-alpha.vercel.app/payments/paymentVerification",
+        //   "http://localhost:3000/payments/paymentVerification",
         //   { response },
         //   {
         //     headers: {
@@ -262,10 +269,11 @@ const CheckOutPage = () => {
           const {
             data: { success },
           } = await axios.post(
-            "https://mobo-alpha.vercel.app/orders/order",
+            "http://localhost:3000/orders/order",
             {
               order: cart,
               total: totalSum,
+            user:   sessionStorage.getItem("user")
             },
             {
               headers: {
@@ -290,8 +298,11 @@ const CheckOutPage = () => {
 
               const {
                 data: { success },
-              } = await axios.delete(
-                "https://mobo-alpha.vercel.app/cart/clear",
+              } = await axios.post(
+                "http://localhost:3000/cart/clear",
+                {
+                user:   sessionStorage.getItem("user")
+                },
                 {
                   headers: {
                     Authorization: "Bearer " + localStorage.getItem("token"),
@@ -335,7 +346,7 @@ const CheckOutPage = () => {
   const stripePayment = async () => {
     const {
       data: { key },
-    } = await axios.get("https://mobo-alpha.vercel.app/getStripekey", {
+    } = await axios.get("http://localhost:3000/getStripekey", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
@@ -343,7 +354,7 @@ const CheckOutPage = () => {
     const stripe = await loadStripe(key);
 
     const { data } = await axios.post(
-      "https://mobo-alpha.vercel.app/payments/stripePayment",
+      "http://localhost:3000/payments/stripePayment",
       {
         products: cart,
       },
@@ -442,18 +453,15 @@ const CheckOutPage = () => {
                   enableSearch={true}
                   value={phone}
                   onChange={(phone) => setPhone(phone)}
-                  
-className="checkout-phone"                />
+                  className="checkout-phone"
+                />
               </div>
               <div
                 className="checkout-address"
                 style={{ backgroundColor: "rgb(217, 214, 214)" }}
               >
                 <h2>Address</h2>
-                <div
-                  
-                  style={{ overflowY: "scroll", marginBottom: "0.6rem" }}
-                >
+                <div style={{ overflowY: "scroll", marginBottom: "0.6rem" }}>
                   {userAddress &&
                     userAddress.map((elem, index) => {
                       return (

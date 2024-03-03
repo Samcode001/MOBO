@@ -11,7 +11,7 @@ const useAddToCart = () => {
     const {
       data: { success, message },
     } = await axios.post(
-      "https://mobo-alpha.vercel.app/cart/addItem",
+      "http://localhost:3000/cart/addItem",
       {
         name: productData.name,
         price: productData.price,
@@ -20,6 +20,7 @@ const useAddToCart = () => {
         type: productData.type,
         quantity: quantity,
         memory: productData.memory,
+      user:   sessionStorage.getItem("user")
       },
       {
         headers: {

@@ -25,7 +25,7 @@ const Home = () => {
   const getData = async () => {
     try {
       const res = await axios.get(
-        "https://mobo-alpha.vercel.app/data/phones",
+        "http://localhost:3000/data/phones",
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),

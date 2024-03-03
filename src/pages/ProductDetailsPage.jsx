@@ -12,7 +12,7 @@ const ProductDetailsPage = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get("https://mobo-alpha.vercel.app/data/phones", {
+      const res = await axios.get("http://localhost:3000/data/phones", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

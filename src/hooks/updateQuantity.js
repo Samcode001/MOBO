@@ -6,14 +6,15 @@ const useUpdateQuantity = () => {
   const [cart, setCart] = useRecoilState(cartState);
   const updateQuantity = async (quantity, productName, flag) => {
     // flag ? (quantity = quantity + 1) : (quantity = quantity - 1);
-    console.log(quantity, productName, flag);
+    // console.log(quantity, productName, flag);
     const {
       data: { updatedCart },
     } = await axios.post(
-      "https://mobo-alpha.vercel.app/cart/updateQuantity",
+      "http://localhost:3000/cart/updateQuantity",
       {
         updateQuantity: quantity,
         productName: productName,
+      user:   sessionStorage.getItem("user")
       },
       {
         headers: {

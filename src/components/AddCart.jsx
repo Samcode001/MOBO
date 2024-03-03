@@ -26,6 +26,8 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
   const navigate = useNavigate();
   const cartRef = useRef();
 
+  const user = localStorage.getItem("user");
+
   const handleClickOutside = (event) => {
     if (cartRef.current && !cartRef.current.contains(event.target)) {
       setCartFlag(false);
@@ -48,9 +50,10 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
 
   const deleteCartItem = async (itemName) => {
     const res = await axios.post(
-      "https://mobo-alpha.vercel.app/cart/removeItem",
+      "http://localhost:3000/cart/removeItem",
       {
         name: itemName,
+        user: sessionStorage.getItem("user"),
       },
       {
         headers: {
@@ -190,7 +193,9 @@ const AddCart = ({ cartFlag, setCartFlag }) => {
           className="button"
           onClick={() => {
             setCartFlag((prevFlag) => !prevFlag);
-            navigate("/checkout");
+            if (user) {
+              navigate("/checkout");
+            } else navigate("/login");
           }}
         >
           Check Out

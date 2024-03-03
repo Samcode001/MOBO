@@ -8,11 +8,17 @@ const useGetCart = () => {
   const getCart = async () => {
     const {
       data: { cartItems },
-    } = await axios.get("https://mobo-alpha.vercel.app/cart/getItems", {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+    } = await axios.post(
+      "http://localhost:3000/cart/getItems",
+      {
+      user:   sessionStorage.getItem("user")
       },
-    });
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
     if (cartItems) {
       setCart(cartItems);
     }

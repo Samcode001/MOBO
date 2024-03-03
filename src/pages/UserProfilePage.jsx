@@ -16,7 +16,7 @@ const UserProfilePage = () => {
 
   // const getUser = async () => {
   //   const { data } = await axios.post(
-  //     "https://mobo-alpha.vercel.app/admin/getUser",
+  //     "http://localhost:3000/admin/getUser",
   //     {},
   //     {
   //       headers: {
@@ -89,8 +89,11 @@ const ProfileOrders = () => {
   const [orders, setOrders] = useState([]);
 
   const getOrders = async () => {
-    const { data } = await axios.get(
-      "https://mobo-alpha.vercel.app/orders/order",
+    const { data } = await axios.post(
+      "http://localhost:3000/orders/order",
+      {
+      user:   sessionStorage.getItem("user")
+      },
       {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -164,11 +167,17 @@ const ProfileAddress = () => {
   const getAddress = async () => {
     const {
       data: { success, address },
-    } = await axios.get("https://mobo-alpha.vercel.app/admin/address", {
-      headers: {
-        Authorization: "bearer " + localStorage.getItem("token"),
+    } = await axios.post(
+      "http://localhost:3000/admin/address",
+      {
+      user:   sessionStorage.getItem("user")
       },
-    });
+      {
+        headers: {
+          Authorization: "bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
 
     if (success) {
       setUserAddress(address);

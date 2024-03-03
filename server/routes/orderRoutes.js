@@ -60,8 +60,8 @@ import easyInvoice from "easyinvoice";
 
 router.post("/order", authenticateJwt, async (req, res) => {
   try {
-    const user = req.headers["user"].admin;
-    const { order, total } = req.body;
+    // const user = req.headers["user"].admin;
+    const { order, total, user } = req.body;
     const orderId = uuidv4();
     const currentDate = new Date();
     const currenDateForamt = `${currentDate.getDate()}/${
@@ -111,9 +111,10 @@ router.post("/order", authenticateJwt, async (req, res) => {
   }
 });
 
-router.get("/order", authenticateJwt, async (req, res) => {
+router.post("/order", async (req, res) => {
   try {
-    const user = req.headers["user"].admin;
+    // const user = req.headers["user"].admin;
+    const { user } = req.user;
 
     const orders = await ORDER.findOne({ user: user });
 

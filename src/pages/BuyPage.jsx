@@ -50,14 +50,11 @@ const CheckOutPage = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(
-        "https://mobo-alpha.vercel.app/data/phones",
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+      const res = await axios.get("http://localhost:3000/data/phones", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
       if (res.status === 200) {
         let temp = res.data.phones.find((elem) => elem._id === id);
         console.log(temp);
@@ -94,9 +91,10 @@ const CheckOutPage = () => {
     const {
       data: { success, message },
     } = await axios.post(
-      "https://mobo-alpha.vercel.app/admin/address",
+      "http://localhost:3000/admin/address",
       {
         address: deliveryAddress,
+      user:   sessionStorage.getItem("user")
       },
       {
         headers: {
@@ -137,19 +135,23 @@ const CheckOutPage = () => {
           " " +
           postOffice.Pincode
       );
-      // console.log(data);
-      // console.log(postOffice)
     }
   };
 
   const getAddress = async () => {
     const {
       data: { success, message, address },
-    } = await axios.get("https://mobo-alpha.vercel.app/admin/address", {
-      headers: {
-        Authorization: "bearer " + localStorage.getItem("token"),
+    } = await axios.post(
+      "http://localhost:3000/admin/address",
+      {
+      user:   sessionStorage.getItem("user")
       },
-    });
+      {
+        headers: {
+          Authorization: "bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
 
     if (success) {
       setAddressFlag(true);
@@ -206,7 +208,7 @@ const CheckOutPage = () => {
   const razorPayment = async (amount) => {
     const {
       data: { key },
-    } = await axios.get("https://mobo-alpha.vercel.app/getRazorkey", {
+    } = await axios.get("http://localhost:3000/getRazorkey", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
@@ -214,7 +216,7 @@ const CheckOutPage = () => {
     const {
       data: { order, success },
     } = await axios.post(
-      "https://mobo-alpha.vercel.app/payments/checkout",
+      "http://localhost:3000/payments/checkout",
       {
         amount,
       },
@@ -245,14 +247,13 @@ const CheckOutPage = () => {
       description: "Test Transaction",
       image: logoImage,
       order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      // callback_url: https://mobo-alpha.vercel.app/payments/paymentVerification",
+      // callback_url: http://localhost:3000/payments/paymentVerification",
       handler: async function (response) {
         // alert(response.razorpay_payment_id);
         // alert(response.razorpay_order_id);
         // alert(response.razorpay_signature);
         // const { data: success } = await axios.post(
-        //   "
-https://mobo-alpha.vercel.app/payments/paymentVerification",
+        //   "http://localhost:3000/payments/paymentVerification",
         //   { response },
         //   {
         //     headers: {
@@ -264,10 +265,11 @@ https://mobo-alpha.vercel.app/payments/paymentVerification",
           const {
             data: { success },
           } = await axios.post(
-            "https://mobo-alpha.vercel.app/orders/order",
+            "http://localhost:3000/orders/order",
             {
               order: phoneData,
               total: totalSum,
+            user:   sessionStorage.getItem("user")
             },
             {
               headers: {
@@ -292,7 +294,8 @@ https://mobo-alpha.vercel.app/payments/paymentVerification",
 
             //       const {
             //         data: { success },
-            //       } = await axios.delete("https://mobo-alpha.vercel.app/cart/clear", {
+            //       } = await axios.delete("
+            //localhost:3000/cart/clear", {
             //         headers: {
             //           Authorization: "Bearer " + localStorage.getItem("token"),
             //         },
@@ -300,7 +303,7 @@ https://mobo-alpha.vercel.app/payments/paymentVerification",
             //       if (success) {
             //     }
             // }, 2000);
-            navigate("/paymentsuccess");
+            http: navigate("/paymentsuccess");
           }
         } else {
           toast.error("Payment Failed", {
@@ -334,7 +337,7 @@ https://mobo-alpha.vercel.app/payments/paymentVerification",
   const stripePayment = async () => {
     const {
       data: { key },
-    } = await axios.get("https://mobo-alpha.vercel.app/getStripekey", {
+    } = await axios.get("http://localhost:3000/getStripekey", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
@@ -342,7 +345,7 @@ https://mobo-alpha.vercel.app/payments/paymentVerification",
     const stripe = await loadStripe(key);
 
     const { data } = await axios.post(
-      "https://mobo-alpha.vercel.app/payments/stripePayment",
+      "http://localhost:3000/payments/stripePayment",
       {
         products: cart,
       },
@@ -456,7 +459,6 @@ https://mobo-alpha.vercel.app/payments/paymentVerification",
                           key={index}
                           onClick={() => handleSelectAddress(elem)}
                           style={{ cursor: "pointer" }}
-                          
                         >
                           <input
                             id={index}

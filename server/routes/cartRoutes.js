@@ -3,10 +3,10 @@ const router = express.Router();
 import authenticateJwt from "../auth/authenticateJwt.js";
 import CART from "../models/cart.js";
 
-router.post("/addItem", authenticateJwt, async (req, res) => {
+router.post("/addItem", async (req, res) => {
   try {
-    const { name, img, price, os, memory, quantity, type } = req.body;
-    const user = req.headers["user"].admin;
+    const { name, img, price, os, memory, quantity, type, user } = req.body;
+    // const user = req.headers["user"].admin;
     const userExist = await CART.findOne({ user: user });
 
     const newItem = {
@@ -41,9 +41,10 @@ router.post("/addItem", authenticateJwt, async (req, res) => {
   }
 });
 
-router.get("/getItems", authenticateJwt, async (req, res) => {
+router.post("/getItems", async (req, res) => {
   try {
-    const user = req.headers["user"].admin;
+    // const user = req.headers["user"].admin;
+    const { user } = req.body;
     const userCart = await CART.findOne({ user: user });
     res.status(200).json({ cartItems: userCart.cart });
   } catch (error) {
@@ -51,9 +52,9 @@ router.get("/getItems", authenticateJwt, async (req, res) => {
   }
 });
 
-router.post("/removeItem", authenticateJwt, async (req, res) => {
-  const { name } = req.body;
-  const user = req.headers["user"].admin;
+router.post("/removeItem", async (req, res) => {
+  const { name, user } = req.body;
+  // const user = req.headers["user"].admin;
   const userCart = await CART.findOne({ user: user });
 
   let cart = userCart.cart;
@@ -66,14 +67,14 @@ router.post("/removeItem", authenticateJwt, async (req, res) => {
   res.status(201).send("ItemDeleted");
 });
 
-router.post("/updateQuantity", authenticateJwt, async (req, res) => {
+router.post("/updateQuantity", async (req, res) => {
   try {
-    const { updateQuantity, productName } = req.body;
+    const { updateQuantity, productName, user } = req.body;
     if (updateQuantity === 0 || updateQuantity === 11) {
       return res.status(401).send("Not allowed");
     }
 
-    const user = req.headers["user"].admin;
+    // const user = req.headers["user"].admin;
     const userCart = await CART.findOne({ user: user });
 
     userCart.cart.forEach((item) => {
@@ -91,7 +92,7 @@ router.post("/updateQuantity", authenticateJwt, async (req, res) => {
   }
 });
 
-router.delete("/clear", authenticateJwt, async (req, res) => {
+router.post("/clear", async (req, res) => {
   try {
     const user = req.headers["user"].admin;
 

@@ -10,7 +10,7 @@ const useHanldeList = () => {
     const {
       data: { success, message },
     } = await axios.post(
-      "https://mobo-alpha.vercel.app/wishlist/addItem",
+      "http://localhost:3000/wishlist/addItem",
       {
         name: productData.name,
         img: productData.images[0],
@@ -18,6 +18,7 @@ const useHanldeList = () => {
         type: productData.type,
         memory: productData.memory,
         price: productData.price,
+      user:   sessionStorage.getItem("user")
       },
       {
         headers: {
@@ -54,11 +55,17 @@ const useHanldeList = () => {
   const getWishList = async () => {
     const {
       data: { wishListItems },
-    } = await axios.get("https://mobo-alpha.vercel.app/wishlist/getItems", {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+    } = await axios.post(
+      "http://localhost:3000/wishlist/getItems",
+      {
+        user:   sessionStorage.getItem("user")
       },
-    });
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
     if (wishListItems) {
       setWishList(wishListItems);
     }
@@ -66,9 +73,10 @@ const useHanldeList = () => {
 
   const removeToList = async (itemName, flag = true) => {
     const res = await axios.post(
-      "https://mobo-alpha.vercel.app/wishlist/removeItem",
+      "http://localhost:3000/wishlist/removeItem",
       {
         name: itemName,
+        user:   sessionStorage.getItem("user")
       },
       {
         headers: {

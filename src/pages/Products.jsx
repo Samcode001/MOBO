@@ -27,7 +27,7 @@ const Products = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get("https://mobo-alpha.vercel.app/data/phones", {
+      const res = await axios.get("http://localhost:3000/data/phones", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -145,10 +145,15 @@ const Products = () => {
           justifyContent: "space-between",
           width: "90%",
           zIndex: 999,
-          backgroundColor: "white",
+          backgroundColor: "#fafafa",
         }}
       >
-        <h1 style={{ fontSize: "clamp(2rem,5vw,3rem)", padding: "4px 1rem" }}>
+        <h1
+          style={{
+            fontSize: "clamp(2rem,5vw,3rem)",
+            padding: "4px 1rem",
+          }}
+        >
           BEST DEALS{" "}
         </h1>
         <FaFilter

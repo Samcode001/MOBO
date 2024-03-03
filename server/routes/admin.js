@@ -24,7 +24,7 @@ router.post("/signup", async (req, res) => {
     }
 
     const { username, password, name, avatar } = req.body;
-    // console.log(username, password, name, avatar);
+    console.log(username, password, name, avatar);
 
     const salt = await bcrypt.genSalt(10);
     const securePassword = await bcrypt.hash(password, salt);
@@ -65,8 +65,10 @@ router.post("/signup", async (req, res) => {
       });
     }
   } catch (error) {
-    // console.log(error);
-    res.status(500).json({ message: "Internal Server Error ", success: false });
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: `Internal Server Error:${error} `, success: false });
   }
 });
 
@@ -105,10 +107,10 @@ router.post("/getUser", authenticateJwt, async (req, res) => {
   }
 });
 
-router.post("/address", authenticateJwt, async (req, res) => {
+router.post("/address", async (req, res) => {
   try {
-    const { address } = req.body;
-    const user = req.headers["user"].admin;
+    const { address, user } = req.body;
+    // const user = req.headers["user"].admin;
     const admin = await USER.findOne({ username: user });
 
     // if (admin.address.length === 0) {
@@ -124,10 +126,10 @@ router.post("/address", authenticateJwt, async (req, res) => {
   }
 });
 
-router.get("/address", authenticateJwt, async (req, res) => {
+router.get("/address", async (req, res) => {
   try {
-    const { address } = req.body;
-    const user = req.headers["user"].admin;
+    const { address, user } = req.body;
+    // const user = req.headers["user"].admin;
     const admin = await USER.findOne({ username: user });
     if (admin.address.length === 0) {
       return res
@@ -137,7 +139,7 @@ router.get("/address", authenticateJwt, async (req, res) => {
       res.status(200).json({
         success: true,
         message: "Address Found",
-        address: admin.address
+        address: admin.address,
       });
     }
   } catch (error) {

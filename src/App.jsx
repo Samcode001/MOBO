@@ -13,15 +13,22 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import { useEffect } from "react";
-import useHandleUser from "./hooks/handleUser.js";
 import NotFound from "./components/NotFound";
 import Faq from "./pages/Faq.jsx";
 import About from "./pages/About.jsx";
 import Footer from "./components/Footer.jsx";
 import Android from "./pages/Android.jsx";
+import axios from "axios";
+import avatar from "./assets/avatar.png";
+import { useEffect } from "react";
 
 function App() {
+  const user = sessionStorage.getItem("user");
+
+  if (!user) {
+    sessionStorage.setItem("user", Date.now());
+  }
+
   return (
     <>
       <RecoilRoot>

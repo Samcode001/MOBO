@@ -76,15 +76,15 @@ const ProductDetails = ({ data }) => {
   };
 
   const hanldeCart = async () => {
-    if (user) {
-      await addToCart(data);
-      getCart();
-    } else navigate("/login");
+    // if (user) {
+    // } else navigate("/login");
+    await addToCart(data);
+    getCart();
   };
 
   const getRatings = async (id) => {
     const res = await axios.post(
-      "https://mobo-alpha.vercel.app/data/ratings",
+      "http://localhost:3000/data/ratings",
       {
         id: id,
       },
@@ -219,7 +219,10 @@ const ProductDetails = ({ data }) => {
             </button>
             <button
               className="button-buy"
-              onClick={() => navigate(`/buy/${data._id}`)}
+              onClick={() => {
+                if (user) navigate(`/buy/${data._id}`);
+                else navigate("/login");
+              }}
             >
               Buy Now
             </button>
@@ -426,7 +429,7 @@ const ProductDetails = ({ data }) => {
               onClick={async () => {
                 await getRatings(elem._id);
                 window.scrollTo(0, 0);
-                setSelectImage(elem.images[0])
+                setSelectImage(elem.images[0]);
               }}
             />
           ))}

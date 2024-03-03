@@ -46,7 +46,7 @@ const Signup = () => {
       formData.append("password", password);
       formData.append("file", avatar);
       const res = await axios.post(
-        "https://mobo-alpha.vercel.app/admin/signup",
+        "http://localhost:3000/admin/signup",
         {
           name,
           username,
@@ -54,7 +54,7 @@ const Signup = () => {
           avatar,
         }
       );
-
+     
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
         navigate("/");
