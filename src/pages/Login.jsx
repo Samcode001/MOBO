@@ -7,8 +7,8 @@ import { toast } from "react-toastify";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
+    username: "demo@gmail.com",
+    password: "demo@1234",
   });
 
   const { getUser } = useHandleUser();
